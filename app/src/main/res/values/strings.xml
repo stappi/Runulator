@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Runulator</string>
+    <string name="distance">Distance [km]</string>
+    <string name="run_time">Run time [h:min:sec]</string>
+    <string name="pace">Pace per km [min:sec]</string>
+    <string name="speed">Speed [km/h]</string>
+    <string name="calculate">Calculate</string>
+    <string name="calories">Calories</string>
+    <string name="forecast">Forecast</string>
+</resources>
