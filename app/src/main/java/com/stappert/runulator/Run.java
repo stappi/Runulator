@@ -1,11 +1,40 @@
 package com.stappert.runulator;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * Defines a run.
+ * Defines a run. Contains static functions, to create and manage runs. (Companion object)
  */
 public class Run {
+
+    // =============================================================================================
+    // time units
+    // =============================================================================================
+    /**
+     * One second.
+     */
+    public final static int SECOND = 1;
+
+    /**
+     * One minute in seconds.
+     */
+    public final static int MINUTE = 60;
+
+    /**
+     * One hour in seconds.
+     */
+    public final static int HOUR = 60 * 60;
 
     // =============================================================================================
     // json keys
@@ -79,7 +108,7 @@ public class Run {
      * @param pace     in seconds
      * @param speed    in km/h
      */
-    public Run(float distance, int duration, int pace, float speed) {
+    private Run(float distance, int duration, int pace, float speed) {
         this.distance = distance;
         this.duration = duration;
         this.pace = pace;
@@ -97,7 +126,7 @@ public class Run {
      */
     public String getDistance() {
         int noOfDecimalPlaces = Float.toString(distance).split("\\.")[1].length();
-        return String.format("%." + (noOfDecimalPlaces < 4 ? noOfDecimalPlaces : 4) + "f", distance);
+        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces < 4 ? noOfDecimalPlaces : 4) + "f", distance);
     }
 
     /**
@@ -124,7 +153,8 @@ public class Run {
      * @return speed in km/h
      */
     public String getSpeed() {
-        return String.format("%.2f", speed);
+        int noOfDecimalPlaces = Float.toString(speed).split("\\.")[1].length();
+        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces <= 1 ? 1 : 2) + "f", speed);
     }
 
     /**
@@ -158,7 +188,7 @@ public class Run {
      * @param fatigueCoefficient fatigue coefficient
      */
     public String getForecast(float forecastDistance, float fatigueCoefficient) {
-        return "~ " + RunUtils.createWithDistanceAndDuration(forecastDistance,
+        return "~ " + createWithDistanceAndDuration(forecastDistance,
                 (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient))).toString();
     }
 
@@ -199,7 +229,7 @@ public class Run {
      */
     public String toString() {
         return getDistance() + "KM in "
-                + getDuration() + (duration >= 60 * 60 ? "h" : duration >= 60 ? "min" : "sec") + "\n("
+                + getDuration() + (duration >= HOUR ? "h" : duration >= MINUTE ? "min" : "sec") + "\n("
                 + getPace() + "min/km; "
                 + getSpeed() + "km/h)";
     }
@@ -227,11 +257,164 @@ public class Run {
      * @return total seconds in hh:mm:ss
      */
     private String secondsToString(int totalSeconds) {
-        int hours = totalSeconds / 60 / 60;
-        int minutes = totalSeconds / 60 % 60;
-        int seconds = totalSeconds % 60 % 60;
-        return (hours > 0 ? hours + ":" : "")
-                + (minutes >= 10 ? minutes : "0" + minutes)
-                + ":" + (seconds >= 10 ? seconds : "0" + seconds);
+        if (totalSeconds <= 0) {
+            return "0";
+        } else {
+            int hours = totalSeconds / HOUR;
+            int minutes = totalSeconds / MINUTE % MINUTE;
+            int seconds = totalSeconds % MINUTE % MINUTE;
+            return (hours > 0 ? hours + ":" : "")
+                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
+                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
+        }
+    }
+
+    // =============================================================================================
+    // create runs depending on parameters
+    // =============================================================================================
+
+    /**
+     * Creates a run depending on distance in km and duration in seconds.
+     *
+     * @param distance in km
+     * @param duration in seconds
+     * @return run
+     */
+    public static Run createWithDistanceAndDuration(float distance, int duration) {
+        int pace = Math.round(duration / distance);
+        float speed = distance * HOUR / duration;
+        return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and pace in seconds.
+     *
+     * @param distance in km
+     * @param pace     in seconds
+     * @return run
+     */
+    public static Run createWithDistanceAndPace(float distance, int pace) {
+        int duration = Math.round(distance * pace);
+        float speed = (float) HOUR / pace;
+        return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and speed in km/h.
+     *
+     * @param distance in km
+     * @param speed    in km/h
+     * @return run
+     */
+    public static Run createWithDistanceAndSpeed(float distance, float speed) {
+        int duration = Math.round(distance / speed * HOUR);
+        int pace = Math.round(HOUR / speed);
+        return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on duration in seconds and pace in seconds.
+     *
+     * @param duration in seconds
+     * @param pace     in seconds
+     * @return run
+     */
+    public static Run createWithDurationAndPace(int duration, int pace) {
+        float distance = duration / pace;
+        float speed = (float) HOUR / pace;
+        return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on duration in seconds and speed in km/h.
+     *
+     * @param duration in seconds
+     * @param speed    in km/h
+     * @return run
+     */
+    public static Run createWithDurationAndSpeed(int duration, float speed) {
+        float distance = duration * speed / HOUR;
+        int pace = Math.round(HOUR / speed);
+        return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Converts a list of run as json strings to run objects.
+     *
+     * @param runsJson list of runs as json strings
+     * @return list of run objects
+     */
+    public static List<Run> jsonToRuns(Set<String> runsJson) {
+        List<Run> runs = new ArrayList<>();
+        try {
+            for (String runJsonString : runsJson) {
+                JSONObject runJson = new JSONObject(runJsonString);
+                runs.add(new Run(
+                        (float) runJson.getDouble(Run.KEY_DISTANCE),
+                        runJson.getInt(Run.KEY_DURATION),
+                        runJson.getInt(Run.KEY_PACE),
+                        (float) runJson.getDouble(Run.KEY_SPEED)
+                ));
+            }
+        } catch (JSONException ex) {
+            Log.e("Error", ex.getMessage());
+        }
+        return runs;
+    }
+
+    /**
+     * Converts a collection of run objects to a set of runs as json strings.
+     *
+     * @param runs collection of run objects
+     * @return runs as json strings
+     */
+    public static Set<String> runsToJson(Collection<Run> runs) {
+        Set<String> runsJson = new HashSet<>();
+        for (Run run : runs) {
+            runsJson.add(run.toJson());
+        }
+        return runsJson;
+    }
+
+    // =============================================================================================
+    // utility functions
+    // =============================================================================================
+
+    /**
+     * Parses string value (input) to float (distance or speed).
+     *
+     * @param number user input
+     * @return distance or speed
+     * @throws Exception if input cannot convert to number
+     */
+    public static float parseToFloat(String number) throws CustomException {
+        try {
+            return Float.parseFloat(number.replace(",", "."));
+        } catch (NumberFormatException ex) {
+            throw new CustomException("Error", number + " is not a number. Reset to default value.");
+        }
+    }
+
+    /**
+     * Parses string value (input) to float. Minimal format is ss, middle format is mm:ss,
+     * full format is hh:mm:ss (h = hour, m = minute, s = second).
+     *
+     * @param time user input
+     * @return distance or speed
+     * @throws Exception if input cannot convert to number
+     */
+    public static int parseTimeInSeconds(String time) throws CustomException {
+        try {
+            int duration = 0;
+            String[] timeSegments = time.split(":");
+            int maxTimeSegments = timeSegments.length >= 3 ? 2 : timeSegments.length - 1; // max until hours
+            for (int i = maxTimeSegments; i >= 0; i--) {
+                // seconds timeSegments[0] * 60^0 + minutes + timeSegments[1] * 60^1 + ...
+                duration += Integer.parseInt(timeSegments[i]) * Math.pow(60, maxTimeSegments - i);
+            }
+            return duration;
+        } catch (NumberFormatException ex) {
+            throw new CustomException("Error", "Can not parse time.");
+        }
     }
 }

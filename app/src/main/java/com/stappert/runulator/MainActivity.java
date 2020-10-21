@@ -83,25 +83,25 @@ public class MainActivity extends AppCompatActivity {
         // calculate depending on set values
         try {
             if (isDistanceSet && isDurationSet) {
-                currentRun = RunUtils.createWithDistanceAndDuration(
-                        RunUtils.parseToFloat(distanceEditText.getText().toString()),
-                        RunUtils.parseTimeInSeconds(durationEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndDuration(
+                        Run.parseToFloat(distanceEditText.getText().toString()),
+                        Run.parseTimeInSeconds(durationEditText.getText().toString()));
             } else if (isDistanceSet && isPaceSet) {
-                currentRun = RunUtils.createWithDistanceAndPace(
-                        RunUtils.parseToFloat(distanceEditText.getText().toString()),
-                        RunUtils.parseTimeInSeconds(paceEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndPace(
+                        Run.parseToFloat(distanceEditText.getText().toString()),
+                        Run.parseTimeInSeconds(paceEditText.getText().toString()));
             } else if (isDistanceSet && isSpeedSet) {
-                currentRun = RunUtils.createWithDistanceAndSpeed(
-                        RunUtils.parseToFloat(distanceEditText.getText().toString()),
-                        RunUtils.parseToFloat(speedEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndSpeed(
+                        Run.parseToFloat(distanceEditText.getText().toString()),
+                        Run.parseToFloat(speedEditText.getText().toString()));
             } else if (isDurationSet && isPaceSet) {
-                currentRun = RunUtils.createWithDurationAndPace(
-                        RunUtils.parseTimeInSeconds(durationEditText.getText().toString()),
-                        RunUtils.parseTimeInSeconds(paceEditText.getText().toString()));
+                currentRun = Run.createWithDurationAndPace(
+                        Run.parseTimeInSeconds(durationEditText.getText().toString()),
+                        Run.parseTimeInSeconds(paceEditText.getText().toString()));
             } else if (isDurationSet && isSpeedSet) {
-                currentRun = RunUtils.createWithDurationAndSpeed(
-                        RunUtils.parseTimeInSeconds(durationEditText.getText().toString()),
-                        RunUtils.parseToFloat(speedEditText.getText().toString()));
+                currentRun = Run.createWithDurationAndSpeed(
+                        Run.parseTimeInSeconds(durationEditText.getText().toString()),
+                        Run.parseToFloat(speedEditText.getText().toString()));
             } else if (isPaceSet && isSpeedSet) {
                 // this case can not be calculated
                 Toast.makeText(this, "this case can not be calculated", Toast.LENGTH_LONG).show();
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // save favorite runs
-        saveValue(KEY_RUNS, RunUtils.runsToJson(favoriteRuns));
+        saveValue(KEY_RUNS, Run.runsToJson(favoriteRuns));
 
         // update gui
         checkFavoriteButton();
@@ -359,14 +359,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initValues() {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        favoriteRuns = RunUtils.jsonToRuns(sharedPref.getStringSet(KEY_RUNS, new HashSet<String>()));
+        favoriteRuns = Run.jsonToRuns(sharedPref.getStringSet(KEY_RUNS, new HashSet<String>()));
         try {
-            currentRun = RunUtils.createWithDistanceAndDuration(
-                    RunUtils.parseToFloat(sharedPref.getString(KEY_DISTANCE, "10")),
-                    RunUtils.parseTimeInSeconds(sharedPref.getString(KEY_DURATION, "0:55:00")));
+            currentRun = Run.createWithDistanceAndDuration(
+                    Run.parseToFloat(sharedPref.getString(KEY_DISTANCE, "10")),
+                    Run.parseTimeInSeconds(sharedPref.getString(KEY_DURATION, "0:55:00")));
         } catch (Exception ex) {
             Log.e("error", ex.getMessage());
-            currentRun = RunUtils.createWithDistanceAndDuration(10, 55 * 60);
+            currentRun = Run.createWithDistanceAndDuration(10, 55 * 60);
         }
         updateRunOnGui();
         checkFavoriteButton();
