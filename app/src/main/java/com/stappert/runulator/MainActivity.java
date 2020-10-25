@@ -64,14 +64,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initElements();
-        initListener();
-        initValues();
+        try {
+            initElements();
+            initListener();
+            initValues();
+        } catch (CustomException ex) {
+            Log.e(ex.getTitle(), ex.getMessage());
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     // =============================================================================================
     // private utility functions
     // =============================================================================================
+
     /**
      * Calculates run depending on input.
      */
@@ -115,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             saveValue(KEY_PACE, paceEditText.getText().toString());
             saveValue(KEY_SPEED, speedEditText.getText().toString());
         } catch (Exception ex) {
+            Log.e("error", ex.getMessage());
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -123,15 +130,20 @@ public class MainActivity extends AppCompatActivity {
      * Updates run on gui.
      */
     private void updateRunOnGui() {
-        // set run
-        distanceEditText.setText(currentRun.getDistance());
-        durationEditText.setText(currentRun.getDuration());
-        paceEditText.setText(currentRun.getPace());
-        speedEditText.setText(currentRun.getSpeed());
-        // set calories and forecast
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        caloriesTextView.setText(currentRun.getCalories(sharedPref.getInt(KEY_WEIGHT, 100)));
-        forecastTextView.setText(currentRun.getForecast(sharedPref.getFloat(KEY_FATIGUE_PARAMETER, 1.0759f)));
+        try {
+            // set run
+            distanceEditText.setText(currentRun.getDistance());
+            durationEditText.setText(currentRun.getDuration());
+            paceEditText.setText(currentRun.getPace());
+            speedEditText.setText(currentRun.getSpeed());
+            // set calories and forecast
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            caloriesTextView.setText(currentRun.getCalories(sharedPref.getInt(KEY_WEIGHT, 100)));
+            forecastTextView.setText(currentRun.getForecast(sharedPref.getFloat(KEY_FATIGUE_PARAMETER, 1.0759f)));
+        } catch (CustomException ex) {
+            Log.e(ex.getTitle(), ex.getMessage());
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -226,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
     // =============================================================================================
     // Initialize
     // =============================================================================================
+
     /**
      * Initializes gui elements.
      */
@@ -356,8 +369,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Load values from shared preferences.
+     *
+     * @throws CustomException if initialization failed
      */
-    private void initValues() {
+    private void initValues() throws CustomException {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         favoriteRuns = Run.jsonToRuns(sharedPref.getStringSet(KEY_RUNS, new HashSet<String>()));
         try {

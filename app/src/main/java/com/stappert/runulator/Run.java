@@ -172,8 +172,9 @@ public class Run {
      * Riegel.
      *
      * @param fatigueCoefficient fatigue coefficient
+     * @throws CustomException if forecast gets values not greater than 0
      */
-    public String getForecast(float fatigueCoefficient) {
+    public String getForecast(float fatigueCoefficient) throws CustomException {
         return getForecast(DISTANCE_5KM, fatigueCoefficient) + "\n\n"
                 + getForecast(DISTANCE_10KM, fatigueCoefficient) + "\n\n"
                 + getForecast(DISTANCE_HM, fatigueCoefficient) + "\n\n"
@@ -186,8 +187,9 @@ public class Run {
      *
      * @param forecastDistance   desired distance for forecast
      * @param fatigueCoefficient fatigue coefficient
+     * @throws CustomException if forecast gets values not greater than 0
      */
-    public String getForecast(float forecastDistance, float fatigueCoefficient) {
+    public String getForecast(float forecastDistance, float fatigueCoefficient) throws CustomException {
         return "~ " + createWithDistanceAndDuration(forecastDistance,
                 (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient))).toString();
     }
@@ -279,8 +281,13 @@ public class Run {
      * @param distance in km
      * @param duration in seconds
      * @return run
+     * @throws CustomException if parameters are not greater than 0
      */
-    public static Run createWithDistanceAndDuration(float distance, int duration) {
+    public static Run createWithDistanceAndDuration(float distance, int duration)
+            throws CustomException {
+        if (distance <= 0 || duration <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
         int pace = Math.round(duration / distance);
         float speed = distance * HOUR / duration;
         return new Run(distance, duration, pace, speed);
@@ -292,8 +299,13 @@ public class Run {
      * @param distance in km
      * @param pace     in seconds
      * @return run
+     * @throws CustomException if parameters are not greater than 0
      */
-    public static Run createWithDistanceAndPace(float distance, int pace) {
+    public static Run createWithDistanceAndPace(float distance, int pace)
+            throws CustomException {
+        if (distance <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
         int duration = Math.round(distance * pace);
         float speed = (float) HOUR / pace;
         return new Run(distance, duration, pace, speed);
@@ -305,8 +317,13 @@ public class Run {
      * @param distance in km
      * @param speed    in km/h
      * @return run
+     * @throws CustomException if parameters are not greater than 0
      */
-    public static Run createWithDistanceAndSpeed(float distance, float speed) {
+    public static Run createWithDistanceAndSpeed(float distance, float speed)
+            throws CustomException {
+        if (distance <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
         int duration = Math.round(distance / speed * HOUR);
         int pace = Math.round(HOUR / speed);
         return new Run(distance, duration, pace, speed);
@@ -318,8 +335,13 @@ public class Run {
      * @param duration in seconds
      * @param pace     in seconds
      * @return run
+     * @throws CustomException if parameters are not greater than 0
      */
-    public static Run createWithDurationAndPace(int duration, int pace) {
+    public static Run createWithDurationAndPace(int duration, int pace)
+            throws CustomException {
+        if (duration <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
         float distance = duration / pace;
         float speed = (float) HOUR / pace;
         return new Run(distance, duration, pace, speed);
@@ -331,8 +353,13 @@ public class Run {
      * @param duration in seconds
      * @param speed    in km/h
      * @return run
+     * @throws CustomException if parameters are not greater than 0
      */
-    public static Run createWithDurationAndSpeed(int duration, float speed) {
+    public static Run createWithDurationAndSpeed(int duration, float speed)
+            throws CustomException {
+        if (duration <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
         float distance = duration * speed / HOUR;
         int pace = Math.round(HOUR / speed);
         return new Run(distance, duration, pace, speed);

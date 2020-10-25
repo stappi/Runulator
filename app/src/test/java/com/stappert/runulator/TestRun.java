@@ -62,7 +62,7 @@ public class TestRun {
         assertEquals(3 * Run.HOUR, Run.parseTimeInSeconds("1:120:00"));
         assertEquals(Run.HOUR + 10 * Run.MINUTE, Run.parseTimeInSeconds("4200"));
         assertEquals(Run.HOUR + 10 * Run.MINUTE, Run.parseTimeInSeconds("0:0:4200"));
-        assertEquals(6* Run.HOUR, Run.parseTimeInSeconds("1:120:10800"));
+        assertEquals(6 * Run.HOUR, Run.parseTimeInSeconds("1:120:10800"));
 
         // expect exceptions
         exception.expect(CustomException.class);
@@ -98,69 +98,93 @@ public class TestRun {
     }
 
     @Test
-    public void testCreateWithDurationAndSpeed() {
-        try {
-            // 2h with 11 km/h
-            Run run_1 = Run.createWithDurationAndSpeed(2 * Run.HOUR, 11);
-            assertEquals("22.0", run_1.getDistance());
-            assertEquals("2:00:00", run_1.getDuration());
-            assertEquals("5:27", run_1.getPace());
-            assertEquals("11.0", run_1.getSpeed());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void testCreateWithDurationAndSpeed() throws CustomException {
+        // 2h with 11 km/h
+        Run run_1 = Run.createWithDurationAndSpeed(2 * Run.HOUR, 11);
+        assertEquals("22.0", run_1.getDistance());
+        assertEquals("2:00:00", run_1.getDuration());
+        assertEquals("5:27", run_1.getPace());
+        assertEquals("11.0", run_1.getSpeed());
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Run.createWithDurationAndSpeed(0 * Run.HOUR, 12);
+        Run.createWithDurationAndSpeed(-1 * Run.HOUR, 12);
+        Run.createWithDurationAndSpeed(1 * Run.HOUR, 0);
+        Run.createWithDurationAndSpeed(1 * Run.HOUR, -5);
+        Run.createWithDurationAndSpeed(0 * Run.HOUR, -5);
     }
 
     @Test
-    public void testCreateWithDurationAndPace() {
-        try {
-            // 1h10min with 5:00 pace
-            Run run_1 = Run.createWithDurationAndPace(Run.HOUR + 10 * Run.MINUTE, 5 * Run.MINUTE);
-            assertEquals("14.0", run_1.getDistance());
-            assertEquals("1:10:00", run_1.getDuration());
-            assertEquals("5:00", run_1.getPace());
-            assertEquals("12.0", run_1.getSpeed());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void testCreateWithDurationAndPace() throws CustomException {
+        // 1h10min with 5:00 pace
+        Run run_1 = Run.createWithDurationAndPace(Run.HOUR + 10 * Run.MINUTE, 5 * Run.MINUTE);
+        assertEquals("14.0", run_1.getDistance());
+        assertEquals("1:10:00", run_1.getDuration());
+        assertEquals("5:00", run_1.getPace());
+        assertEquals("12.0", run_1.getSpeed());
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Run.createWithDurationAndPace(0 * Run.HOUR, 1 * Run.MINUTE);
+        Run.createWithDurationAndPace(-1 * Run.HOUR, 12 * 1 * Run.MINUTE);
+        Run.createWithDurationAndPace(1 * Run.HOUR, 0 * Run.MINUTE);
+        Run.createWithDurationAndPace(1 * Run.HOUR, -5 * Run.MINUTE);
+        Run.createWithDurationAndPace(0 * Run.HOUR, -5 * Run.MINUTE);
     }
 
     @Test
-    public void testCreateWithDistanceAndSpeed() {
-        try {
-            // 10 km with 10.91 km/h
-            Run run_1 = Run.createWithDistanceAndSpeed(10, 10.91f);
-            assertEquals("10.0", run_1.getDistance());
-            assertEquals("55:00", run_1.getDuration());
-            assertEquals("5:30", run_1.getPace());
-            assertEquals("10.91", run_1.getSpeed());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void testCreateWithDistanceAndSpeed() throws CustomException {
+        // 10 km with 10.91 km/h
+        Run run_1 = Run.createWithDistanceAndSpeed(10, 10.91f);
+        assertEquals("10.0", run_1.getDistance());
+        assertEquals("55:00", run_1.getDuration());
+        assertEquals("5:30", run_1.getPace());
+        assertEquals("10.91", run_1.getSpeed());
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Run.createWithDistanceAndSpeed(0, 10);
+        Run.createWithDistanceAndSpeed(-1, 12);
+        Run.createWithDistanceAndSpeed(10, 0);
+        Run.createWithDistanceAndSpeed(10, -5);
+        Run.createWithDistanceAndSpeed(0, -5);
     }
 
     @Test
-    public void testCreateWithDistanceAndPace() {
-        try {
-            // 10 km with 5:00 pace
-            Run run_1 = Run.createWithDistanceAndPace(10, Run.parseTimeInSeconds("6:00"));
-            assertEquals("10.0", run_1.getDistance());
-            assertEquals("1:00:00", run_1.getDuration());
-            assertEquals("6:00", run_1.getPace());
-            assertEquals("10.0", run_1.getSpeed());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void testCreateWithDistanceAndPace() throws CustomException {
+        // 10 km with 5:00 pace
+        Run run_1 = Run.createWithDistanceAndPace(10, Run.parseTimeInSeconds("6:00"));
+        assertEquals("10.0", run_1.getDistance());
+        assertEquals("1:00:00", run_1.getDuration());
+        assertEquals("6:00", run_1.getPace());
+        assertEquals("10.0", run_1.getSpeed());
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Run.createWithDistanceAndPace(0, 5 * Run.MINUTE);
+        Run.createWithDistanceAndPace(-1, 6 * Run.MINUTE);
+        Run.createWithDistanceAndPace(10, 0 * Run.MINUTE);
+        Run.createWithDistanceAndPace(10, -5 * Run.MINUTE);
+        Run.createWithDistanceAndPace(0, -5 * Run.MINUTE);
     }
 
     @Test
-    public void testCreateWithDistanceAndDuration() {
-        // 10 km in 50 Run.MINUTEs
+    public void testCreateWithDistanceAndDuration() throws CustomException {
+        // 10 km in 50 minutes
         Run run_1 = Run.createWithDistanceAndDuration(10, 50 * Run.MINUTE);
         assertEquals("10.0", run_1.getDistance());
         assertEquals("50:00", run_1.getDuration());
         assertEquals("5:00", run_1.getPace());
         assertEquals("12.0", run_1.getSpeed());
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Run.createWithDistanceAndDuration(0, 50 * Run.MINUTE);
+        Run.createWithDistanceAndDuration(-1, 60 * Run.MINUTE);
+        Run.createWithDistanceAndDuration(10, 0 * Run.MINUTE);
+        Run.createWithDistanceAndDuration(10, -50 * Run.MINUTE);
+        Run.createWithDistanceAndDuration(0, -50 * Run.MINUTE);
     }
 
     @Test
@@ -268,7 +292,7 @@ public class TestRun {
     @Test
     public void testGetDistance() {
         try {
-             Assert.assertEquals("10.0",
+            Assert.assertEquals("10.0",
                     Run.createWithDistanceAndSpeed(10, 10).getDistance());
             Assert.assertEquals("10.0",
                     Run.createWithDistanceAndSpeed(10.0f, 10).getDistance());
