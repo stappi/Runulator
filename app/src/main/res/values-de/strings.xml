@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Runulator</string>
+    <string name="distance">Distanz [km]</string>
+    <string name="run_time">Laufzeit [h:min:sec]</string>
+    <string name="pace">Pace pro km [min:sec]</string>
+    <string name="speed">Geschw. [km/h]</string>
+    <string name="calculate">Berechnen</string>
+    <string name="calories">Kalorien</string>
+    <string name="forecast">Prognose</string>
+    <string name="menu_info">Info</string>
+    <string name="info_text">Der Runulator (Run + Calculator) ist eine App, um deinen Lauf (Distanz, Zeit, Pace, Geschwindigkeit) und eine Prognose für verschiedene Distanzen zu berechnen.</string>
+</resources>
