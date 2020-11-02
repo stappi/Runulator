@@ -7,4 +7,6 @@
     <string name="calculate">Calculate</string>
     <string name="calories">Calories</string>
     <string name="forecast">Forecast</string>
+    <string name="menu_info">Info</string>
+    <string name="info_text">The Runulator (Run + Calculator) is an android application, to calculate your run (distance, time, pace, speed) and to get a forecast for several run distances.</string>
 </resources>
