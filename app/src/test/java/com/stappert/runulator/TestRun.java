@@ -104,7 +104,9 @@ public class TestRun {
         assertEquals("22.0", run_1.getDistance());
         assertEquals("2:00:00", run_1.getDuration());
         assertEquals("5:27", run_1.getPace());
+        assertEquals(5 * Run.MINUTE + 27 * Run.SECOND, run_1.getPaceInSeconds());
         assertEquals("11.0", run_1.getSpeed());
+        assertEquals(11.0f, run_1.getSpeedAsNumber(), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -122,7 +124,9 @@ public class TestRun {
         assertEquals("14.0", run_1.getDistance());
         assertEquals("1:10:00", run_1.getDuration());
         assertEquals("5:00", run_1.getPace());
+        assertEquals(5 * Run.MINUTE, run_1.getPaceInSeconds());
         assertEquals("12.0", run_1.getSpeed());
+        assertEquals(12.0f, run_1.getSpeedAsNumber(), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -140,7 +144,9 @@ public class TestRun {
         assertEquals("10.0", run_1.getDistance());
         assertEquals("55:00", run_1.getDuration());
         assertEquals("5:30", run_1.getPace());
+        assertEquals(5 * Run.MINUTE + 30 * Run.SECOND, run_1.getPaceInSeconds());
         assertEquals("10.91", run_1.getSpeed());
+        assertEquals(10.91f, run_1.getSpeedAsNumber(), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -158,7 +164,9 @@ public class TestRun {
         assertEquals("10.0", run_1.getDistance());
         assertEquals("1:00:00", run_1.getDuration());
         assertEquals("6:00", run_1.getPace());
+        assertEquals(6 * Run.MINUTE, run_1.getPaceInSeconds());
         assertEquals("10.0", run_1.getSpeed());
+        assertEquals(10.0f, run_1.getSpeedAsNumber(), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -176,7 +184,9 @@ public class TestRun {
         assertEquals("10.0", run_1.getDistance());
         assertEquals("50:00", run_1.getDuration());
         assertEquals("5:00", run_1.getPace());
+        assertEquals(5 * Run.MINUTE, run_1.getPaceInSeconds());
         assertEquals("12.0", run_1.getSpeed());
+        assertEquals(12.0f, run_1.getSpeedAsNumber(), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);

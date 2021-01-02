@@ -1,15 +1,10 @@
 package com.stappert.runulator;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,20 +20,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * Main activity of application.
+ */
 public class MainActivity extends AppCompatActivity {
-
-    // Constants
-    private final static String KEY_DISTANCE = "distance";
-    private final static String KEY_DURATION = "duration";
-    private final static String KEY_PACE = "pace";
-    private final static String KEY_SPEED = "speed";
-    private final static String KEY_RUNS = "runs";
-    private final static String KEY_WEIGHT = "weight";
-    private final static String KEY_FATIGUE_PARAMETER = "fatigue_parameter";
 
     // Elements
     private EditText distanceEditText;
@@ -58,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     // variables
     private Run currentRun;
     private List<Run> favoriteRuns;
+    private SettingsManager settings;
 
     /**
      * Initializes activity.
@@ -69,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try {
+            settings = SettingsManager.getInstance().init(this);
             initElements();
             initListener();
             initValues();
@@ -103,8 +96,25 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_info:
                 Toast.makeText(this, this.getText(R.string.info_text), Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Called on resume of activity.
+     */
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        try {
+            initValues();
+        } catch (CustomException ex) {
+            Log.e(ex.getTitle(), ex.getMessage());
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -150,10 +160,10 @@ public class MainActivity extends AppCompatActivity {
             updateRunOnGui();
             checkFavoriteButton();
             // save values to shared preferences
-            saveValue(KEY_DISTANCE, distanceEditText.getText().toString());
-            saveValue(KEY_DURATION, durationEditText.getText().toString());
-            saveValue(KEY_PACE, paceEditText.getText().toString());
-            saveValue(KEY_SPEED, speedEditText.getText().toString());
+            settings.setDistance(distanceEditText.getText().toString());
+            settings.setDuration(durationEditText.getText().toString());
+            settings.setPace(paceEditText.getText().toString());
+            settings.setSpeed(speedEditText.getText().toString());
         } catch (Exception ex) {
             Log.e("error", ex.getMessage());
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -171,37 +181,13 @@ public class MainActivity extends AppCompatActivity {
             paceEditText.setText(currentRun.getPace());
             speedEditText.setText(currentRun.getSpeed());
             // set calories and forecast
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-            caloriesTextView.setText(currentRun.getCalories(sharedPref.getInt(KEY_WEIGHT, 100)));
-            forecastTextView.setText(currentRun.getForecast(sharedPref.getFloat(KEY_FATIGUE_PARAMETER, 1.0759f)));
+            SharedPreferences sharedPref = getSharedPreferences("runulator", Context.MODE_PRIVATE);
+            caloriesTextView.setText(currentRun.getCalories(settings.getWeightUnit().toKg(settings.getWeight())));
+            forecastTextView.setText(currentRun.getForecast(1.0759f));
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-
-    /**
-     * Save value in shared preferences.
-     *
-     * @param key   key
-     * @param value value
-     */
-    private void saveValue(String key, Object value) {
-        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
-        if (value instanceof Float) {
-            editor.putFloat(key, (Float) value);
-        } else if (value instanceof Integer) {
-            editor.putInt(key, (Integer) value);
-        } else if (value instanceof Set<?>) {
-            editor.putStringSet(key, (Set<String>) value);
-        } else if (value instanceof String) {
-            editor.putString(key, (String) value);
-        } else if (value instanceof Boolean) {
-            editor.putBoolean(key, (Boolean) value);
-        } else if (value instanceof Long) {
-            editor.putLong(key, (Long) value);
-        }
-        editor.commit();
     }
 
     /**
@@ -215,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // save favorite runs
-        saveValue(KEY_RUNS, Run.runsToJson(favoriteRuns));
+        settings.setFavoriteRuns(favoriteRuns);
 
         // update gui
         checkFavoriteButton();
@@ -407,16 +393,8 @@ public class MainActivity extends AppCompatActivity {
      * @throws CustomException if initialization failed
      */
     private void initValues() throws CustomException {
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        favoriteRuns = Run.jsonToRuns(sharedPref.getStringSet(KEY_RUNS, new HashSet<String>()));
-        try {
-            currentRun = Run.createWithDistanceAndDuration(
-                    Run.parseToFloat(sharedPref.getString(KEY_DISTANCE, "10")),
-                    Run.parseTimeInSeconds(sharedPref.getString(KEY_DURATION, "0:55:00")));
-        } catch (Exception ex) {
-            Log.e("error", ex.getMessage());
-            currentRun = Run.createWithDistanceAndDuration(10, 55 * 60);
-        }
+        favoriteRuns = settings.getFavoriteRuns();
+        currentRun = settings.getRun();
         updateRunOnGui();
         checkFavoriteButton();
         checkOpenFavoritesButton();

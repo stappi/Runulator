@@ -139,12 +139,21 @@ public class Run {
     }
 
     /**
-     * Returns in the pace in hh:mm:ss as string (h = hour, m = minute, s = second).
+     * Returns the pace in hh:mm:ss as string (h = hour, m = minute, s = second).
      *
      * @return pace
      */
     public String getPace() {
         return secondsToString(pace);
+    }
+
+    /**
+     * Returns the pace.
+     *
+     * @return pace
+     */
+    public int getPaceInSeconds() {
+        return pace;
     }
 
     /**
@@ -155,6 +164,15 @@ public class Run {
     public String getSpeed() {
         int noOfDecimalPlaces = Float.toString(speed).split("\\.")[1].length();
         return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces <= 1 ? 1 : 2) + "f", speed);
+    }
+
+    /**
+     * Returns in the speed in km/h as string with maximal 4 decimal places.
+     *
+     * @return speed in km/h
+     */
+    public float getSpeedAsNumber() {
+        return speed;
     }
 
     /**

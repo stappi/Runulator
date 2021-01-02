@@ -9,4 +9,20 @@
     <string name="forecast">Forecast</string>
     <string name="menu_info">Info</string>
     <string name="info_text">The Runulator (Run + Calculator) is an android application, to calculate your run (distance, time, pace, speed) and to get a forecast for several run distances.</string>
+    <string name="menu_settings">Settings</string>
+    <string name="run_settings">Run settings</string>
+    <string name="general_settings">General Settings</string>
+    <string name="reset_app">Reset App</string>
+    <string name="reset_app_msg">Reset application to factory settings.</string>
+    <string name="unit_system">Unit system</string>
+    <string name="weight">Weight</string>
+    <string name="fatigue_parameter">Fatigue parameter</string>
+    <string name="meters">Meters</string>
+    <string name="miles">Miles</string>
+    <string name="reset_app_confirm">Do you really want to reset the application?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="weight_msg">Bitte geben Sie Ihr Gewicht an.</string>
+    <string name="ok">Ok</string>
+    <string name="weight_fail">Due to an issue the weight could not be updated.</string>
 </resources>
