@@ -16,6 +16,8 @@ import org.w3c.dom.Text;
 
 public class TabForecast extends Fragment {
 
+    private TextView forecastTextView;
+
     /**
      * Creates view for tab forecast.
      *
@@ -30,13 +32,23 @@ public class TabForecast extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_layout_forecast, container, false);
+        forecastTextView = view.findViewById(R.id.forecastTextView);
+        writeForecast();
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        writeForecast();
+    }
+
+    public void writeForecast() {
         try {
-            TextView forecastTextView = view.findViewById(R.id.forecastTextView);
             forecastTextView.setText(SettingsManager.getInstance().getRun().getForecast(1.0759f));
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-        return view;
     }
 }

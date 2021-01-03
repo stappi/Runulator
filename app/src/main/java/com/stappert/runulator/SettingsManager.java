@@ -87,7 +87,16 @@ public class SettingsManager {
      * @param distance distance
      */
     public void setDistance(String distance) {
-        saveValue(KEY_DISTANCE, Float.parseFloat(distance));
+        setDistance(Float.parseFloat(distance));
+    }
+
+    /**
+     * Stores the last set distance.
+     *
+     * @param distance distance
+     */
+    public void setDistance(float distance) {
+        saveValue(KEY_DISTANCE, distance);
     }
 
     /**
@@ -105,7 +114,16 @@ public class SettingsManager {
      * @param duration duration
      */
     public void setDuration(String duration) throws CustomException {
-        saveValue(KEY_DURATION, Run.parseTimeInSeconds(duration));
+        setDuration(Run.parseTimeInSeconds(duration));
+    }
+
+    /**
+     * Stores the last set duration.
+     *
+     * @param duration duration
+     */
+    public void setDuration(int duration) {
+        saveValue(KEY_DURATION, duration);
     }
 
     /**
@@ -160,6 +178,18 @@ public class SettingsManager {
             Log.e("error", ex.getMessage());
             return Run.createWithDistanceAndDuration(10, 55 * 60);
         }
+    }
+
+    /**
+     * Returns the last calculated run. If no run is available, a default run (10 km, 60 minutes)
+     * will be returned.
+     *
+     * @return run
+     * @throws CustomException if run can not be created
+     */
+    public void setRun(Run run) {
+        setDistance(run.getDistanceAsNumber());
+        setDuration(run.getDurationInSeconds());
     }
 
     /**

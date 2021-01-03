@@ -332,6 +332,7 @@ public class TabRun extends Fragment {
                         currentRun = favoriteRuns.get(i);
                         updateRunOnGui();
                         checkFavoriteButton();
+                        settings.setRun(currentRun);
                         dialog.cancel();
                     }
                 });

@@ -130,12 +130,30 @@ public class Run {
     }
 
     /**
-     * Returns in the duration in hh:mm:ss as string (h = hour, m = minute, s = second).
+     * Returns the distance as number.
+     *
+     * @return distance
+     */
+    public float getDistanceAsNumber() {
+        return distance;
+    }
+
+    /**
+     * Returns the duration in hh:mm:ss as string (h = hour, m = minute, s = second).
      *
      * @return duration
      */
     public String getDuration() {
         return secondsToString(duration);
+    }
+
+    /**
+     * Returns the duration in seconds.
+     *
+     * @return duration
+     */
+    public int getDurationInSeconds() {
+        return duration;
     }
 
     /**

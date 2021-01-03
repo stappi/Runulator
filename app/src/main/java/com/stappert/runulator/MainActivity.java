@@ -14,8 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.stappert.runulator.ui.main.SectionsPagerAdapter;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

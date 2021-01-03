@@ -1,4 +1,4 @@
-package com.stappert.runulator.ui.main;
+package com.stappert.runulator;
 
 import android.content.Context;
 
