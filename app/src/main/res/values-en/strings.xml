@@ -25,4 +25,6 @@
     <string name="weight_msg">Bitte geben Sie Ihr Gewicht an.</string>
     <string name="ok">Ok</string>
     <string name="weight_fail">Due to an issue the weight could not be updated.</string>
+    <string name="tab_run">Run</string>
+    <string name="tab_forecast">Forecast</string>
 </resources>
