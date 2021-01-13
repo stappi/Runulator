@@ -22,9 +22,14 @@
     <string name="reset_app_confirm">Do you really want to reset the application?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="weight_msg">Bitte geben Sie Ihr Gewicht an.</string>
+    <string name="weight_msg">Please enter your weight.</string>
     <string name="ok">Ok</string>
-    <string name="weight_fail">Due to an issue the weight could not be updated.</string>
+    <string name="enter_value_fail">Due to an issue the weight could not be updated.</string>
     <string name="tab_run">Run</string>
     <string name="tab_forecast">Forecast</string>
+    <string name="height">Height</string>
+    <string name="height_msg">Please enter your height.</string>
+    <string name="bmi">BMI</string>
+    <string name="step_frequency">Recommended step frequency</string>
+    <string name="steps_per_minute">Steps per minute</string>
 </resources>

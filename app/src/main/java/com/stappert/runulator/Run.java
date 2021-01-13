@@ -230,6 +230,21 @@ public class Run {
                 (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient))).toString();
     }
 
+    /**
+     * Calculates the recommended step frequency per minute depending on height and speed.
+     * Formula is from https://www.matthias-marquardt.com/rechner/schrittfrequenz/.
+     *
+     * @param height height in cm
+     * @return recommended step frequency per minute
+     */
+    public int calculateStepFrequency(int height) throws CustomException {
+        if (100 < height && height < 272) {
+            return (int) Math.ceil(160 + (speed - 6) * 2.5 - (height - 170) / 2);
+        } else {
+            throw new CustomException("error", "You're are not " + height + "cm tall.");
+        }
+    }
+
     // =============================================================================================
     // utility functions
     // =============================================================================================
@@ -479,5 +494,16 @@ public class Run {
         } catch (NumberFormatException ex) {
             throw new CustomException("Error", "Can not parse time.");
         }
+    }
+
+    /**
+     * Calculates bmi.
+     *
+     * @param weight weight in kg
+     * @param height height in cm
+     * @return bmi
+     */
+    public static float calculateBMI(float weight, float height) {
+        return weight / (float) Math.pow(height / 100, 2);
     }
 }

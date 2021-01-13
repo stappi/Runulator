@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Toast;
 
 import androidx.preference.Preference;
@@ -32,6 +33,11 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     private Preference weightButton;
 
     /**
+     * Button, to set weight.
+     */
+    private Preference heightButton;
+
+    /**
      * Creates the preferences.
      *
      * @param savedInstanceState saved instance state
@@ -57,6 +63,15 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     /**
+     * Returns the weight button.
+     *
+     * @return weight button
+     */
+    public Preference getHeightButton() {
+        return heightButton;
+    }
+
+    /**
      * Adds the run settings.
      *
      * @param screen screen of settings
@@ -66,6 +81,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         runSettings.setTitle(context.getString(R.string.run_settings));
         screen.addPreference(runSettings);
         runSettings.addPreference(createWeightButton());
+        runSettings.addPreference(createHeightButton());
     }
 
     /**
@@ -76,18 +92,42 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     private Preference createWeightButton() {
         weightButton = new Preference(context);
         weightButton.setTitle(context.getString(R.string.weight));
-        weightButton.setSummary(settings.getWeightUnit().formatWeight(settings.getWeight()));
+        weightButton.setSummary(settings.getWeightUnit().format(settings.getWeight()));
         weightButton.setIcon(context.getDrawable(R.drawable.ic_weight));
         weightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new WeightDialog().show(
-                        MainSettingsFragment.this.getChildFragmentManager(),
-                        context.getString(R.string.weight));
+                new ValueDialog(ValueDialog.ValueType.WEIGHT,
+                        getContext().getString(R.string.weight), getContext().getString(R.string.weight_msg),
+                        settings.getWeight(), settings.getWeightUnit(), Unit.getWeightUnits(), InputType.TYPE_CLASS_NUMBER
+                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
                 return true;
             }
         });
         return weightButton;
+    }
+
+    /**
+     * creates the weight button.
+     *
+     * @return weight button
+     */
+    private Preference createHeightButton() {
+        heightButton = new Preference(context);
+        heightButton.setTitle(context.getString(R.string.height));
+        heightButton.setSummary(settings.getHeightUnit().format(settings.getHeight()));
+        heightButton.setIcon(context.getDrawable(R.drawable.ic_height));
+        heightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new ValueDialog(ValueDialog.ValueType.HEIGHT,
+                        getContext().getString(R.string.height), getContext().getString(R.string.height_msg),
+                        settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(), InputType.TYPE_CLASS_NUMBER
+                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
+                return true;
+            }
+        });
+        return heightButton;
     }
 
     /**
@@ -123,7 +163,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Context context = MainSettingsFragment.this.context;
                                 context.getSharedPreferences("runulator", Context.MODE_PRIVATE).edit().clear().commit();
-                                weightButton.setSummary(settings.getWeightUnit().formatWeight(settings.getWeight()));
+                                weightButton.setSummary(settings.getWeightUnit().format(settings.getWeight()));
                                 Toast.makeText(context, "App wurde zurückgesetzt", Toast.LENGTH_LONG).show();
                             }
                         })

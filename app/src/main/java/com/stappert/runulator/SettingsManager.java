@@ -21,6 +21,8 @@ public class SettingsManager {
     private String KEY_RUNS = "runs";
     private String KEY_WEIGHT = "weight";
     private String KEY_WEIGHT_UNIT = "weight_unit";
+    private String KEY_HEIGHT = "height";
+    private String KEY_HEIGHT_UNIT = "height_unit";
 
     /**
      * Single object of the settings manager.
@@ -220,12 +222,22 @@ public class SettingsManager {
     }
 
     /**
+     * Returns the weight in kg.
+     *
+     * @return weight in kg
+     * @throws CustomException if conversion for unit is not supported
+     */
+    public int getWeightInKg() throws CustomException {
+        return getWeightUnit().toKg(getWeight());
+    }
+
+    /**
      * Returns the selected weight unit.
      *
      * @return weight unit
      */
-    public WeightUnit getWeightUnit() {
-        return WeightUnit.valueOf((sharedPreferences.getString(KEY_WEIGHT_UNIT, WeightUnit.KG.name())));
+    public Unit getWeightUnit() {
+        return Unit.valueOf((sharedPreferences.getString(KEY_WEIGHT_UNIT, Unit.KG.name())));
     }
 
     /**
@@ -234,9 +246,48 @@ public class SettingsManager {
      * @param weight weight
      * @param unit   unit
      */
-    public void setWeight(int weight, WeightUnit unit) {
+    public void setWeight(int weight, Unit unit) {
         saveValue(KEY_WEIGHT, weight);
         saveValue(KEY_WEIGHT_UNIT, unit.name());
+    }
+
+    /**
+     * Returns the height. Default value are 190 cm.
+     *
+     * @return height
+     */
+    public int getHeight() {
+        return sharedPreferences.getInt(KEY_HEIGHT, 190);
+    }
+
+    /**
+     * Returns the weight in kg.
+     *
+     * @return weight in kg
+     * @throws CustomException if conversion for unit is not supported
+     */
+    public int getHeightInCm() throws CustomException {
+        return (int) getHeightUnit().toCm(getHeight());
+    }
+
+    /**
+     * Returns the selected height unit. Default unit is cm.
+     *
+     * @return height unit
+     */
+    public Unit getHeightUnit() {
+        return Unit.valueOf((sharedPreferences.getString(KEY_HEIGHT_UNIT, Unit.CM.name())));
+    }
+
+    /**
+     * Stores the height depending on height unit.
+     *
+     * @param height height
+     * @param unit   unit
+     */
+    public void setHeight(int height, Unit unit) {
+        saveValue(KEY_HEIGHT, height);
+        saveValue(KEY_HEIGHT_UNIT, unit.name());
     }
 
     /**

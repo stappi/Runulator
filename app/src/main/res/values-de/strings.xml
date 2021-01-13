@@ -24,7 +24,12 @@
     <string name="no">Nein</string>
     <string name="weight_msg">Bitte geben Sie Ihr Gewicht an.</string>
     <string name="ok">Ok</string>
-    <string name="weight_fail">Aufgrund eines Problems konnte das Gewicht nicht aktualisiert werden.</string>
+    <string name="enter_value_fail">Aufgrund eines Problems konnte das Gewicht nicht aktualisiert werden.</string>
     <string name="tab_run">Lauf</string>
     <string name="tab_forecast">Prognose</string>
+    <string name="height">Körpergröße</string>
+    <string name="height_msg">Bitte geben Sie ihre Körpergröße an.</string>
+    <string name="bmi">BMI</string>
+    <string name="step_frequency">Empfohlene Schrittfrequenz</string>
+    <string name="steps_per_minute">Schritte pro Minute</string>
 </resources>

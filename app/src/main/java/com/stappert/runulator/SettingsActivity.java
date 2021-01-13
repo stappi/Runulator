@@ -7,7 +7,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-public class SettingsActivity extends AppCompatActivity implements WeightDialog.WeightDialogListener {
+public class SettingsActivity extends AppCompatActivity implements ValueDialog.ValueDialogListener {
 
     private SettingsManager settings;
 
@@ -58,8 +58,16 @@ public class SettingsActivity extends AppCompatActivity implements WeightDialog.
     }
 
     @Override
-    public void applyWeight(int weight, WeightUnit unit) {
-        settings.setWeight(weight, unit);
-        settingsFragment.getWeightButton().setSummary(unit.formatWeight(weight));
+    public void applyValue(ValueDialog.ValueType valueType, Number value, Unit unit) {
+        switch (valueType) {
+            case WEIGHT:
+                settings.setWeight(value.intValue(), unit);
+                settingsFragment.getWeightButton().setSummary(unit.format(value.intValue()));
+                break;
+            case HEIGHT:
+                settings.setHeight(value.intValue(), unit);
+                settingsFragment.getHeightButton().setSummary(unit.format(value.intValue()));
+                break;
+        }
     }
 }

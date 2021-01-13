@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
+import java.util.Locale;
 
 public class TabRun extends Fragment {
 
@@ -41,6 +42,8 @@ public class TabRun extends Fragment {
     private ImageButton favoriteButton;
     private ImageButton openFavoritesButton;
     private TextView caloriesTextView;
+    private TextView stepFrequencyTextView;
+    private TextView bmiTextView;
 
     /**
      * Current run.
@@ -79,6 +82,17 @@ public class TabRun extends Fragment {
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
         return runView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            initValues();
+        } catch (CustomException ex) {
+            Log.e(ex.getTitle(), ex.getMessage());
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     // =============================================================================================
@@ -137,11 +151,20 @@ public class TabRun extends Fragment {
      * Updates run on gui.
      */
     private void updateRunOnGui() {
-        distanceEditText.setText(currentRun.getDistance());
-        durationEditText.setText(currentRun.getDuration());
-        paceEditText.setText(currentRun.getPace());
-        speedEditText.setText(currentRun.getSpeed());
-        caloriesTextView.setText(currentRun.getCalories(settings.getWeightUnit().toKg(settings.getWeight())));
+        try {
+            distanceEditText.setText(currentRun.getDistance());
+            durationEditText.setText(currentRun.getDuration());
+            paceEditText.setText(currentRun.getPace());
+            speedEditText.setText(currentRun.getSpeed());
+            caloriesTextView.setText(currentRun.getCalories(settings.getWeightInKg()));
+            stepFrequencyTextView.setText(currentRun.calculateStepFrequency(settings.getHeightInCm()) + " " + getString(R.string.steps_per_minute));
+            bmiTextView.setText(String.format(Locale.ENGLISH, "%.2f", Run.calculateBMI(
+                    settings.getWeightUnit().toKg(settings.getWeight()),
+                    settings.getHeightUnit().toCm(settings.getHeight()))));
+        } catch (Exception ex) {
+            Log.e("error", ex.getMessage());
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -229,6 +252,8 @@ public class TabRun extends Fragment {
         favoriteButton = runView.findViewById(R.id.favoriteButton);
         openFavoritesButton = runView.findViewById(R.id.openButton);
         caloriesTextView = runView.findViewById(R.id.caloriesTextView);
+        stepFrequencyTextView = runView.findViewById(R.id.stepFrequencyTextView);
+        bmiTextView = runView.findViewById(R.id.bmiTextView);
     }
 
     /**

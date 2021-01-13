@@ -6,14 +6,14 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/weightEditTextNumber"
+        android:id="@+id/valueEditTextNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:inputType="number" />
 
     <Spinner
-        android:id="@+id/weightUnitSpinner"
+        android:id="@+id/unitSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5" />

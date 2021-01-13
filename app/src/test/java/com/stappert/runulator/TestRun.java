@@ -23,7 +23,6 @@ import static org.junit.Assert.*;
  */
 public class TestRun {
 
-
     /**
      * For expected exceptions.
      */
@@ -239,6 +238,13 @@ public class TestRun {
         }
     }
 
+    @Test
+    public void testCalculateBMI() {
+        assertEquals(29.91, Run.calculateBMI(108, 190), 0.1f);
+        assertEquals(0, Run.calculateBMI(0, 190), 0.1f);
+        assertEquals(Float.POSITIVE_INFINITY, Run.calculateBMI(108, 0), 0.1f);
+    }
+
     // =============================================================================================
     // test private functions
     // =============================================================================================
@@ -330,5 +336,31 @@ public class TestRun {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testCalculateStepFrequency() throws CustomException {
+
+        // height 190 cm
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(190));
+        Assert.assertEquals(155, Run.createWithDistanceAndSpeed(10, 8).calculateStepFrequency(190));
+        Assert.assertEquals(158, Run.createWithDistanceAndSpeed(10, 9).calculateStepFrequency(190));
+        Assert.assertEquals(160, Run.createWithDistanceAndSpeed(10, 10).calculateStepFrequency(190));
+        Assert.assertEquals(163, Run.createWithDistanceAndSpeed(10, 11).calculateStepFrequency(190));
+        Assert.assertEquals(165, Run.createWithDistanceAndSpeed(10, 12).calculateStepFrequency(190));
+        Assert.assertEquals(168, Run.createWithDistanceAndSpeed(10, 13).calculateStepFrequency(190));
+        Assert.assertEquals(170, Run.createWithDistanceAndSpeed(10, 14).calculateStepFrequency(190));
+        Assert.assertEquals(173, Run.createWithDistanceAndSpeed(10, 15).calculateStepFrequency(190));
+        Assert.assertEquals(175, Run.createWithDistanceAndSpeed(10, 16).calculateStepFrequency(190));
+        Assert.assertEquals(178, Run.createWithDistanceAndSpeed(10, 17).calculateStepFrequency(190));
+        Assert.assertEquals(180, Run.createWithDistanceAndSpeed(10, 18).calculateStepFrequency(190));
+        Assert.assertEquals(183, Run.createWithDistanceAndSpeed(10, 19).calculateStepFrequency(190));
+        Assert.assertEquals(185, Run.createWithDistanceAndSpeed(10, 20).calculateStepFrequency(190));
+
+        // expect exceptions with faulty values
+        exception.expect(CustomException.class);
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(-1));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(0));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(272));
     }
 }
