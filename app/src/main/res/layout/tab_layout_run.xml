@@ -23,7 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:ems="10"
-            android:inputType="numberDecimal" />
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true"/>
 
         <ImageButton
             android:id="@+id/resetDistanceButton"
@@ -52,7 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:ems="10"
-            android:inputType="time" />
+            android:gravity="right"
+            android:inputType="time"
+            android:selectAllOnFocus="true" />
 
         <ImageButton
             android:id="@+id/resetDurationButton"
@@ -81,7 +85,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:ems="10"
-            android:inputType="time" />
+            android:gravity="right"
+            android:inputType="time"
+            android:selectAllOnFocus="true" />
 
         <ImageButton
             android:id="@+id/resetPaceButton"
@@ -110,7 +116,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:ems="10"
-            android:inputType="numberDecimal" />
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
 
         <ImageButton
             android:id="@+id/resetSpeedButton"

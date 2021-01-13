@@ -153,6 +153,7 @@ public class ValueDialog extends AppCompatDialogFragment {
         valueEditText = view.findViewById(R.id.valueEditTextNumber);
         valueEditText.setText(selectedValue.toString());
         valueEditText.setInputType(inputType);
+        valueEditText.requestFocus();
         // spinner, to select desired unit for value
         unitSpinner = (Spinner) view.findViewById(R.id.unitSpinner);
         ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(
