@@ -15,32 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 /**
  * Organizes the forecast view of the application.
  */
 public class TabForecast extends Fragment {
-
-    // =============================================================================================
-    // default run distances
-    // =============================================================================================
-    /**
-     * Default distance 5 kilometers.
-     */
-    private final static float DISTANCE_5KM = 5;
-    /**
-     * Default distance 10 kilometers.
-     */
-    private final static float DISTANCE_10KM = 10;
-    /**
-     * Default distance half marathon.
-     */
-    private final static float DISTANCE_HM = 21.0975f;
-    /**
-     * Default distance marathon.
-     */
-    private final static float DISTANCE_M = 42.195f;
-
-    // ==============
 
     /**
      * Settings manager.
@@ -94,7 +81,7 @@ public class TabForecast extends Fragment {
             forecastTable.addView(createUnits(), new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             // add runs
-            for (float distance : new float[]{5, 10, 21.0975f, 42.195f}) {
+            for (float distance : createDistanceList()) {
                 forecastTable.addView(createForecast(run.getForecastRun(distance, 1.0759f)),
                         new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
@@ -102,6 +89,24 @@ public class TabForecast extends Fragment {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Returns the distances.
+     *
+     * @return distances
+     */
+    private SortedSet<Float> createDistanceList() {
+        SortedSet distances = new TreeSet();
+        distances.addAll(Arrays.asList(5f, 10f, 21.0975f, 42.195f, settings.getDistance()));
+        try {
+            for (Run run : settings.getFavoriteRuns()) {
+                distances.add(run.getDistanceAsNumber(Unit.KM));
+            }
+        } catch (CustomException ex) {
+            Log.e("error", ex.getMessage());
+        }
+        return distances;
     }
 
     /**
@@ -195,5 +200,23 @@ public class TabForecast extends Fragment {
         valueTextView.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         return valueTextView;
+    }
+
+    /**
+     * Defines default run distances.
+     */
+    private enum RunDistance {
+        FIVE_KM(5, "5 " + Unit.KM.toString()),
+        TEN_KM(10, "10 " + Unit.KM.toString()),
+        HALF_MARATHON(21.0975f, "half_marathon"),
+        MARATHON(42.195f, "marathon");
+
+        private final float distance;
+        private final String label;
+
+        RunDistance(float distance, String label) {
+            this.distance = distance;
+            this.label = label;
+        }
     }
 }
