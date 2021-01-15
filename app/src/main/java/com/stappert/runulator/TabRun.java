@@ -1,8 +1,6 @@
 package com.stappert.runulator;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.text.Editable;
@@ -26,13 +24,20 @@ import androidx.fragment.app.Fragment;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Organizes the run view of the application.
+ */
 public class TabRun extends Fragment {
 
     // Elements
     private View runView;
+    private TextView distanceTextView;
     private EditText distanceEditText;
+    private TextView durationTextView;
     private EditText durationEditText;
+    private TextView paceTextView;
     private EditText paceEditText;
+    private TextView speedTextView;
     private EditText speedEditText;
     private Button calculateButton;
     private ImageButton resetDistanceButton;
@@ -76,7 +81,7 @@ public class TabRun extends Fragment {
             settings = SettingsManager.getInstance().init(getContext());
             initElements();
             initListener();
-            initValues();
+            updateValues();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -84,11 +89,14 @@ public class TabRun extends Fragment {
         return runView;
     }
 
+    /**
+     * Update values on resume.
+     */
     @Override
     public void onResume() {
         super.onResume();
         try {
-            initValues();
+            updateValues();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -110,25 +118,15 @@ public class TabRun extends Fragment {
         // calculate depending on set values
         try {
             if (isDistanceSet && isDurationSet) {
-                currentRun = Run.createWithDistanceAndDuration(
-                        Run.parseToFloat(distanceEditText.getText().toString()),
-                        Run.parseTimeInSeconds(durationEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndDuration(getDistanceInKm(), getDurationInSeconds());
             } else if (isDistanceSet && isPaceSet) {
-                currentRun = Run.createWithDistanceAndPace(
-                        Run.parseToFloat(distanceEditText.getText().toString()),
-                        Run.parseTimeInSeconds(paceEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndPace(getDistanceInKm(), getPaceInSeconds());
             } else if (isDistanceSet && isSpeedSet) {
-                currentRun = Run.createWithDistanceAndSpeed(
-                        Run.parseToFloat(distanceEditText.getText().toString()),
-                        Run.parseToFloat(speedEditText.getText().toString()));
+                currentRun = Run.createWithDistanceAndSpeed(getDistanceInKm(), getSpeedInKmh());
             } else if (isDurationSet && isPaceSet) {
-                currentRun = Run.createWithDurationAndPace(
-                        Run.parseTimeInSeconds(durationEditText.getText().toString()),
-                        Run.parseTimeInSeconds(paceEditText.getText().toString()));
+                currentRun = Run.createWithDurationAndPace(getDurationInSeconds(), getPaceInSeconds());
             } else if (isDurationSet && isSpeedSet) {
-                currentRun = Run.createWithDurationAndSpeed(
-                        Run.parseTimeInSeconds(durationEditText.getText().toString()),
-                        Run.parseToFloat(speedEditText.getText().toString()));
+                currentRun = Run.createWithDurationAndSpeed(getDurationInSeconds(), getSpeedInKmh());
             } else if (isPaceSet && isSpeedSet) {
                 // this case can not be calculated
                 Toast.makeText(getContext(), "this case can not be calculated", Toast.LENGTH_LONG).show();
@@ -137,7 +135,7 @@ public class TabRun extends Fragment {
             updateRunOnGui();
             checkFavoriteButton();
             // save values to shared preferences
-            settings.setDistance(distanceEditText.getText().toString());
+            settings.setDistance(getDistanceInKm());
             settings.setDuration(durationEditText.getText().toString());
             settings.setPace(paceEditText.getText().toString());
             settings.setSpeed(speedEditText.getText().toString());
@@ -152,10 +150,14 @@ public class TabRun extends Fragment {
      */
     private void updateRunOnGui() {
         try {
-            distanceEditText.setText(currentRun.getDistance());
+            distanceTextView.setText(getString(R.string.distance) + " [" + settings.getDistanceUnit().toString() + "]");
+            distanceEditText.setText(currentRun.getDistance(settings.getDistanceUnit()));
+            durationTextView.setText(getString(R.string.run_time) + " [" + settings.getDurationUnit().toString() + "]");
             durationEditText.setText(currentRun.getDuration());
-            paceEditText.setText(currentRun.getPace());
-            speedEditText.setText(currentRun.getSpeed());
+            paceTextView.setText(getString(R.string.pace) + " [" + settings.getPaceUnit().toString() + "]");
+            paceEditText.setText(currentRun.getPace(settings.getPaceUnit()));
+            speedTextView.setText(getString(R.string.speed) + " [" + settings.getSpeedUnit().toString() + "]");
+            speedEditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
             caloriesTextView.setText(currentRun.getCalories(settings.getWeightInKg()));
             stepFrequencyTextView.setText(currentRun.calculateStepFrequency(settings.getHeightInCm()) + " " + getString(R.string.steps_per_minute));
             bmiTextView.setText(String.format(Locale.ENGLISH, "%.2f", Run.calculateBMI(
@@ -232,6 +234,47 @@ public class TabRun extends Fragment {
                 || speedEditText.getText().toString().isEmpty();
     }
 
+
+    /**
+     * Returns distance from text field parsed to kilometer.
+     *
+     * @return distance
+     * @throws CustomException if conversion failed
+     */
+    private float getDistanceInKm() throws CustomException {
+        return settings.getDistanceUnit().toKm(Run.parseToFloat(distanceEditText.getText().toString()));
+    }
+
+    /**
+     * Returns duration from text field parsed to seconds.
+     *
+     * @return duration
+     * @throws CustomException if conversion failed
+     */
+    private int getDurationInSeconds() throws CustomException {
+        return Run.parseTimeInSeconds(durationEditText.getText().toString());
+    }
+
+    /**
+     * Returns pace from text field parsed to seconds per minute.
+     *
+     * @return pace
+     * @throws CustomException if conversion failed
+     */
+    private int getPaceInSeconds() throws CustomException {
+        return settings.getPaceUnit().toMinPerKm(Run.parseToFloat(paceEditText.getText().toString()));
+    }
+
+    /**
+     * Returns speed from text field parsed to km per hour.
+     *
+     * @return speed
+     * @throws CustomException if conversion failed
+     */
+    private float getSpeedInKmh() throws CustomException {
+        return settings.getSpeedUnit().toKmPerHour(Run.parseToFloat(speedEditText.getText().toString()));
+    }
+
     // =============================================================================================
     // Initialize
     // =============================================================================================
@@ -240,9 +283,13 @@ public class TabRun extends Fragment {
      * Initializes gui elements.
      */
     private void initElements() {
+        distanceTextView = runView.findViewById(R.id.distanceTextView);
         distanceEditText = runView.findViewById(R.id.distanceEditTextNumber);
+        durationTextView = runView.findViewById(R.id.durationTextView);
         durationEditText = runView.findViewById(R.id.durationEditTextNumber);
+        paceTextView = runView.findViewById(R.id.paceTextView);
         paceEditText = runView.findViewById(R.id.paceEditTextNumber);
+        speedTextView = runView.findViewById(R.id.speedTextView);
         speedEditText = runView.findViewById(R.id.speedEditTextNumber);
         calculateButton = runView.findViewById(R.id.calculateButton);
         resetDistanceButton = runView.findViewById(R.id.resetDistanceButton);
@@ -353,12 +400,17 @@ public class TabRun extends Fragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        // Get the alert dialog selected item's text
-                        currentRun = favoriteRuns.get(i);
-                        updateRunOnGui();
-                        checkFavoriteButton();
-                        settings.setRun(currentRun);
-                        dialog.cancel();
+                        try {
+                            // Get the alert dialog selected item's text
+                            currentRun = favoriteRuns.get(i);
+                            updateRunOnGui();
+                            checkFavoriteButton();
+                            settings.setRun(currentRun);
+                            dialog.cancel();
+                        } catch (CustomException ex) {
+                            Log.e(ex.getTitle(), ex.getMessage());
+                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
         AlertDialog alert = builder.create();
@@ -371,7 +423,7 @@ public class TabRun extends Fragment {
      *
      * @throws CustomException if initialization failed
      */
-    private void initValues() throws CustomException {
+    private void updateValues() throws CustomException {
         favoriteRuns = settings.getFavoriteRuns();
         currentRun = settings.getRun();
         updateRunOnGui();

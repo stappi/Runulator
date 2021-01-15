@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Toast;
 
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -80,8 +81,52 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         PreferenceCategory runSettings = new PreferenceCategory(context);
         runSettings.setTitle(context.getString(R.string.run_settings));
         screen.addPreference(runSettings);
+        runSettings.addPreference(createUnitOfLength());
         runSettings.addPreference(createWeightButton());
         runSettings.addPreference(createHeightButton());
+    }
+
+    /**
+     * Creates the preference to set the unit of length (km or mile).
+     *
+     * @return preference to set unit of length
+     */
+    private Preference createUnitOfLength() {
+        String[] units = new String[Unit.getDistanceUnits().size()];
+        String[] unitLabels = new String[Unit.getDistanceUnits().size()];
+        for (int i = 0; i < Unit.getDistanceUnits().size(); i++) {
+            units[i] = Unit.getDistanceUnits().get(i).name();
+            unitLabels[i] = Unit.getDistanceUnits().get(i).getLabel(context);
+        }
+        ListPreference selectedUnitOfLength = new ListPreference(context);
+        selectedUnitOfLength.setKey(SettingsManager.KEY_DISTANCE_UNIT);
+        selectedUnitOfLength.setTitle(context.getString(R.string.unit_of_length));
+        selectedUnitOfLength.setIcon(R.drawable.ic_unit_of_length);
+        selectedUnitOfLength.setEntryValues(units);
+        selectedUnitOfLength.setEntries(unitLabels);
+        selectedUnitOfLength.setDefaultValue(Unit.KM.name());
+        selectedUnitOfLength.setValue(settings.getDistanceUnit().name());
+        selectedUnitOfLength.setSummary(settings.getDistanceUnit().getLabel(context));
+        selectedUnitOfLength.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object unit) {
+                SettingsManager settings = SettingsManager.getInstance();
+                switch (Unit.valueOf(unit.toString())) {
+                    case MILE:
+                        settings.setDistanceUnit(Unit.MILE);
+                        settings.setPaceUnit(Unit.MIN_MILE);
+                        settings.setSpeedUnit(Unit.MPH);
+                        break;
+                    default:
+                        settings.setDistanceUnit(Unit.KM);
+                        settings.setPaceUnit(Unit.MIN_KM);
+                        settings.setSpeedUnit(Unit.KM_H);
+                }
+                preference.setSummary(settings.getDistanceUnit().getLabel(context));
+                return true;
+            }
+        });
+        return selectedUnitOfLength;
     }
 
     /**

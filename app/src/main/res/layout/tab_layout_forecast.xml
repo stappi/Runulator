@@ -7,11 +7,12 @@
     android:paddingTop="20dp"
     android:paddingRight="20dp">
 
-    <TextView
-        android:id="@+id/forecastTextView"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/forecastTable"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="-"
-        android:textSize="15dp" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:stretchColumns="0,1,2"
+        android:scrollHorizontally="false"/>
 </LinearLayout>

@@ -100,12 +100,20 @@ public class TestRun {
     public void testCreateWithDurationAndSpeed() throws CustomException {
         // 2h with 11 km/h
         Run run_1 = Run.createWithDurationAndSpeed(2 * Run.HOUR, 11);
-        assertEquals("22.0", run_1.getDistance());
+        assertEquals("22.0", run_1.getDistance(Unit.KM));
+        assertEquals("13.6702", run_1.getDistance(Unit.MILE));
+        assertEquals(22, run_1.getDistanceAsNumber(Unit.KM), 0.1f);
+        assertEquals(13.6702, run_1.getDistanceAsNumber(Unit.MILE), 0.1f);
         assertEquals("2:00:00", run_1.getDuration());
-        assertEquals("5:27", run_1.getPace());
-        assertEquals(5 * Run.MINUTE + 27 * Run.SECOND, run_1.getPaceInSeconds());
-        assertEquals("11.0", run_1.getSpeed());
-        assertEquals(11.0f, run_1.getSpeedAsNumber(), 0.0001f);
+        assertEquals(2 * Run.HOUR, run_1.getDurationAsNumber());
+        assertEquals("5:27", run_1.getPace(Unit.MIN_KM));
+        assertEquals("8:46", run_1.getPace(Unit.MIN_MILE));
+        assertEquals(5 * Run.MINUTE + 27 * Run.SECOND, run_1.getPaceAsNumber(Unit.MIN_KM));
+        assertEquals(8 * Run.MINUTE + 46 * Run.SECOND, run_1.getPaceAsNumber(Unit.MIN_MILE));
+        assertEquals("11.0", run_1.getSpeed(Unit.KM_H));
+        assertEquals("6.84", run_1.getSpeed(Unit.MPH));
+        assertEquals(11.0f, run_1.getSpeedAsNumber(Unit.KM_H), 0.0001f);
+        assertEquals(6.8351f, run_1.getSpeedAsNumber(Unit.MPH), 0.0001f);
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -120,12 +128,10 @@ public class TestRun {
     public void testCreateWithDurationAndPace() throws CustomException {
         // 1h10min with 5:00 pace
         Run run_1 = Run.createWithDurationAndPace(Run.HOUR + 10 * Run.MINUTE, 5 * Run.MINUTE);
-        assertEquals("14.0", run_1.getDistance());
+        assertEquals("14.0", run_1.getDistance(Unit.KM));
         assertEquals("1:10:00", run_1.getDuration());
-        assertEquals("5:00", run_1.getPace());
-        assertEquals(5 * Run.MINUTE, run_1.getPaceInSeconds());
-        assertEquals("12.0", run_1.getSpeed());
-        assertEquals(12.0f, run_1.getSpeedAsNumber(), 0.0001f);
+        assertEquals("5:00", run_1.getPace(Unit.MIN_KM));
+        assertEquals("12.0", run_1.getSpeed(Unit.KM_H));
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -140,12 +146,10 @@ public class TestRun {
     public void testCreateWithDistanceAndSpeed() throws CustomException {
         // 10 km with 10.91 km/h
         Run run_1 = Run.createWithDistanceAndSpeed(10, 10.91f);
-        assertEquals("10.0", run_1.getDistance());
+        assertEquals("10.0", run_1.getDistance(Unit.KM));
         assertEquals("55:00", run_1.getDuration());
-        assertEquals("5:30", run_1.getPace());
-        assertEquals(5 * Run.MINUTE + 30 * Run.SECOND, run_1.getPaceInSeconds());
-        assertEquals("10.91", run_1.getSpeed());
-        assertEquals(10.91f, run_1.getSpeedAsNumber(), 0.0001f);
+        assertEquals("5:30", run_1.getPace(Unit.MIN_KM));
+        assertEquals("10.91", run_1.getSpeed(Unit.KM_H));
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -160,12 +164,10 @@ public class TestRun {
     public void testCreateWithDistanceAndPace() throws CustomException {
         // 10 km with 5:00 pace
         Run run_1 = Run.createWithDistanceAndPace(10, Run.parseTimeInSeconds("6:00"));
-        assertEquals("10.0", run_1.getDistance());
+        assertEquals("10.0", run_1.getDistance(Unit.KM));
         assertEquals("1:00:00", run_1.getDuration());
-        assertEquals("6:00", run_1.getPace());
-        assertEquals(6 * Run.MINUTE, run_1.getPaceInSeconds());
-        assertEquals("10.0", run_1.getSpeed());
-        assertEquals(10.0f, run_1.getSpeedAsNumber(), 0.0001f);
+        assertEquals("6:00", run_1.getPace(Unit.MIN_KM));
+        assertEquals("10.0", run_1.getSpeed(Unit.KM_H));
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -180,12 +182,10 @@ public class TestRun {
     public void testCreateWithDistanceAndDuration() throws CustomException {
         // 10 km in 50 minutes
         Run run_1 = Run.createWithDistanceAndDuration(10, 50 * Run.MINUTE);
-        assertEquals("10.0", run_1.getDistance());
+        assertEquals("10.0", run_1.getDistance(Unit.KM));
         assertEquals("50:00", run_1.getDuration());
-        assertEquals("5:00", run_1.getPace());
-        assertEquals(5 * Run.MINUTE, run_1.getPaceInSeconds());
-        assertEquals("12.0", run_1.getSpeed());
-        assertEquals(12.0f, run_1.getSpeedAsNumber(), 0.0001f);
+        assertEquals("5:00", run_1.getPace(Unit.MIN_KM));
+        assertEquals("12.0", run_1.getSpeed(Unit.KM_H));
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
@@ -309,15 +309,15 @@ public class TestRun {
     public void testGetDistance() {
         try {
             Assert.assertEquals("10.0",
-                    Run.createWithDistanceAndSpeed(10, 10).getDistance());
+                    Run.createWithDistanceAndSpeed(10, 10).getDistance(Unit.KM));
             Assert.assertEquals("10.0",
-                    Run.createWithDistanceAndSpeed(10.0f, 10).getDistance());
+                    Run.createWithDistanceAndSpeed(10.0f, 10).getDistance(Unit.KM));
             Assert.assertEquals("10.75",
-                    Run.createWithDistanceAndSpeed(10.75f, 10).getDistance());
+                    Run.createWithDistanceAndSpeed(10.75f, 10).getDistance(Unit.KM));
             Assert.assertEquals("21.0975",
-                    Run.createWithDistanceAndSpeed(21.0975f, 10).getDistance());
+                    Run.createWithDistanceAndSpeed(21.0975f, 10).getDistance(Unit.KM));
             Assert.assertEquals("34.3434",
-                    Run.createWithDistanceAndSpeed(34.34344334f, 10).getDistance());
+                    Run.createWithDistanceAndSpeed(34.34344334f, 10).getDistance(Unit.KM));
         } catch (Exception e) {
             e.printStackTrace();
         }

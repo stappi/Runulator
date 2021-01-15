@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Runulator</string>
-    <string name="distance">Distance [km]</string>
-    <string name="run_time">Run time [h:min:sec]</string>
-    <string name="pace">Pace per km [min:sec]</string>
-    <string name="speed">Speed [km/h]</string>
+    <string name="distance">Distance</string>
+    <string name="run_time">Run time</string>
+    <string name="pace">Pace</string>
+    <string name="speed">Speed</string>
     <string name="calculate">Calculate</string>
     <string name="calories">Calories</string>
     <string name="forecast">Forecast</string>
@@ -38,4 +38,16 @@
     <string name="bmi">BMI</string>
     <string name="step_frequency">Recommended step frequency</string>
     <string name="steps_per_minute">Steps per minute</string>
+    <string name="unit_of_length">Unit of length</string>
+    <string name="mile">Mile</string>
+    <string name="kilometer">Kilometer</string>
+    <string name="kilogram">Kilogram</string>
+    <string name="pound">Pound</string>
+    <string name="centimeter">Centimeter</string>
+    <string name="feet">Feet</string>
+    <string name="inch">Inch</string>
+    <string name="minutes_per_km">Minutes per kilometer</string>
+    <string name="minutes_per_mile">Minutes per mile</string>
+    <string name="kilometer_per_hour">Kilometer per hour</string>
+    <string name="miles_per_hour">Miles per hour</string>
 </resources>

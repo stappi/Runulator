@@ -14,6 +14,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/distanceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,6 +46,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/durationTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,6 +78,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/paceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -107,6 +110,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/speedTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

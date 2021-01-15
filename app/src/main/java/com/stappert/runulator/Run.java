@@ -42,39 +42,19 @@ public class Run {
     /**
      * Key 'distance' to parse in/from json.
      */
-    public final static String KEY_DISTANCE = "distance";
+    public final static String JSON_KEY_DISTANCE = "distance";
     /**
      * Key 'duration' to parse in/from json.
      */
-    public final static String KEY_DURATION = "duration";
+    public final static String JSON_KEY_DURATION = "duration";
     /**
      * Key 'pace' to parse in/from json.
      */
-    public final static String KEY_PACE = "pace";
+    public final static String JSON_KEY_PACE = "pace";
     /**
      * Key 'speed' to parse in/from json.
      */
-    public final static String KEY_SPEED = "speed";
-
-    // =============================================================================================
-    // default run distances
-    // =============================================================================================
-    /**
-     * Default distance 5 kilometers.
-     */
-    private final static float DISTANCE_5KM = 5;
-    /**
-     * Default distance 10 kilometers.
-     */
-    private final static float DISTANCE_10KM = 10;
-    /**
-     * Default distance half marathon.
-     */
-    private final static float DISTANCE_HM = 21.0975f;
-    /**
-     * Default distance marathon.
-     */
-    private final static float DISTANCE_M = 42.195f;
+    public final static String JSON_KEY_SPEED = "speed";
 
     // =============================================================================================
     // class variables
@@ -120,22 +100,27 @@ public class Run {
     // =============================================================================================
 
     /**
-     * Returns in the distance in km as string with maximal 4 decimal places.
+     * Returns in the distance as string with maximal 4 decimal places.
      *
-     * @return distance in km
+     * @param unit unit to convert
+     * @return distance
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public String getDistance() {
-        int noOfDecimalPlaces = Float.toString(distance).split("\\.")[1].length();
-        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces < 4 ? noOfDecimalPlaces : 4) + "f", distance);
+    public String getDistance(Unit unit) throws CustomException {
+        float parsedDistance = getDistanceAsNumber(unit);
+        int noOfDecimalPlaces = Float.toString(parsedDistance).split("\\.")[1].length();
+        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces < 4 ? noOfDecimalPlaces : 4) + "f", parsedDistance);
     }
 
     /**
      * Returns the distance as number.
      *
+     * @param unit unit to convert
      * @return distance
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public float getDistanceAsNumber() {
-        return distance;
+    public float getDistanceAsNumber(Unit unit) throws CustomException {
+        return unit.kmTo(distance);
     }
 
     /**
@@ -152,51 +137,62 @@ public class Run {
      *
      * @return duration
      */
-    public int getDurationInSeconds() {
+    public int getDurationAsNumber() {
         return duration;
     }
 
     /**
-     * Returns the pace in hh:mm:ss as string (h = hour, m = minute, s = second).
+     * Returns the pace in hh:mm:ss as string (h = hour, m = minute, s = second) per desired length
+     * (km, mi).
      *
+     * @param unit convert to
      * @return pace
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public String getPace() {
-        return secondsToString(pace);
+    public String getPace(Unit unit) throws CustomException {
+        return secondsToString(getPaceAsNumber(unit));
     }
 
     /**
      * Returns the pace.
      *
+     * @param unit convert to
      * @return pace
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public int getPaceInSeconds() {
-        return pace;
+    public int getPaceAsNumber(Unit unit) throws CustomException {
+        return (int) Math.round(unit.minPerKmTo(pace));
     }
 
     /**
-     * Returns in the speed in km/h as string with maximal 4 decimal places.
+     * Returns in the speed as string with maximal 2 decimal places.
      *
-     * @return speed in km/h
+     * @param unit convert to
+     * @return speed
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public String getSpeed() {
-        int noOfDecimalPlaces = Float.toString(speed).split("\\.")[1].length();
-        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces <= 1 ? 1 : 2) + "f", speed);
+    public String getSpeed(Unit unit) throws CustomException {
+        float parsedSpeed = getSpeedAsNumber(unit);
+        int noOfDecimalPlaces = Float.toString(parsedSpeed).split("\\.")[1].length();
+        return String.format(Locale.ENGLISH, "%." + (noOfDecimalPlaces <= 1 ? 1 : 2) + "f", parsedSpeed);
     }
 
+
     /**
-     * Returns in the speed in km/h as string with maximal 4 decimal places.
+     * Returns in the speed as number.
      *
-     * @return speed in km/h
+     * @param unit convert to
+     * @return speed
+     * @throws CustomException if conversion to desired unit is not possible
      */
-    public float getSpeedAsNumber() {
-        return speed;
+    public float getSpeedAsNumber(Unit unit) throws CustomException {
+        return unit.kmPerHourTo(speed);
     }
 
     /**
      * Calculates the number of calories burned.
      *
-     * @param weight
+     * @param weight in kg
      * @return
      */
     public String getCalories(int weight) {
@@ -204,30 +200,16 @@ public class Run {
     }
 
     /**
-     * Calculates a forecast for several distances with formula t2 = t1 x ( d2 / d1 )^k by Peter
-     * Riegel.
+     * Creates a forecast run for the desired distance depending on the fatigue coefficient.
      *
+     * @param forecastDistance   distance for forecast
      * @param fatigueCoefficient fatigue coefficient
-     * @throws CustomException if forecast gets values not greater than 0
+     * @return forecast run
+     * @throws CustomException if forecast is not possible
      */
-    public String getForecast(float fatigueCoefficient) throws CustomException {
-        return getForecast(DISTANCE_5KM, fatigueCoefficient) + "\n\n"
-                + getForecast(DISTANCE_10KM, fatigueCoefficient) + "\n\n"
-                + getForecast(DISTANCE_HM, fatigueCoefficient) + "\n\n"
-                + getForecast(DISTANCE_M, fatigueCoefficient);
-    }
-
-    /**
-     * Calculates a forecast for a desired distance with formula t2 = t1 x ( d2 / d1 )^k by Peter
-     * Riegel.
-     *
-     * @param forecastDistance   desired distance for forecast
-     * @param fatigueCoefficient fatigue coefficient
-     * @throws CustomException if forecast gets values not greater than 0
-     */
-    public String getForecast(float forecastDistance, float fatigueCoefficient) throws CustomException {
-        return "~ " + createWithDistanceAndDuration(forecastDistance,
-                (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient))).toString();
+    public Run getForecastRun(float forecastDistance, float fatigueCoefficient) throws CustomException {
+        return createWithDistanceAndDuration(forecastDistance,
+                (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient)));
     }
 
     /**
@@ -261,8 +243,7 @@ public class Run {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Run run = (Run) object;
-        return Float.compare(run.distance, distance) == 0 &&
-                duration == run.duration;
+        return run.distance == distance && duration == run.duration;
     }
 
     /**
@@ -281,10 +262,14 @@ public class Run {
      * @return run
      */
     public String toString() {
-        return getDistance() + "KM in "
-                + getDuration() + (duration >= HOUR ? "h" : duration >= MINUTE ? "min" : "sec") + "\n("
-                + getPace() + "min/km; "
-                + getSpeed() + "km/h)";
+        try {
+            return getDistance(Unit.KM) + "KM in "
+                    + getDuration() + (duration >= HOUR ? "h" : duration >= MINUTE ? "min" : "sec") + "\n("
+                    + getPace(Unit.MIN_KM) + "min/km; "
+                    + getSpeed(Unit.KM_H) + "km/h)";
+        } catch (CustomException ex) {
+            return "error";
+        }
     }
 
     /**
@@ -293,10 +278,10 @@ public class Run {
      * @return run as json string
      */
     public String toJson() {
-        return "{" + "\'" + KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + KEY_DURATION + "\':" + duration + ","
-                + "\'" + KEY_PACE + "\':" + pace + ","
-                + "\'" + KEY_SPEED + "\':" + speed + "}";
+        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
+                + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
+                + "\'" + JSON_KEY_PACE + "\':" + pace + ","
+                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
     }
 
     // =============================================================================================
@@ -428,10 +413,10 @@ public class Run {
             for (String runJsonString : runsJson) {
                 JSONObject runJson = new JSONObject(runJsonString);
                 runs.add(new Run(
-                        (float) runJson.getDouble(Run.KEY_DISTANCE),
-                        runJson.getInt(Run.KEY_DURATION),
-                        runJson.getInt(Run.KEY_PACE),
-                        (float) runJson.getDouble(Run.KEY_SPEED)
+                        (float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
+                        runJson.getInt(Run.JSON_KEY_DURATION),
+                        runJson.getInt(Run.JSON_KEY_PACE),
+                        (float) runJson.getDouble(Run.JSON_KEY_SPEED)
                 ));
             }
         } catch (JSONException ex) {

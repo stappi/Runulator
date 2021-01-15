@@ -14,15 +14,18 @@ import java.util.Set;
 public class SettingsManager {
 
     // Keys to store and load values from shared preferences
-    private String KEY_DISTANCE = "distance";
-    private String KEY_DURATION = "duration";
-    private String KEY_PACE = "pace";
-    private String KEY_SPEED = "speed";
-    private String KEY_RUNS = "runs";
-    private String KEY_WEIGHT = "weight";
-    private String KEY_WEIGHT_UNIT = "weight_unit";
-    private String KEY_HEIGHT = "height";
-    private String KEY_HEIGHT_UNIT = "height_unit";
+    private static String KEY_DISTANCE = "distance";
+    public static String KEY_DISTANCE_UNIT = "distance_unit";
+    private static String KEY_DURATION = "duration";
+    private static String KEY_PACE_UNIT = "pace_unit";
+    private static String KEY_PACE = "pace";
+    private static String KEY_SPEED_UNIT = "speed_unit";
+    private static String KEY_SPEED = "speed";
+    private static String KEY_RUNS = "runs";
+    private static String KEY_WEIGHT = "weight";
+    private static String KEY_WEIGHT_UNIT = "weight_unit";
+    private static String KEY_HEIGHT = "height";
+    private static String KEY_HEIGHT_UNIT = "height_unit";
 
     /**
      * Single object of the settings manager.
@@ -84,11 +87,12 @@ public class SettingsManager {
     }
 
     /**
-     * Stores the last set distance.
+     * Stores the last set distance in km.
      *
      * @param distance distance
+     * @throws CustomException if conversion for unit is not supported
      */
-    public void setDistance(String distance) {
+    public void setDistance(String distance) throws CustomException {
         setDistance(Float.parseFloat(distance));
     }
 
@@ -96,9 +100,28 @@ public class SettingsManager {
      * Stores the last set distance.
      *
      * @param distance distance
+     * @throws CustomException if conversion for unit is not supported
      */
-    public void setDistance(float distance) {
-        saveValue(KEY_DISTANCE, distance);
+    public void setDistance(float distance) throws CustomException {
+        saveValue(KEY_DISTANCE, getDistanceUnit().toKm(distance));
+    }
+
+    /**
+     * Returns the distance unit.
+     *
+     * @return distance unit.
+     */
+    public Unit getDistanceUnit() {
+        return Unit.valueOf((sharedPreferences.getString(KEY_DISTANCE_UNIT, Unit.KM.name())));
+    }
+
+    /**
+     * Sets the distance unit.
+     *
+     * @param unit distance unit.
+     */
+    public void setDistanceUnit(Unit unit) {
+        saveValue(KEY_DISTANCE_UNIT, unit.name());
     }
 
     /**
@@ -129,41 +152,88 @@ public class SettingsManager {
     }
 
     /**
-     * Returns the last set pace.
+     * Returns the duration unit.
      *
-     * @return pace
+     * @return duration unit.
      */
-    public int getPace() throws CustomException {
-        return sharedPreferences.getInt(KEY_PACE,
-                Run.createWithDistanceAndDuration(getDistance(), getDuration()).getPaceInSeconds());
+    public Unit getDurationUnit() {
+        return Unit.HOUR;
     }
 
     /**
      * Stores the last set pace.
      *
      * @param pace pace
+     * @throws CustomException if conversion for unit is not supported
      */
     public void setPace(String pace) throws CustomException {
-        saveValue(KEY_PACE, Run.parseTimeInSeconds(pace));
+        setPace(Run.parseTimeInSeconds(pace));
     }
 
     /**
-     * Returns the last set speed.
+     * Stores the last set pace in seconds per minute.
      *
-     * @return speed
+     * @param pace pace
+     * @throws CustomException if conversion for unit is not supported
      */
-    public float getSpeed() throws CustomException {
-        return sharedPreferences.getFloat(KEY_SPEED,
-                Run.createWithDistanceAndDuration(getDistance(), getDuration()).getSpeedAsNumber());
+    public void setPace(int pace) throws CustomException {
+        saveValue(KEY_PACE, getPaceUnit().toMinPerKm(pace));
+    }
+
+    /**
+     * Returns the pace unit.
+     *
+     * @return speed unit.
+     */
+    public Unit getPaceUnit() {
+        return Unit.valueOf((sharedPreferences.getString(KEY_PACE_UNIT, Unit.MIN_KM.name())));
+    }
+
+    /**
+     * Sets the pace unit.
+     *
+     * @param unit pace unit.
+     */
+    public void setPaceUnit(Unit unit) {
+        saveValue(KEY_PACE_UNIT, unit.name());
     }
 
     /**
      * Stores the last set speed.
      *
      * @param speed speed
+     * @throws CustomException if conversion for unit is not supported
      */
-    public void setSpeed(String speed) {
-        saveValue(KEY_SPEED, speed);
+    public void setSpeed(String speed) throws CustomException {
+        setSpeed(Float.parseFloat(speed));
+    }
+
+    /**
+     * Stores the last set speed in km/h.
+     *
+     * @param speed speed
+     * @throws CustomException if conversion for unit is not supported
+     */
+    public void setSpeed(float speed) throws CustomException {
+        saveValue(KEY_SPEED, getSpeedUnit().toKmPerHour(speed));
+    }
+
+    /**
+     * Returns the speed unit.
+     *
+     * @return speed unit.
+     */
+    public Unit getSpeedUnit() {
+        return Unit.valueOf((sharedPreferences.getString(KEY_SPEED_UNIT, Unit.KM_H.name())));
+    }
+
+    /**
+     * Sets the speed unit.
+     *
+     * @param unit speed unit.
+     */
+    public void setSpeedUnit(Unit unit) {
+        saveValue(KEY_SPEED_UNIT, unit.name());
     }
 
     /**
@@ -189,9 +259,9 @@ public class SettingsManager {
      * @return run
      * @throws CustomException if run can not be created
      */
-    public void setRun(Run run) {
-        setDistance(run.getDistanceAsNumber());
-        setDuration(run.getDurationInSeconds());
+    public void setRun(Run run) throws CustomException {
+        setDistance(run.getDistanceAsNumber(Unit.KM));
+        setDuration(run.getDurationAsNumber());
     }
 
     /**
