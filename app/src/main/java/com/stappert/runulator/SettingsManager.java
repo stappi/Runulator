@@ -26,6 +26,7 @@ public class SettingsManager {
     private static String KEY_WEIGHT_UNIT = "weight_unit";
     private static String KEY_HEIGHT = "height";
     private static String KEY_HEIGHT_UNIT = "height_unit";
+    private static String KEY_BIRTHDAY = "birthday";
 
     /**
      * Single object of the settings manager.
@@ -350,7 +351,24 @@ public class SettingsManager {
     }
 
     /**
-     * Stores the height depending on height unit.
+     * Stores the birthday.
+     *
+     * @param birthday birthday
+     */
+    public void setBirthday(long birthday) {
+        saveValue(KEY_BIRTHDAY, birthday);
+    }
+
+    /**
+     * Returns the birthday.
+     * @return birthday
+     */
+    public long getBirthday() {
+        return sharedPreferences.getLong(KEY_BIRTHDAY, 0);
+    }
+
+    /**
+     * Stores the height depending on weight unit.
      *
      * @param height height
      * @param unit   unit

@@ -48,6 +48,10 @@ public class TabRun extends Fragment {
     private ImageButton openFavoritesButton;
     private TextView caloriesTextView;
     private TextView stepFrequencyTextView;
+    private TextView heartRateMaxTextView;
+    private TextView heartRateFatBurningTextView;
+    private TextView heartRateConditionBuildingTextView;
+    private TextView heartRateMaxPerformanceTextView;
     private TextView bmiTextView;
 
     /**
@@ -163,6 +167,11 @@ public class TabRun extends Fragment {
             bmiTextView.setText(String.format(Locale.ENGLISH, "%.2f", Run.calculateBMI(
                     settings.getWeightUnit().toKg(settings.getWeight()),
                     settings.getHeightUnit().toCm(settings.getHeight()))));
+            final int age = Utils.calculateAge(settings.getBirthday());
+            heartRateMaxTextView.setText("" + Run.calculateMaxHeartRate(age));
+            heartRateFatBurningTextView.setText("" + Run.calculateHeartRateFatBurning(age));
+            heartRateConditionBuildingTextView.setText("" + Run.calculateHeartRateBuildingCondition(age));
+            heartRateMaxPerformanceTextView.setText("" + Run.calculateHeartRateMaxPerformance(age));
         } catch (Exception ex) {
             Log.e("error", ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -300,6 +309,10 @@ public class TabRun extends Fragment {
         openFavoritesButton = runView.findViewById(R.id.openButton);
         caloriesTextView = runView.findViewById(R.id.caloriesTextView);
         stepFrequencyTextView = runView.findViewById(R.id.stepFrequencyTextView);
+        heartRateMaxTextView = runView.findViewById(R.id.heartRateMaxTextView);
+        heartRateFatBurningTextView = runView.findViewById(R.id.heartRateFatBurningTextView);
+        heartRateConditionBuildingTextView = runView.findViewById(R.id.heartRateConditionBuildingTextView);
+        heartRateMaxPerformanceTextView = runView.findViewById(R.id.heartRateMaxPerformanceTextView);
         bmiTextView = runView.findViewById(R.id.bmiTextView);
     }
 

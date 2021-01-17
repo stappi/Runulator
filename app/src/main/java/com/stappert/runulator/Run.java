@@ -491,4 +491,48 @@ public class Run {
     public static float calculateBMI(float weight, float height) {
         return weight / (float) Math.pow(height / 100, 2);
     }
+
+    /**
+     * Calculates the maximal heart rate.
+     * https://www.runtastic.com/blog/de/berechne-deine-maximale-herzfrequenz-und-ziel-herzfrequenz/
+     *
+     * @param age age
+     * @return maximal heart rate
+     */
+    public static int calculateMaxHeartRate(int age) {
+        return 220 - age;
+    }
+
+    /**
+     * Calculates the heart rate for burning fat.
+     * https://www.runtastic.com/blog/de/berechne-deine-maximale-herzfrequenz-und-ziel-herzfrequenz/
+     *
+     * @param age age
+     * @return heart rate for fat burning
+     */
+    public static int calculateHeartRateFatBurning(int age) {
+        return (int) Math.round(calculateMaxHeartRate(age) * 0.65);
+    }
+
+    /**
+     * Calculates the heart rate for building condition.
+     * https://www.runtastic.com/blog/de/berechne-deine-maximale-herzfrequenz-und-ziel-herzfrequenz/
+     *
+     * @param age age
+     * @return heart rate for condition building
+     */
+    public static int calculateHeartRateBuildingCondition(int age) {
+        return (int) Math.round(calculateMaxHeartRate(age) * 0.75);
+    }
+
+    /**
+     * Calculates the heart rate for maximal performance.
+     * https://www.runtastic.com/blog/de/berechne-deine-maximale-herzfrequenz-und-ziel-herzfrequenz/
+     *
+     * @param age age
+     * @return heart rate for maximal performance
+     */
+    public static int calculateHeartRateMaxPerformance(int age) {
+        return (int) Math.round(calculateMaxHeartRate(age) * 0.85);
+    }
 }

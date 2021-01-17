@@ -1,10 +1,12 @@
 package com.stappert.runulator;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.preference.ListPreference;
@@ -12,6 +14,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Creates the main settings.
@@ -37,6 +43,11 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
      * Button, to set weight.
      */
     private Preference heightButton;
+
+    /**
+     * Button, to set birthday.
+     */
+    private Preference birthdayButton;
 
     /**
      * Creates the preferences.
@@ -158,6 +169,53 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
      * @return weight button
      */
     private Preference createHeightButton() {
+        birthdayButton = new Preference(context);
+        birthdayButton.setTitle(context.getString(R.string.birthday));
+        updateBirthday();
+        birthdayButton.setIcon(context.getDrawable(R.drawable.ic_birthday));
+        birthdayButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                // create listener, to apply birthday
+                DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
+                        settings.setBirthday(calendar.getTimeInMillis());
+                        updateBirthday();
+                    }
+                };
+                // create date dialog
+                Calendar birthday = Calendar.getInstance();
+                birthday.setTimeInMillis(settings.getBirthday());
+                DatePickerDialog dateDialog = new DatePickerDialog(getContext(), datePickerListener,
+                        birthday.get(Calendar.YEAR), birthday.get(Calendar.MONTH), birthday.get(Calendar.DAY_OF_MONTH));
+                dateDialog.getDatePicker().setMaxDate(new Date().getTime());
+                dateDialog.show();
+                return true;
+            }
+        });
+        return birthdayButton;
+    }
+
+    /**
+     * Updates birthday.
+     */
+    private void updateBirthday() {
+        long birthday = settings.getBirthday();
+        birthdayButton.setSummary(new SimpleDateFormat(context.getString(R.string.date_format)).format(new Date(birthday))
+                + " (" + Utils.calculateAge(birthday) + " " + getString(R.string.years) + ")");
+    }
+
+    /**
+     * creates the weight button.
+     *
+     * @return weight button
+     */
+    private Preference createAgeButton() {
         heightButton = new Preference(context);
         heightButton.setTitle(context.getString(R.string.height));
         heightButton.setSummary(settings.getHeightUnit().format(settings.getHeight()));
