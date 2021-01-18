@@ -9,10 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.stappert.runulator.R;
-import com.stappert.runulator.TabForecast;
-import com.stappert.runulator.TabRun;
-
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
@@ -20,7 +16,7 @@ import com.stappert.runulator.TabRun;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast, R.string.tab_health};
 
     private final Context mContext;
 
@@ -34,6 +30,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0: return new TabRun();
             case 1: return new TabForecast();
+            case 2: return new TabHealth();
         }
         return null;
     }
@@ -47,6 +44,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 2 total pages.
-        return 2;
+        return 3;
     }
 }

@@ -57,4 +57,5 @@
     <string name="heart_rate_fat_burning">Heart rate for fat burning</string>
     <string name="heart_rate_condition_building">Heart rate for condition building</string>
     <string name="heart_rate_maximal_performance">Heart rate for maximal performance</string>
+    <string name="tab_health">Health</string>
 </resources>

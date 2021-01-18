@@ -51,4 +51,5 @@
     <string name="heart_rate_condition_building">Herzfrequenz für Konditionsaufbau</string>
     <string name="heart_rate_max">Maximale Herzfrequenz</string>
     <string name="heart_rate_fat_burning">Herzfrequenz für Fettverbrennung</string>
+    <string name="tab_health">Gesundheit</string>
 </resources>
