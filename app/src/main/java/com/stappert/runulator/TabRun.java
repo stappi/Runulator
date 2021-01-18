@@ -271,7 +271,7 @@ public class TabRun extends Fragment {
      * @throws CustomException if conversion failed
      */
     private int getPaceInSeconds() throws CustomException {
-        return settings.getPaceUnit().toMinPerKm(Run.parseToFloat(paceEditText.getText().toString()));
+        return settings.getPaceUnit().toMinPerKm(Run.parseTimeInSeconds(paceEditText.getText().toString()));
     }
 
     /**
