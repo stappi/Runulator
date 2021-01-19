@@ -1,5 +1,6 @@
 package com.stappert.runulator;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -81,9 +83,13 @@ public class TabForecast extends Fragment {
             forecastTable.addView(createUnits(), new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             // add runs
-            for (float distance : createDistanceList()) {
-                forecastTable.addView(createForecast(run.getForecastRun(distance, 1.0759f)),
-                        new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            List<Float> distances = createDistanceList();
+            for (int i = 0; i < distances.size(); i++) {
+                TableRow forecast = createForecast(
+                        run.getForecastRun(distances.get(i), 1.0759f),
+                        i % 2 == 0 ? Color.LTGRAY : Color.TRANSPARENT);
+                forecastTable.addView(forecast, new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
@@ -96,17 +102,17 @@ public class TabForecast extends Fragment {
      *
      * @return distances
      */
-    private SortedSet<Float> createDistanceList() {
+    private List<Float> createDistanceList() {
         SortedSet distances = new TreeSet();
         distances.addAll(Arrays.asList(5f, 10f, 21.0975f, 42.195f, settings.getDistance()));
         try {
-            for (Run run : settings.getFavoriteRuns()) {
-                distances.add(run.getDistanceAsNumber(Unit.KM));
+            for (int i = 0; i < settings.getFavoriteRuns().size(); i++) {
+                distances.add(settings.getFavoriteRuns().get(i).getDistanceAsNumber(Unit.KM));
             }
         } catch (CustomException ex) {
             Log.e("error", ex.getMessage());
         }
-        return distances;
+        return new ArrayList<>(distances);
     }
 
     /**
@@ -147,7 +153,7 @@ public class TabForecast extends Fragment {
      * @param forecast
      * @return forecast row
      */
-    private TableRow createForecast(Run forecast) throws CustomException {
+    private TableRow createForecast(Run forecast, int backgroundColor) throws CustomException {
         TableRow row = new TableRow(getContext());
         row.addView(createCellForecastValue(forecast.getDistance(settings.getDistanceUnit())));
         row.addView(createCellForecastValue(forecast.getDuration()));
@@ -155,6 +161,7 @@ public class TabForecast extends Fragment {
         row.addView(createCellForecastValue(forecast.getSpeed(settings.getSpeedUnit())));
         row.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        row.setBackgroundColor(backgroundColor);
         return row;
     }
 
