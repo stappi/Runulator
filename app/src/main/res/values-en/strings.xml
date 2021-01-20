@@ -30,7 +30,7 @@
     <string name="height">Height</string>
     <string name="height_msg">Please enter your height.</string>
     <string name="bmi">BMI</string>
-    <string name="step_frequency">Recommended step frequency</string>
+    <string name="step_frequency">Step frequency</string>
     <string name="steps_per_minute">Steps per minute</string>
     <string name="unit_of_length">Unit of length</string>
     <string name="mile">Mile</string>
@@ -47,9 +47,10 @@
     <string name="birthday">Birthday</string>
     <string name="years">Alter</string>
     <string name="date_format">dd/MM/yyyy</string>
-    <string name="heart_rate_maximal_performance">Heart rate for maximal performance</string>
-    <string name="heart_rate_condition_building">Heart rate for condition building</string>
-    <string name="heart_rate_fat_burning">Heart rate for fat burning</string>
-    <string name="heart_rate_max">Maximum heart rate</string>
+    <string name="heart_rate_maximal_performance">Maximal performance</string>
+    <string name="heart_rate_condition_building">Condition building</string>
+    <string name="heart_rate_fat_burning">Fat burning</string>
+    <string name="heart_rate_max">Maximum</string>
     <string name="tab_health">Health</string>
+    <string name="heart_rate">Heart Rate</string>
 </resources>
