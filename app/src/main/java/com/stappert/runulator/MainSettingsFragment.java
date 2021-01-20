@@ -95,6 +95,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         runSettings.addPreference(createUnitOfLength());
         runSettings.addPreference(createWeightButton());
         runSettings.addPreference(createHeightButton());
+        runSettings.addPreference(createAgeButton());
     }
 
     /**
@@ -164,11 +165,34 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     /**
-     * creates the weight button.
+     * creates the height button.
      *
      * @return weight button
      */
     private Preference createHeightButton() {
+        heightButton = new Preference(context);
+        heightButton.setTitle(context.getString(R.string.height));
+        heightButton.setSummary(settings.getHeightUnit().format(settings.getHeight()));
+        heightButton.setIcon(context.getDrawable(R.drawable.ic_height));
+        heightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new ValueDialog(ValueDialog.ValueType.HEIGHT,
+                        getContext().getString(R.string.height), getContext().getString(R.string.height_msg),
+                        settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(), InputType.TYPE_CLASS_NUMBER
+                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
+                return true;
+            }
+        });
+        return heightButton;
+    }
+
+    /**
+     * creates the age button.
+     *
+     * @return age button
+     */
+    private Preference createAgeButton() {
         birthdayButton = new Preference(context);
         birthdayButton.setTitle(context.getString(R.string.birthday));
         updateBirthday();
@@ -208,29 +232,6 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         long birthday = settings.getBirthday();
         birthdayButton.setSummary(new SimpleDateFormat(context.getString(R.string.date_format)).format(new Date(birthday))
                 + " (" + Utils.calculateAge(birthday) + " " + getString(R.string.years) + ")");
-    }
-
-    /**
-     * creates the weight button.
-     *
-     * @return weight button
-     */
-    private Preference createAgeButton() {
-        heightButton = new Preference(context);
-        heightButton.setTitle(context.getString(R.string.height));
-        heightButton.setSummary(settings.getHeightUnit().format(settings.getHeight()));
-        heightButton.setIcon(context.getDrawable(R.drawable.ic_height));
-        heightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new ValueDialog(ValueDialog.ValueType.HEIGHT,
-                        getContext().getString(R.string.height), getContext().getString(R.string.height_msg),
-                        settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(), InputType.TYPE_CLASS_NUMBER
-                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
-                return true;
-            }
-        });
-        return heightButton;
     }
 
     /**
