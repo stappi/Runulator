@@ -11,7 +11,7 @@ public class SettingsActivity extends AppCompatActivity implements ValueDialog.V
 
     private SettingsManager settings;
 
-    private MainSettingsFragment settingsFragment;
+    private com.stappert.runulator.SettingsFragment settingsFragment;
 
     /**
      * Creates the settings activity.
@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity implements ValueDialog.V
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         settings = SettingsManager.getInstance();
-        settingsFragment = new MainSettingsFragment();
+        settingsFragment = new com.stappert.runulator.SettingsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.settings, settingsFragment).commit();
     }
 

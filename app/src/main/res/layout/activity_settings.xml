@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="com.stappert.runulator.MainSettingsFragment"
+        android:name="com.stappert.runulator.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="com.stappert.runulator.MainSettingsFragment" />

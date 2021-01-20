@@ -13,14 +13,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class MainActivityTabAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast, R.string.tab_health};
 
     private final Context mContext;
 
-    public SectionsPagerAdapter(@NonNull FragmentManager fm, int behavior, Context mContext) {
+    public MainActivityTabAdapter(@NonNull FragmentManager fm, int behavior, Context mContext) {
         super(fm, behavior);
         this.mContext = mContext;
     }

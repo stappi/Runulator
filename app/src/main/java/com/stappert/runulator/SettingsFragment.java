@@ -22,7 +22,7 @@ import java.util.Date;
 /**
  * Creates the main settings.
  */
-public class MainSettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     /**
      * Current context of application.
@@ -157,7 +157,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 new ValueDialog(ValueDialog.ValueType.WEIGHT,
                         getContext().getString(R.string.weight), getContext().getString(R.string.weight_msg),
                         settings.getWeight(), settings.getWeightUnit(), Unit.getWeightUnits(), InputType.TYPE_CLASS_NUMBER
-                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
+                ).show(SettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
                 return true;
             }
         });
@@ -180,7 +180,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 new ValueDialog(ValueDialog.ValueType.HEIGHT,
                         getContext().getString(R.string.height), getContext().getString(R.string.height_msg),
                         settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(), InputType.TYPE_CLASS_NUMBER
-                ).show(MainSettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
+                ).show(SettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
                 return true;
             }
         });
@@ -259,13 +259,13 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new AlertDialog.Builder(MainSettingsFragment.this.context)
-                        .setTitle(MainSettingsFragment.this.context.getString(R.string.reset_app))
-                        .setMessage(MainSettingsFragment.this.context.getString(R.string.reset_app_confirm))
+                new AlertDialog.Builder(SettingsFragment.this.context)
+                        .setTitle(SettingsFragment.this.context.getString(R.string.reset_app))
+                        .setMessage(SettingsFragment.this.context.getString(R.string.reset_app_confirm))
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                Context context = MainSettingsFragment.this.context;
+                                Context context = SettingsFragment.this.context;
                                 context.getSharedPreferences("runulator", Context.MODE_PRIVATE).edit().clear().commit();
                                 weightButton.setSummary(settings.getWeightUnit().format(settings.getWeight()));
                                 Toast.makeText(context, "App wurde zurückgesetzt", Toast.LENGTH_LONG).show();
