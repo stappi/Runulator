@@ -3,6 +3,7 @@ package com.stappert.runulator;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -207,23 +208,5 @@ public class TabForecast extends Fragment {
         valueTextView.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         return valueTextView;
-    }
-
-    /**
-     * Defines default run distances.
-     */
-    private enum RunDistance {
-        FIVE_KM(5, "5 " + Unit.KM.toString()),
-        TEN_KM(10, "10 " + Unit.KM.toString()),
-        HALF_MARATHON(21.0975f, "half_marathon"),
-        MARATHON(42.195f, "marathon");
-
-        private final float distance;
-        private final String label;
-
-        RunDistance(float distance, String label) {
-            this.distance = distance;
-            this.label = label;
-        }
     }
 }

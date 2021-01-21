@@ -378,7 +378,7 @@ public class Run {
         if (duration <= 0 || pace <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        float distance = duration / pace;
+        float distance = 1.0f * duration / pace;
         float speed = (float) HOUR / pace;
         return new Run(distance, duration, pace, speed);
     }
