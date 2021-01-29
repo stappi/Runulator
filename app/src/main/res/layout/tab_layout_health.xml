@@ -10,7 +10,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_pill_button"
+        android:background="@drawable/shape_area"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -25,18 +25,18 @@
         <TableRow android:layout_marginTop="15dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@string/heart_rate_max"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/heartRateMaxTextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="-"
                 android:textSize="15dp" />
         </TableRow>
@@ -48,18 +48,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@string/heart_rate_fat_burning"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/heartRateFatBurningTextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="-"
                 android:textSize="15dp" />
         </TableRow>
@@ -72,18 +72,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@string/heart_rate_condition_building"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/heartRateConditionBuildingTextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="-"
                 android:textSize="15dp" />
         </TableRow>
@@ -95,18 +95,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@string/heart_rate_maximal_performance"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/heartRateMaxPerformanceTextView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="-"
                 android:textSize="15dp" />
         </TableRow>
@@ -115,7 +115,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_pill_button"
+        android:background="@drawable/shape_area"
         android:orientation="horizontal"
         android:padding="10dp"
         android:layout_marginTop="25dp">
@@ -133,7 +133,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@string/bmi"
                 android:textSize="15dp"
                 android:textStyle="bold"/>
@@ -142,7 +142,7 @@
                 android:id="@+id/bmiTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.3"
                 android:text="-"
                 android:textSize="15dp" />
         </TableRow>
