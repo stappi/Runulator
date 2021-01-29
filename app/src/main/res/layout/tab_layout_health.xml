@@ -10,7 +10,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
+        android:background="@drawable/shape_pill_button"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -115,7 +115,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
+        android:background="@drawable/shape_pill_button"
         android:orientation="horizontal"
         android:padding="10dp"
         android:layout_marginTop="25dp">

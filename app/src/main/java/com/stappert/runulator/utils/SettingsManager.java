@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 /**
  * Custom exception for general errors in Runulator.

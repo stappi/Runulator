@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -14,6 +14,12 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import com.stappert.runulator.R;
+import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.dialogs.ValueDialog;
+import com.stappert.runulator.utils.Unit;
+import com.stappert.runulator.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

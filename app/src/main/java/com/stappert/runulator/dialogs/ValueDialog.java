@@ -1,11 +1,10 @@
-package com.stappert.runulator;
+package com.stappert.runulator.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.stappert.runulator.R;
+import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.utils.Unit;
 
 import java.util.List;
 

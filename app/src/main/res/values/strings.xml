@@ -59,4 +59,15 @@
     <string name="heart_rate_maximal_performance">Maximal performance</string>
     <string name="tab_health">Health</string>
     <string name="heart_rate">Heart Rate</string>
+    <string name="run_parameter_1">Run parameter 1</string>
+    <string name="run_parameter_2">Run parameter 2</string>
+    <string name="unit">Unit</string>
+    <string name="input_info_select_please_one">Select a second run parameter.</string>
+    <string name="input_info_select_please_two">Select two run parameters.</string>
+    <string name="run_value_1">Run value 1</string>
+    <string name="run_value_2">Run value 2</string>
+    <string name="input_info_enter_values">Please enter values to calculate the run.</string>
+    <string name="unknown">-</string>
+    <!-- Strings used for fragments for navigation -->
+
 </resources>

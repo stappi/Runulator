@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.util.Log;
 
@@ -195,8 +195,8 @@ public class Run {
      * @param weight in kg
      * @return
      */
-    public String getCalories(int weight) {
-        return "~" + (int) (distance * weight * 0.9f) + " kcal";
+    public String calculateCalories(int weight) {
+        return "~" + (int) (distance * weight * 0.9f);
     }
 
     /**

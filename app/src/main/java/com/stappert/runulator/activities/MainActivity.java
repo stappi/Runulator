@@ -1,9 +1,10 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.stappert.runulator.R;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;

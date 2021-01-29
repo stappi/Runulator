@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.content.Context;
 
@@ -68,9 +68,13 @@ public enum Unit {
     /**
      * Minutes in form mm:ss. Note, that values are on seconds level.
      */
-    MINUTE("min:sec", null);
+    MINUTE("min:sec", null),
 
-    // =============================================================================================
+    // ============ default ========================================================================
+    /**
+     * Default unit.
+     */
+    DEFAULT("", null);
 
     /**
      * International symbol.
@@ -99,7 +103,7 @@ public enum Unit {
      * @return label
      */
     public String getLabel(Context context) {
-        return Utils.getStringByIdName(context, label);
+        return label != null ? Utils.getStringByIdName(context, label) : symbol;
     }
 
 

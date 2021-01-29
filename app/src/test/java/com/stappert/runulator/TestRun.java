@@ -1,7 +1,8 @@
 package com.stappert.runulator;
 
-import android.util.Log;
-import android.widget.Toast;
+import com.stappert.runulator.utils.CustomException;
+import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.utils.Unit;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -11,7 +12,6 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -182,7 +182,7 @@ public class TestRun {
     public void testCreateWithDistanceAndDuration() throws CustomException {
         // 10 km in 50 minutes
         Run run_1 = Run.createWithDistanceAndDuration(10, 50 * Run.MINUTE);
-        assertEquals("10.0", run_1.getDistance(Unit.KM));
+        assertEquals("10.0" , run_1.getDistance(Unit.KM));
         assertEquals("50:00", run_1.getDuration());
         assertEquals("5:00", run_1.getPace(Unit.MIN_KM));
         assertEquals("12.0", run_1.getSpeed(Unit.KM_H));

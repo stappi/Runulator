@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.content.Context;
 
@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.stappert.runulator.R;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

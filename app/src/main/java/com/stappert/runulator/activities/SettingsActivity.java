@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,11 +7,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.stappert.runulator.R;
+import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.dialogs.ValueDialog;
+import com.stappert.runulator.utils.Unit;
+
 public class SettingsActivity extends AppCompatActivity implements ValueDialog.ValueDialogListener {
 
     private SettingsManager settings;
 
-    private com.stappert.runulator.SettingsFragment settingsFragment;
+    private com.stappert.runulator.activities.SettingsFragment settingsFragment;
 
     /**
      * Creates the settings activity.
@@ -32,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity implements ValueDialog.V
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         settings = SettingsManager.getInstance();
-        settingsFragment = new com.stappert.runulator.SettingsFragment();
+        settingsFragment = new com.stappert.runulator.activities.SettingsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.settings, settingsFragment).commit();
     }
 
