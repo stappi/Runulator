@@ -416,6 +416,7 @@ public class TabRun extends Fragment {
     private void addParameterToInputArea(final RunParameter runParameter) {
         TextView label = new TextView(getContext());
         label.setLayoutParams(LAYOUT_LABEL);
+        label.setTypeface(null, Typeface.BOLD);
         final EditText input = new EditText(getContext());
         input.setText(inputParameter.containsKey(runParameter)
                 ? inputParameter.get(runParameter).getText().toString() : "");

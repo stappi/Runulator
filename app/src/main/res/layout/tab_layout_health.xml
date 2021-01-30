@@ -3,33 +3,32 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp">
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp">
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_area"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/heart_rate"
-            android:textSize="20dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold" />
 
-        <TableRow android:layout_marginTop="15dp">
+        <TableRow>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/heart_rate_max"
-                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -37,14 +36,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="-"
-                android:textSize="15dp" />
+                android:text="-"/>
         </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -52,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/heart_rate_fat_burning"
-                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -60,15 +57,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="-"
-                android:textSize="15dp" />
+                android:text="-"/>
         </TableRow>
 
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -76,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/heart_rate_condition_building"
-                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -84,14 +79,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="-"
-                android:textSize="15dp" />
+                android:text="-"/>
         </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -99,7 +93,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/heart_rate_maximal_performance"
-                android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -107,35 +100,60 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="-"
-                android:textSize="15dp" />
+                android:text="-"/>
         </TableRow>
     </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSeparator"
+        android:layout_marginTop="10dp"/>
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_area"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/weight"
-            android:textSize="20dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp"
             android:textStyle="bold" />
 
-        <TableRow android:layout_marginTop="15dp">
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="@string/weight"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/weightTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="-"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/bmi"
-                android:textSize="15dp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -143,8 +161,68 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="-"
-                android:textSize="15dp" />
+                android:text="-"/>
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSeparator"
+        android:layout_marginTop="10dp"/>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/further"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold" />
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="@string/age"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/ageTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="-"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text="@string/height"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/heightTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:text="-"/>
         </TableRow>
     </TableLayout>
 </LinearLayout>

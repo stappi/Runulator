@@ -7,6 +7,12 @@
     <!-- input parameters  -->
     <include layout="@layout/tab_layout_run_input"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSeparator"
+        android:layout_marginTop="10dp"/>
+
     <!-- input parameters  -->
     <include layout="@layout/tab_layout_run_output"/>
 </LinearLayout>

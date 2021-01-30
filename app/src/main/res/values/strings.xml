@@ -68,6 +68,10 @@
     <string name="run_value_2">Run value 2</string>
     <string name="input_info_enter_values">Please enter values to calculate the run.</string>
     <string name="unknown">-</string>
+    <string name="run_result">Run result</string>
+    <string name="input">Input</string>
+    <string name="further">Further</string>
+    <string name="age">Age</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

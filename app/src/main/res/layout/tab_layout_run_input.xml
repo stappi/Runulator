@@ -5,20 +5,34 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
-    android:background="@drawable/shape_area"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="@string/input"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/runParamIntputInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/input_info_select_please_two"
+            android:textColor="@color/colorPrimaryDark" />
+    </LinearLayout>
 
     <!-- pillbar -->
     <include layout="@layout/tab_layout_run_pillbar" />
-
-
-    <TextView
-        android:id="@+id/runParamIntputInfoTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:text="@string/input_info_select_please_two"
-        android:textColor="@color/colorPrimaryDark"/>
 
     <TableLayout
         android:id="@+id/runParamIntputTableLayout"

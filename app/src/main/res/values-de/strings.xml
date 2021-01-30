@@ -45,7 +45,7 @@
     <string name="kilometer_per_hour">Kilometer pro Stunde</string>
     <string name="miles_per_hour">Meilen pro Stunde</string>
     <string name="birthday">Geburtsdatum</string>
-    <string name="years">Alter</string>
+    <string name="years">Jahre</string>
     <string name="date_format">dd.MM.yyyy</string>
     <string name="heart_rate_maximal_performance">Maximale Leistung</string>
     <string name="heart_rate_condition_building">Konditionsaufbau</string>
@@ -62,4 +62,8 @@
     <string name="run_value_2">Laufwert 2</string>
     <string name="input_info_enter_values">Bitte geben Sie die Werte ein, um den Lauf zu berechnen.</string>
     <string name="unknown">-</string>
+    <string name="run_result">Laufergebnis</string>
+    <string name="input">Eingabe</string>
+    <string name="further">Weitere</string>
+    <string name="age">Alter</string>
 </resources>

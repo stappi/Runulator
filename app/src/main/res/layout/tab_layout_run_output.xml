@@ -6,14 +6,22 @@
     android:layout_marginRight="10dp"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/run_result"
+        android:textSize="14sp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"/>
+
     <TableLayout
         android:id="@+id/runOutputTableLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/shape_area"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TableRow
             android:id="@+id/caloriesTableRow"

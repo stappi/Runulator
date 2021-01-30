@@ -30,7 +30,10 @@ public class TabHealth extends Fragment {
     private TextView heartRateFatBurningTextView;
     private TextView heartRateConditionBuildingTextView;
     private TextView heartRateMaxPerformanceTextView;
+    private TextView weightTextView;
     private TextView bmiTextView;
+    private TextView ageTextView;
+    private TextView heightTextView;
 
     /**
      * Settings manager.
@@ -71,6 +74,9 @@ public class TabHealth extends Fragment {
      */
     private void updateHealthData() {
         try {
+            ageTextView.setText(Utils.calculateAge(settings.getBirthday()) + " " + getString(R.string.years));
+            heightTextView.setText(settings.getHeight() + " " + settings.getHeightUnit().toString());
+            weightTextView.setText(settings.getWeight() + " " + settings.getWeightUnit().toString());
             bmiTextView.setText(String.format(Locale.ENGLISH, "%.2f", Run.calculateBMI(
                     settings.getWeightUnit().toKg(settings.getWeight()),
                     settings.getHeightUnit().toCm(settings.getHeight()))));
@@ -93,6 +99,9 @@ public class TabHealth extends Fragment {
         heartRateFatBurningTextView = healthView.findViewById(R.id.heartRateFatBurningTextView);
         heartRateConditionBuildingTextView = healthView.findViewById(R.id.heartRateConditionBuildingTextView);
         heartRateMaxPerformanceTextView = healthView.findViewById(R.id.heartRateMaxPerformanceTextView);
+        weightTextView = healthView.findViewById(R.id.weightTextView);
         bmiTextView = healthView.findViewById(R.id.bmiTextView);
+        ageTextView = healthView.findViewById(R.id.ageTextView);
+        heightTextView = healthView.findViewById(R.id.heightTextView);
     }
 }
