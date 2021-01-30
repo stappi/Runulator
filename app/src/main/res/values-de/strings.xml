@@ -31,7 +31,7 @@
     <string name="height_msg">Bitte geben Sie ihre Körpergröße an.</string>
     <string name="bmi">BMI</string>
     <string name="step_frequency">Schrittfrequenz</string>
-    <string name="steps_per_minute">Schritte pro Minute</string>
+    <string name="steps_per_minute">Schritte / Minute</string>
     <string name="unit_of_length">Längeneinheit</string>
     <string name="mile">Meilen</string>
     <string name="kilometer">Kilometer</string>
@@ -66,4 +66,5 @@
     <string name="input">Eingabe</string>
     <string name="further">Weitere</string>
     <string name="age">Alter</string>
+    <string name="general">Allgemein</string>
 </resources>

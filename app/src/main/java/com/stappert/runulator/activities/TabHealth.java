@@ -26,14 +26,14 @@ public class TabHealth extends Fragment {
 
     // Elements
     private View healthView;
+    private TextView ageTextView;
+    private TextView heightTextView;
+    private TextView weightTextView;
+    private TextView bmiTextView;
     private TextView heartRateMaxTextView;
     private TextView heartRateFatBurningTextView;
     private TextView heartRateConditionBuildingTextView;
     private TextView heartRateMaxPerformanceTextView;
-    private TextView weightTextView;
-    private TextView bmiTextView;
-    private TextView ageTextView;
-    private TextView heightTextView;
 
     /**
      * Settings manager.
@@ -95,13 +95,13 @@ public class TabHealth extends Fragment {
      * Initializes gui elements.
      */
     private void initElements() {
+        ageTextView = healthView.findViewById(R.id.ageTextView);
+        heightTextView = healthView.findViewById(R.id.heightTextView);
+        weightTextView = healthView.findViewById(R.id.weightTextView);
+        bmiTextView = healthView.findViewById(R.id.bmiTextView);
         heartRateMaxTextView = healthView.findViewById(R.id.heartRateMaxTextView);
         heartRateFatBurningTextView = healthView.findViewById(R.id.heartRateFatBurningTextView);
         heartRateConditionBuildingTextView = healthView.findViewById(R.id.heartRateConditionBuildingTextView);
         heartRateMaxPerformanceTextView = healthView.findViewById(R.id.heartRateMaxPerformanceTextView);
-        weightTextView = healthView.findViewById(R.id.weightTextView);
-        bmiTextView = healthView.findViewById(R.id.bmiTextView);
-        ageTextView = healthView.findViewById(R.id.ageTextView);
-        heightTextView = healthView.findViewById(R.id.heightTextView);
     }
 }

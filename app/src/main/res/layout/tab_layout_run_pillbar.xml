@@ -9,8 +9,8 @@
     android:scrollbars="none">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="3dp"
         android:layout_marginRight="1dp"
@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/distanceButton"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="@drawable/shape_pill_button"
             android:drawableLeft="@drawable/ic_empty"
@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/durationButton"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="@drawable/shape_pill_button"
             android:drawableLeft="@drawable/ic_empty"
@@ -40,7 +40,7 @@
         <TextView
             android:id="@+id/paceButton"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="@drawable/shape_pill_button"
             android:drawableLeft="@drawable/ic_empty"
@@ -50,7 +50,7 @@
         <TextView
             android:id="@+id/speedButton"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="@drawable/shape_pill_button"
             android:drawableLeft="@drawable/ic_empty"
