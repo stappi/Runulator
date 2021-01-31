@@ -301,7 +301,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements ValueC
      */
     @Override
     public void applyValue(ParameterType parameter, Object value, Unit unit) {
-        final Number numberValue = (Number) value;
+        final Number numberValue = Float.parseFloat(value.toString());
         switch (parameter) {
             case WEIGHT:
                 settings.setWeight(numberValue.intValue(), unit);

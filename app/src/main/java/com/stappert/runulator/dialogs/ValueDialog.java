@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,19 +116,29 @@ public class ValueDialog extends AppCompatDialogFragment {
      */
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_value, null);
         builder.setView(view)
                 .setTitle(title)
                 .setMessage(message)
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        //If the key event is a key-down event on the "enter" button
+                        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                            applyValue();
+                            dialog.dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                })
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            Number value = Float.parseFloat(valueEditText.getText().toString());
-                            Unit unit = (Unit) unitSpinner.getSelectedItem();
-                            listener.applyValue(inputParameterType, value, unit);
+                            applyValue();
                         } catch (Exception ex) {
                             Log.e("error", ex.getMessage());
                             Toast.makeText(getActivity(), getString(R.string.enter_value_fail), Toast.LENGTH_LONG);
@@ -136,6 +147,14 @@ public class ValueDialog extends AppCompatDialogFragment {
                 });
         initElements(view);
         return builder.create();
+    }
+
+    /**
+     * Applies the value.
+     */
+    private void applyValue() {
+        Unit unit = (Unit) unitSpinner.getSelectedItem();
+        listener.applyValue(inputParameterType, valueEditText.getText().toString(), unit);
     }
 
     /**
@@ -154,7 +173,7 @@ public class ValueDialog extends AppCompatDialogFragment {
             public void run() {
                 valueEditText.requestFocusFromTouch();
                 InputMethodManager inputMethodManager =
-                        (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(valueEditText, 0);
             }
         });

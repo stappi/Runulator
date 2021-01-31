@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,13 +19,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.stappert.runulator.R;
-import com.stappert.runulator.activities.TabRun;
 import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.Run;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.utils.ValueChangeListener;
-
-import java.lang.reflect.Parameter;
 
 public class DistanceDialog extends AppCompatDialogFragment {
 
@@ -121,6 +119,17 @@ public class DistanceDialog extends AppCompatDialogFragment {
                 InputMethodManager inputMethodManager =
                         (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(distanceEditText, 0);
+            }
+        });
+        // via enter, close dialog
+        distanceEditText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the key event is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    System.out.println("------------------------>");
+                    return true;
+                }
+                return false;
             }
         });
         // set listener

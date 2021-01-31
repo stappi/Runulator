@@ -432,11 +432,11 @@ public class TabRun extends Fragment implements ValueChangeListener {
      * @param parameter run parameter type
      */
     public void createInputParameterListeners(final EditText input, final ParameterType parameter) {
-        final String value = input.getText().toString();
         input.setFocusable(false);
         input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String value = inputParameter.get(parameter).getText().toString();
                 switch (parameter) {
                     case DISTANCE:
                         new DistanceDialog(value, TabRun.this)
