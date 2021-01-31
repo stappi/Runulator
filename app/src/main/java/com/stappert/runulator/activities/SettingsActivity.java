@@ -12,7 +12,7 @@ import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.dialogs.ValueDialog;
 import com.stappert.runulator.utils.Unit;
 
-public class SettingsActivity extends AppCompatActivity implements ValueDialog.ValueDialogListener {
+public class SettingsActivity extends AppCompatActivity {
 
     private SettingsManager settings;
 
@@ -60,19 +60,5 @@ public class SettingsActivity extends AppCompatActivity implements ValueDialog.V
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void applyValue(ValueDialog.ValueType valueType, Number value, Unit unit) {
-        switch (valueType) {
-            case WEIGHT:
-                settings.setWeight(value.intValue(), unit);
-                settingsFragment.getWeightButton().setSummary(unit.format(value.intValue()));
-                break;
-            case HEIGHT:
-                settings.setHeight(value.intValue(), unit);
-                settingsFragment.getHeightButton().setSummary(unit.format(value.intValue()));
-                break;
-        }
     }
 }

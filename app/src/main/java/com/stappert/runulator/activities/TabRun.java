@@ -23,13 +23,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.stappert.runulator.R;
+import com.stappert.runulator.dialogs.DistanceDialog;
+import com.stappert.runulator.dialogs.ValueDialog;
+import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.utils.CustomException;
 import com.stappert.runulator.utils.Run;
 import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.Utils;
+import com.stappert.runulator.utils.ValueChangeListener;
 
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +40,7 @@ import java.util.Map;
 /**
  * Organizes the run view of the application.
  */
-public class TabRun extends Fragment {
+public class TabRun extends Fragment implements ValueChangeListener {
 
     /**
      * Layout for labels in gui.
@@ -84,22 +87,22 @@ public class TabRun extends Fragment {
     /**
      * Map, to handle parameter input to right parameter.
      */
-    private final Map<RunParameter, EditText> inputParameter = new HashMap<>();
+    private final Map<ParameterType, EditText> inputParameter = new HashMap<>();
 
     /**
      * Map, to handle output result to right parameter.
      */
-    private final Map<RunParameter, TextView> runResultParameter = new HashMap<>();
+    private final Map<ParameterType, TextView> runResultParameter = new HashMap<>();
 
     /**
      * Type for run parameter 1, which can be distance or duration.
      */
-    private RunParameter runParameter1;
+    private ParameterType parameterType1;
 
     /**
      * Type for run parameter 2, which can be duration, pace or speed.
      */
-    private RunParameter runParameter2;
+    private ParameterType parameterType2;
 
     /**
      * Current run.
@@ -150,6 +153,7 @@ public class TabRun extends Fragment {
         try {
             calculateAndUpdateRun();
             updatePillButtons();
+            updateInputArea();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -165,47 +169,47 @@ public class TabRun extends Fragment {
      */
     private void calculateAndUpdateRun() throws CustomException {
         // both input parameters must be set
-        if (!inputParameter.containsKey(runParameter1) || !inputParameter.containsKey(runParameter2)) {
+        if (!inputParameter.containsKey(parameterType1) || !inputParameter.containsKey(parameterType2)) {
             // do nothing
-        } else if (inputParameter.get(runParameter1).getText().toString().isEmpty()
-                || inputParameter.get(runParameter2).getText().toString().isEmpty()) {
+        } else if (inputParameter.get(parameterType1).getText().toString().isEmpty()
+                || inputParameter.get(parameterType2).getText().toString().isEmpty()) {
             runParamIntputInfoTextView.setVisibility(View.VISIBLE);
         } else {
             runParamIntputInfoTextView.setVisibility(View.INVISIBLE);
-            Number runValue1 = getRunParameterValue(runParameter1, inputParameter.get(runParameter1));
-            Number runValue2 = getRunParameterValue(runParameter2, inputParameter.get(runParameter2));
+            Number runValue1 = getRunParameterValue(parameterType1, inputParameter.get(parameterType1));
+            Number runValue2 = getRunParameterValue(parameterType2, inputParameter.get(parameterType2));
             // run parameter 1 is distance or duration
-            if (RunParameter.DISTANCE.equals(runParameter1)) {
+            if (ParameterType.DISTANCE.equals(parameterType1)) {
                 // run parameter 2 is duration, pace or speed
-                switch (runParameter2) {
+                switch (parameterType2) {
                     case DURATION:
                         currentRun = Run.createWithDistanceAndDuration(runValue1.floatValue(), runValue2.intValue());
-                        runResultParameter.get(RunParameter.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
-                        runResultParameter.get(RunParameter.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                        runResultParameter.get(ParameterType.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
+                        runResultParameter.get(ParameterType.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
                         break;
                     case PACE:
                         currentRun = Run.createWithDistanceAndPace(runValue1.floatValue(), runValue2.intValue());
-                        runResultParameter.get(RunParameter.DURATION).setText(currentRun.getDuration());
-                        runResultParameter.get(RunParameter.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                        runResultParameter.get(ParameterType.DURATION).setText(currentRun.getDuration());
+                        runResultParameter.get(ParameterType.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
                         break;
                     case SPEED:
                         currentRun = Run.createWithDistanceAndSpeed(runValue1.floatValue(), runValue2.intValue());
-                        runResultParameter.get(RunParameter.DURATION).setText(currentRun.getDuration());
-                        runResultParameter.get(RunParameter.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
+                        runResultParameter.get(ParameterType.DURATION).setText(currentRun.getDuration());
+                        runResultParameter.get(ParameterType.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
                         break;
                 }
             } else {
                 // run parameter 2 is pace or speed
-                switch (runParameter2) {
+                switch (parameterType2) {
                     case PACE:
                         currentRun = Run.createWithDurationAndPace(runValue1.intValue(), runValue2.intValue());
-                        runResultParameter.get(RunParameter.DISTANCE).setText(currentRun.getDistance(settings.getDistanceUnit()));
-                        runResultParameter.get(RunParameter.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                        runResultParameter.get(ParameterType.DISTANCE).setText(currentRun.getDistance(settings.getDistanceUnit()));
+                        runResultParameter.get(ParameterType.SPEED).setText(currentRun.getSpeed(settings.getSpeedUnit()));
                         break;
                     case SPEED:
                         currentRun = Run.createWithDurationAndSpeed(runValue1.intValue(), runValue2.floatValue());
-                        runResultParameter.get(RunParameter.DISTANCE).setText(currentRun.getDistance(settings.getDistanceUnit()));
-                        runResultParameter.get(RunParameter.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
+                        runResultParameter.get(ParameterType.DISTANCE).setText(currentRun.getDistance(settings.getDistanceUnit()));
+                        runResultParameter.get(ParameterType.PACE).setText(currentRun.getPace(settings.getPaceUnit()));
                         break;
                 }
             }
@@ -234,7 +238,7 @@ public class TabRun extends Fragment {
      * @return distance
      * @throws CustomException if conversion failed
      */
-    private Number getRunParameterValue(RunParameter type, EditText textField) throws CustomException {
+    private Number getRunParameterValue(ParameterType type, EditText textField) throws CustomException {
         switch (type) {
             case DISTANCE:
                 return settings.getDistanceUnit().toKm(Run.parseToFloat(textField.getText().toString()));
@@ -255,14 +259,14 @@ public class TabRun extends Fragment {
      * @param parameterType parameter type
      * @return if run parameter is selected or not
      */
-    private boolean applyRunParameter1(RunParameter parameterType) {
-        final boolean isSelected = !parameterType.equals(runParameter1);
+    private boolean applyRunParameter1(ParameterType parameterType) {
+        final boolean isSelected = !parameterType.equals(parameterType1);
         if (isSelected) {
-            runParameter2 = runParameter1 != null ? runParameter1 : runParameter2;
-            runParameter1 = parameterType;
+            parameterType2 = parameterType1 != null ? parameterType1 : parameterType2;
+            parameterType1 = parameterType;
         } else {
-            runParameter1 = RunParameter.DURATION.equals(runParameter2) ? RunParameter.DURATION : null;
-            runParameter2 = RunParameter.DURATION.equals(runParameter2) ? null : runParameter2;
+            parameterType1 = ParameterType.DURATION.equals(parameterType2) ? ParameterType.DURATION : null;
+            parameterType2 = ParameterType.DURATION.equals(parameterType2) ? null : parameterType2;
             inputParameter.remove(parameterType);
         }
         return isSelected;
@@ -274,12 +278,12 @@ public class TabRun extends Fragment {
      * @param parameterType parameter type
      * @return if run parameter is selected or not
      */
-    private boolean applyRunParameter2(RunParameter parameterType) {
-        final boolean isSelected = !parameterType.equals(runParameter2);
+    private boolean applyRunParameter2(ParameterType parameterType) {
+        final boolean isSelected = !parameterType.equals(parameterType2);
         if (isSelected) {
-            runParameter2 = parameterType;
+            parameterType2 = parameterType;
         } else {
-            runParameter2 = null;
+            parameterType2 = null;
             inputParameter.remove(parameterType);
         }
         return isSelected;
@@ -301,10 +305,10 @@ public class TabRun extends Fragment {
      */
     private void enableButtons() {
         final boolean notAllParamSet = getNumberOfSetRunParameters() < 2;
-        distanceButton.setEnabled(RunParameter.DISTANCE.equals(runParameter1) || notAllParamSet);
-        durationButton.setEnabled(RunParameter.DURATION.equals(runParameter1) || RunParameter.DURATION.equals(runParameter2) || notAllParamSet);
-        paceButton.setEnabled((notAllParamSet || RunParameter.PACE.equals(runParameter2)) && !RunParameter.SPEED.equals(runParameter2));
-        speedButton.setEnabled((notAllParamSet || RunParameter.SPEED.equals(runParameter2)) && !RunParameter.PACE.equals(runParameter2));
+        distanceButton.setEnabled(ParameterType.DISTANCE.equals(parameterType1) || notAllParamSet);
+        durationButton.setEnabled(ParameterType.DURATION.equals(parameterType1) || ParameterType.DURATION.equals(parameterType2) || notAllParamSet);
+        paceButton.setEnabled((notAllParamSet || ParameterType.PACE.equals(parameterType2)) && !ParameterType.SPEED.equals(parameterType2));
+        speedButton.setEnabled((notAllParamSet || ParameterType.SPEED.equals(parameterType2)) && !ParameterType.PACE.equals(parameterType2));
     }
 
     /**
@@ -318,28 +322,34 @@ public class TabRun extends Fragment {
             runParamIntputInfoTextView.setText(R.string.input_info_select_please_two);
         } else if (numberOfSetRunParameters == 1) {
             runParamIntputInfoTextView.setText(R.string.input_info_select_please_one);
-            addParameterToInputArea(runParameter1 != null ? runParameter1 : runParameter2);
+            addParameterToInputArea(parameterType1 != null ? parameterType1 : parameterType2);
         } else if (numberOfSetRunParameters == 2) {
             runParamIntputInfoTextView.setText(R.string.input_info_enter_values);
-            addParameterToInputArea(runParameter1);
-            addParameterToInputArea(runParameter2);
+            addParameterToInputArea(parameterType1);
+            addParameterToInputArea(parameterType2);
         }
     }
 
     /**
      * Adds a parameter input field to the gui.
      *
-     * @param runParameter run parameter
+     * @param parameterType run parameter
      */
-    private void addParameterToInputArea(final RunParameter runParameter) {
+    private void addParameterToInputArea(final ParameterType parameterType) {
         TextView label = new TextView(getContext());
         label.setLayoutParams(LAYOUT_LABEL);
         label.setTypeface(null, Typeface.BOLD);
         final EditText input = new EditText(getContext());
-        input.setText(inputParameter.containsKey(runParameter)
-                ? inputParameter.get(runParameter).getText().toString() : "");
+        input.setText(this.inputParameter.containsKey(parameterType)
+                ? this.inputParameter.get(parameterType).getText().toString() : "");
         input.setLayoutParams(LAYOUT_INPUT_VALUE_UNIT);
         input.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+        // add dialogs
+        if ((ParameterType.DISTANCE.equals(parameterType) || ParameterType.SPEED.equals(parameterType)) && settings.isDialogInput()) {
+            createInputParameterListeners(input, parameterType);
+        } else {
+            input.setFocusable(true);
+        }
 
 //        if (RunParameterType.DURATION.equals(runParameterType)) {
 //            input.setOnClickListener(new View.OnClickListener() {
@@ -367,27 +377,27 @@ public class TabRun extends Fragment {
         TextView unit = new TextView(getContext());
         unit.setLayoutParams(LAYOUT_INPUT_VALUE_UNIT);
         unit.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        inputParameter.put(runParameter, input);
+        this.inputParameter.put(parameterType, input);
         addTextWatcherToEditText(input);
-        switch (runParameter) {
+        switch (parameterType) {
             case DISTANCE:
                 label.setText(R.string.distance);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 unit.setText(settings.getDistanceUnit().getLabel(this.getContext()));
                 break;
             case DURATION:
                 label.setText(R.string.run_time);
-                input.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_TIME);
+                input.setInputType(android.text.InputType.TYPE_CLASS_DATETIME | android.text.InputType.TYPE_DATETIME_VARIATION_TIME);
                 unit.setText(settings.getDurationUnit().getLabel(this.getContext()));
                 break;
             case PACE:
                 label.setText(R.string.pace);
-                input.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_TIME);
+                input.setInputType(android.text.InputType.TYPE_CLASS_DATETIME | android.text.InputType.TYPE_DATETIME_VARIATION_TIME);
                 unit.setText(settings.getPaceUnit().getLabel(this.getContext()));
                 break;
             case SPEED:
                 label.setText(R.string.speed);
-                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 unit.setText(settings.getSpeedUnit().getLabel(this.getContext()));
                 break;
         }
@@ -406,12 +416,51 @@ public class TabRun extends Fragment {
     }
 
     /**
+     * Applys the set run parameter value.
+     *
+     * @param value value
+     */
+    @Override
+    public void applyValue(ParameterType parameter, Object value, Unit unit) {
+        inputParameter.get(parameter).setText("" + value);
+    }
+
+    /**
+     * Creates a listener, to add a parameter value.
+     *
+     * @param input     edit text field
+     * @param parameter run parameter type
+     */
+    public void createInputParameterListeners(final EditText input, final ParameterType parameter) {
+        final String value = input.getText().toString();
+        input.setFocusable(false);
+        input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (parameter) {
+                    case DISTANCE:
+                        new DistanceDialog(value, TabRun.this)
+                                .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.distance));
+                        break;
+                    case SPEED:
+                        new ValueDialog(ParameterType.SPEED, getContext().getString(R.string.speed),
+                                getContext().getString(R.string.weight_msg),
+                                value, settings.getSpeedUnit(), null,
+                                android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                                TabRun.this
+                        ).show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.weight));
+                }
+            }
+        });
+    }
+
+    /**
      * Returns the number of set run parameters.
      *
      * @return 2 if both parameters set, 1 if one parameter is set, 0 if no parameter is set
      */
     private int getNumberOfSetRunParameters() {
-        return (runParameter1 != null ? 1 : 0) + (runParameter2 != null ? 1 : 0);
+        return (parameterType1 != null ? 1 : 0) + (parameterType2 != null ? 1 : 0);
     }
 
     /**
@@ -433,14 +482,14 @@ public class TabRun extends Fragment {
         layoutTableRow.setMargins(0, Utils.dp2Pixel(getContext(), 5), 0, 0);
 
         if (noOfSetRunParameters == 2) {
-            final RunParameter outputParameter1 = defineOuputRunParameter1();
-            final RunParameter outputParameter2 = defineOuputRunParameter2(outputParameter1);
+            final ParameterType outputParameter1 = defineOuputRunParameter1();
+            final ParameterType outputParameter2 = defineOuputRunParameter2(outputParameter1);
             runResultArea.addView(getOutputParameter(outputParameter1), layoutTableRow);
             runResultArea.addView(getOutputParameter(outputParameter2), layoutTableRow);
-        } else if (noOfSetRunParameters == 1 && RunParameter.PACE.equals(runParameter2)) {
-            runResultArea.addView(getOutputParameter(RunParameter.SPEED), layoutTableRow);
-        } else if (noOfSetRunParameters == 1 && RunParameter.SPEED.equals(runParameter2)) {
-            runResultArea.addView(getOutputParameter(RunParameter.PACE), layoutTableRow);
+        } else if (noOfSetRunParameters == 1 && ParameterType.PACE.equals(parameterType2)) {
+            runResultArea.addView(getOutputParameter(ParameterType.SPEED), layoutTableRow);
+        } else if (noOfSetRunParameters == 1 && ParameterType.SPEED.equals(parameterType2)) {
+            runResultArea.addView(getOutputParameter(ParameterType.PACE), layoutTableRow);
         }
     }
 
@@ -463,28 +512,28 @@ public class TabRun extends Fragment {
      *
      * @return run parameter 1 for output
      */
-    private RunParameter defineOuputRunParameter1() {
-        return !RunParameter.DISTANCE.equals(runParameter1)
-                ? RunParameter.DISTANCE
-                : !RunParameter.DURATION.equals(runParameter1) && !RunParameter.DURATION.equals(runParameter2)
-                ? RunParameter.DURATION
-                : !RunParameter.PACE.equals(runParameter2)
-                ? RunParameter.PACE : RunParameter.SPEED;
+    private ParameterType defineOuputRunParameter1() {
+        return !ParameterType.DISTANCE.equals(parameterType1)
+                ? ParameterType.DISTANCE
+                : !ParameterType.DURATION.equals(parameterType1) && !ParameterType.DURATION.equals(parameterType2)
+                ? ParameterType.DURATION
+                : !ParameterType.PACE.equals(parameterType2)
+                ? ParameterType.PACE : ParameterType.SPEED;
     }
 
     /**
      * Defines the output run parameter 2 depending on run parameter 1. Parameter can be duration,
      * pace or speed.
      *
-     * @param outputRunParameter1 run parameter 1 for output
+     * @param outputParameterType1 run parameter 1 for output
      * @return run parameter 2 for output
      */
-    private RunParameter defineOuputRunParameter2(RunParameter outputRunParameter1) {
-        return !RunParameter.DURATION.equals(outputRunParameter1)
-                && !RunParameter.DURATION.equals(runParameter1) && !RunParameter.DURATION.equals(runParameter2)
-                ? RunParameter.DURATION
-                : !RunParameter.PACE.equals(outputRunParameter1) && !RunParameter.PACE.equals(runParameter2)
-                ? RunParameter.PACE : RunParameter.SPEED;
+    private ParameterType defineOuputRunParameter2(ParameterType outputParameterType1) {
+        return !ParameterType.DURATION.equals(outputParameterType1)
+                && !ParameterType.DURATION.equals(parameterType1) && !ParameterType.DURATION.equals(parameterType2)
+                ? ParameterType.DURATION
+                : !ParameterType.PACE.equals(outputParameterType1) && !ParameterType.PACE.equals(parameterType2)
+                ? ParameterType.PACE : ParameterType.SPEED;
     }
 
     /**
@@ -493,7 +542,7 @@ public class TabRun extends Fragment {
      * @param parameter run parameter for output
      * @return row for output parameter
      */
-    private TableRow getOutputParameter(RunParameter parameter) {
+    private TableRow getOutputParameter(ParameterType parameter) {
         // create label
         TextView labelTextView = new TextView(getContext());
         labelTextView.setText(parameter.getLabel());
@@ -522,11 +571,11 @@ public class TabRun extends Fragment {
      * Selects or disable
      */
     private void updatePillButtons() {
-        selectRunParameterButton(distanceButton, RunParameter.DISTANCE.equals(runParameter1));
+        selectRunParameterButton(distanceButton, ParameterType.DISTANCE.equals(parameterType1));
         selectRunParameterButton(durationButton,
-                RunParameter.DURATION.equals(runParameter1) || RunParameter.DURATION.equals(runParameter2));
-        selectRunParameterButton(paceButton, RunParameter.PACE.equals(runParameter2));
-        selectRunParameterButton(speedButton, RunParameter.SPEED.equals(runParameter2));
+                ParameterType.DURATION.equals(parameterType1) || ParameterType.DURATION.equals(parameterType2));
+        selectRunParameterButton(paceButton, ParameterType.PACE.equals(parameterType2));
+        selectRunParameterButton(speedButton, ParameterType.SPEED.equals(parameterType2));
         enableButtons();
     }
 
@@ -607,17 +656,17 @@ public class TabRun extends Fragment {
             public void onClick(View button) {
                 switch (button.getId()) {
                     case R.id.distanceButton:
-                        selectRunParameterButton(distanceButton, applyRunParameter1(RunParameter.DISTANCE));
+                        selectRunParameterButton(distanceButton, applyRunParameter1(ParameterType.DISTANCE));
                         break;
                     case R.id.durationButton:
-                        selectRunParameterButton(durationButton, RunParameter.DISTANCE.equals(runParameter1)
-                                ? applyRunParameter2(RunParameter.DURATION) : applyRunParameter1(RunParameter.DURATION));
+                        selectRunParameterButton(durationButton, ParameterType.DISTANCE.equals(parameterType1)
+                                ? applyRunParameter2(ParameterType.DURATION) : applyRunParameter1(ParameterType.DURATION));
                         break;
                     case R.id.paceButton:
-                        selectRunParameterButton(paceButton, applyRunParameter2(RunParameter.PACE));
+                        selectRunParameterButton(paceButton, applyRunParameter2(ParameterType.PACE));
                         break;
                     case R.id.speedButton:
-                        selectRunParameterButton(speedButton, applyRunParameter2(RunParameter.SPEED));
+                        selectRunParameterButton(speedButton, applyRunParameter2(ParameterType.SPEED));
                         break;
                 }
                 enableButtons();
@@ -659,52 +708,5 @@ public class TabRun extends Fragment {
         AlertDialog alert = builder.create();
         alert.setCanceledOnTouchOutside(true);
         alert.show();
-    }
-
-    /**
-     * Run parameter types.
-     */
-    private enum RunParameter {
-        DISTANCE, DURATION, PACE, SPEED;
-
-        /**
-         * Returns the label regarding to parameter type.
-         *
-         * @return label
-         */
-        private int getLabel() {
-            switch (this) {
-                case DISTANCE:
-                    return R.string.distance;
-                case DURATION:
-                    return R.string.run_time;
-                case PACE:
-                    return R.string.pace;
-                case SPEED:
-                    return R.string.speed;
-                default:
-                    return R.string.unknown;
-            }
-        }
-
-        /**
-         * Returns the unit regarding to parameter type.
-         *
-         * @return unit
-         */
-        private Unit getUnit(SettingsManager settings) {
-            switch (this) {
-                case DISTANCE:
-                    return settings.getDistanceUnit();
-                case DURATION:
-                    return settings.getDurationUnit();
-                case PACE:
-                    return settings.getPaceUnit();
-                case SPEED:
-                    return settings.getSpeedUnit();
-                default:
-                    return Unit.DEFAULT;
-            }
-        }
     }
 }

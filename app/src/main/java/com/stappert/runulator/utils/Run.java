@@ -36,6 +36,16 @@ public class Run {
      */
     public final static int HOUR = 60 * 60;
 
+    /**
+     * Distance for half marathon.
+     */
+    public final static float HALF_MARATHON = 21.0975f;
+
+    /**
+     * Distance for marathon.
+     */
+    public final static float MARATHON = 42.195f;
+
     // =============================================================================================
     // json keys
     // =============================================================================================

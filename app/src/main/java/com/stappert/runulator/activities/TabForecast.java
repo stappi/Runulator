@@ -106,7 +106,7 @@ public class TabForecast extends Fragment {
      */
     private List<Float> createDistanceList() {
         SortedSet distances = new TreeSet();
-        distances.addAll(Arrays.asList(5f, 10f, 21.0975f, 42.195f, settings.getDistance()));
+        distances.addAll(Arrays.asList(5f, 10f, Run.HALF_MARATHON, Run.MARATHON, settings.getDistance()));
         try {
             for (int i = 0; i < settings.getFavoriteRuns().size(); i++) {
                 distances.add(settings.getFavoriteRuns().get(i).getDistanceAsNumber(Unit.KM));

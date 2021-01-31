@@ -14,13 +14,19 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 
 import com.stappert.runulator.R;
+import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.dialogs.ValueDialog;
 import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.Utils;
+import com.stappert.runulator.utils.ValueChangeListener;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Parameter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +34,7 @@ import java.util.Date;
 /**
  * Creates the main settings.
  */
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements ValueChangeListener {
 
     /**
      * Current context of application.
@@ -69,24 +75,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         addRunSettings(screen);
         addGeneralSettings(screen);
         super.setPreferenceScreen(screen);
-    }
-
-    /**
-     * Returns the weight button.
-     *
-     * @return weight button
-     */
-    public Preference getWeightButton() {
-        return weightButton;
-    }
-
-    /**
-     * Returns the weight button.
-     *
-     * @return weight button
-     */
-    public Preference getHeightButton() {
-        return heightButton;
     }
 
     /**
@@ -160,9 +148,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         weightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new ValueDialog(ValueDialog.ValueType.WEIGHT,
-                        getContext().getString(R.string.weight), getContext().getString(R.string.weight_msg),
-                        settings.getWeight(), settings.getWeightUnit(), Unit.getWeightUnits(), InputType.TYPE_CLASS_NUMBER
+                new ValueDialog(ParameterType.WEIGHT, getContext().getString(R.string.weight), getContext().getString(R.string.weight_msg),
+                        "" + settings.getWeight(), settings.getWeightUnit(), Unit.getWeightUnits(),
+                        InputType.TYPE_CLASS_NUMBER, SettingsFragment.this
                 ).show(SettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
                 return true;
             }
@@ -183,9 +171,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         heightButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new ValueDialog(ValueDialog.ValueType.HEIGHT,
+                new ValueDialog(ParameterType.HEIGHT,
                         getContext().getString(R.string.height), getContext().getString(R.string.height_msg),
-                        settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(), InputType.TYPE_CLASS_NUMBER
+                        "" + settings.getHeight(), settings.getHeightUnit(), Unit.getHeightUnits(),
+                        InputType.TYPE_CLASS_NUMBER, SettingsFragment.this
                 ).show(SettingsFragment.this.getChildFragmentManager(), context.getString(R.string.weight));
                 return true;
             }
@@ -249,7 +238,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         PreferenceCategory generalSettings = new PreferenceCategory(context);
         generalSettings.setTitle(context.getString(R.string.general_settings));
         screen.addPreference(generalSettings);
+        generalSettings.addPreference(addSelectInputVariant());
         generalSettings.addPreference(createResetAppButton());
+    }
+
+    /**
+     * User can decide to enter run parameter values via dialog or directly.
+     */
+    private Preference addSelectInputVariant() {
+        Preference selectInputVariant = new SwitchPreference(context);
+        selectInputVariant.setTitle(getString(R.string.type_of_input));
+        selectInputVariant.setSummary(getString(R.string.type_of_input_info));
+        selectInputVariant.setIcon(R.drawable.ic_input_type);
+        ((SwitchPreference) selectInputVariant).setChecked(settings.isDialogInput());
+        selectInputVariant.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                settings.setIsDialogInput(((SwitchPreference) preference).isChecked());
+                return true;
+            }
+        });
+        return selectInputVariant;
     }
 
     /**
@@ -282,5 +291,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
         return resetButton;
+    }
+
+    /**
+     * Applies entered value.
+     *
+     * @param parameter run parameter type or null
+     * @param value     value
+     */
+    @Override
+    public void applyValue(ParameterType parameter, Object value, Unit unit) {
+        final Number numberValue = (Number) value;
+        switch (parameter) {
+            case WEIGHT:
+                settings.setWeight(numberValue.intValue(), unit);
+                weightButton.setSummary(unit.format(numberValue.intValue()));
+                break;
+            case HEIGHT:
+                settings.setHeight(numberValue.intValue(), unit);
+                heightButton.setSummary(unit.format(numberValue.intValue()));
+                break;
+        }
     }
 }

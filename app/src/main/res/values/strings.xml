@@ -30,7 +30,7 @@
     <string name="no">No</string>
     <string name="weight_msg">Please enter your weight.</string>
     <string name="ok">Ok</string>
-    <string name="enter_value_fail">Due to an issue the weight could not be updated.</string>
+    <string name="enter_value_fail">Due to an issue the value could not be updated.</string>
     <string name="tab_run">Run</string>
     <string name="tab_forecast">Forecast</string>
     <string name="height">Height</string>
@@ -73,6 +73,12 @@
     <string name="further">Further</string>
     <string name="age">Age</string>
     <string name="general">General</string>
+    <string name="marathon">Marathon</string>
+    <string name="half_marathon">Half marathon</string>
+    <string name="enter_distance">Please enter a distance.</string>
+    <string name="enter_distance_fail">Due to an issue the distance can be updated.</string>
+    <string name="type_of_input">Type of input</string>
+    <string name="type_of_input_info">To enter run parameters decide between input via dialog or directly.</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

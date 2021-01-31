@@ -24,7 +24,7 @@
     <string name="no">Nein</string>
     <string name="weight_msg">Bitte geben Sie Ihr Gewicht an.</string>
     <string name="ok">Ok</string>
-    <string name="enter_value_fail">Aufgrund eines Problems konnte das Gewicht nicht aktualisiert werden.</string>
+    <string name="enter_value_fail">Aufgrund eines Problems konnte der Wert nicht aktualisiert werden.</string>
     <string name="tab_run">Lauf</string>
     <string name="tab_forecast">Prognose</string>
     <string name="height">Körpergröße</string>
@@ -67,4 +67,10 @@
     <string name="further">Weitere</string>
     <string name="age">Alter</string>
     <string name="general">Allgemein</string>
+    <string name="marathon">Marathon</string>
+    <string name="half_marathon">Halbmarathon</string>
+    <string name="enter_distance">Bitte geben Sie eine Distanz an.</string>
+    <string name="enter_distance_fail">Auf Grund eines Problems kann die Distanz nicht angepasst werden.</string>
+    <string name="type_of_input">Art der Eingabe</string>
+    <string name="type_of_input_info">Eingabe der Laufwerte mit Dialog oder direkt.</string>
 </resources>

@@ -27,6 +27,7 @@ public class SettingsManager {
     private static String KEY_HEIGHT = "height";
     private static String KEY_HEIGHT_UNIT = "height_unit";
     private static String KEY_BIRTHDAY = "birthday";
+    private static String KEY_IS_DIALOG_INPUT = "isDialogInput";
 
     /**
      * Single object of the settings manager.
@@ -361,6 +362,7 @@ public class SettingsManager {
 
     /**
      * Returns the birthday.
+     *
      * @return birthday
      */
     public long getBirthday() {
@@ -376,6 +378,24 @@ public class SettingsManager {
     public void setHeight(int height, Unit unit) {
         saveValue(KEY_HEIGHT, height);
         saveValue(KEY_HEIGHT_UNIT, unit.name());
+    }
+
+    /**
+     * Returns flag, if dialog input is selected or direct input.
+     *
+     * @return true, if dialog input is selected
+     */
+    public boolean isDialogInput() {
+        return sharedPreferences.getBoolean(KEY_IS_DIALOG_INPUT, true);
+    }
+
+    /**
+     * Sets the flag, if dialog input is selected or direct input.
+     *
+     * @param isDialogInput true, if dialog input is selected or false, if direct input
+     */
+    public void setIsDialogInput(boolean isDialogInput) {
+        saveValue(KEY_IS_DIALOG_INPUT, isDialogInput);
     }
 
     /**

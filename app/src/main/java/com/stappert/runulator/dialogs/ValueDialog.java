@@ -8,27 +8,35 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.stappert.runulator.R;
+import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.utils.Unit;
+import com.stappert.runulator.utils.ValueChangeListener;
 
 import java.util.List;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class ValueDialog extends AppCompatDialogFragment {
 
     /**
      * Text field to set value.
      */
-    private ValueType valueType;
+    private ParameterType inputParameterType;
 
     /**
      * Text field to set value.
@@ -41,9 +49,14 @@ public class ValueDialog extends AppCompatDialogFragment {
     private Spinner unitSpinner;
 
     /**
+     * TextView, to show unit, of only on unit exists.
+     */
+    private TextView unitTextView;
+
+    /**
      * Listener, to transmit value and selected unit.
      */
-    private ValueDialogListener listener;
+    private ValueChangeListener listener;
 
     /**
      * Title of dialog.
@@ -63,12 +76,12 @@ public class ValueDialog extends AppCompatDialogFragment {
     /**
      * Selected value.
      */
-    private final Number selectedValue;
+    private final String selectedValue;
 
     /**
      * Selected unit.
      */
-    private final int inputType;
+    private final int textInputType;
 
     /**
      * Available units.
@@ -81,15 +94,17 @@ public class ValueDialog extends AppCompatDialogFragment {
      * @param title   title
      * @param message message
      */
-    public ValueDialog(ValueType valueType, String title, String message,
-                       Number selectedValue, Unit selectedUnit, List<Unit> units, int inputType) {
-        this.valueType = valueType;
+    public ValueDialog(ParameterType inputParameterType, String title, String message,
+                       String selectedValue, Unit selectedUnit, List<Unit> units, int textInputType,
+                       ValueChangeListener listener) {
+        this.inputParameterType = inputParameterType;
         this.title = title;
         this.message = message;
         this.selectedValue = selectedValue;
         this.selectedUnit = selectedUnit;
         this.units = units;
-        this.inputType = inputType;
+        this.textInputType = textInputType;
+        this.listener = listener;
     }
 
     /**
@@ -112,7 +127,7 @@ public class ValueDialog extends AppCompatDialogFragment {
                         try {
                             Number value = Float.parseFloat(valueEditText.getText().toString());
                             Unit unit = (Unit) unitSpinner.getSelectedItem();
-                            listener.applyValue(valueType, value, unit);
+                            listener.applyValue(inputParameterType, value, unit);
                         } catch (Exception ex) {
                             Log.e("error", ex.getMessage());
                             Toast.makeText(getActivity(), getString(R.string.enter_value_fail), Toast.LENGTH_LONG);
@@ -124,45 +139,40 @@ public class ValueDialog extends AppCompatDialogFragment {
     }
 
     /**
-     * Attaches listener to dialog.
+     * Initializes dialog.
      *
-     * @param context
+     * @param view view, to access elements
      */
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            listener = (ValueDialogListener) context;
-        } catch (ClassCastException ex) {
-            throw new ClassCastException(context.toString() + " must implement "
-                    + ValueDialogListener.class.getName());
-        }
-    }
-
-    /**
-     * Defines value dialog listener.
-     */
-    public interface ValueDialogListener {
-        void applyValue(ValueType valueType, Number value, Unit unit);
-    }
-
-    public enum ValueType {
-        WEIGHT, HEIGHT
-    }
-
     private void initElements(View view) {
         SettingsManager settings = SettingsManager.getInstance();
         // text field to enter value
         valueEditText = view.findViewById(R.id.valueEditTextNumber);
-        valueEditText.setText(selectedValue.toString());
-        valueEditText.setInputType(inputType);
+        valueEditText.setText(selectedValue);
+        valueEditText.setInputType(textInputType);
         valueEditText.requestFocus();
+        valueEditText.post(new Runnable() {
+            public void run() {
+                valueEditText.requestFocusFromTouch();
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(valueEditText, 0);
+            }
+        });
         // spinner, to select desired unit for value
-        unitSpinner = (Spinner) view.findViewById(R.id.unitSpinner);
-        ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(
-                this.getContext(), android.R.layout.simple_spinner_item, units);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unitSpinner.setAdapter(unitAdapter);
-        unitSpinner.setSelection(units.indexOf(selectedUnit));
+        unitSpinner = view.findViewById(R.id.unitSpinner);
+        unitTextView = view.findViewById(R.id.unitTextView);
+        if (units != null && units.size() > 1) {
+            ArrayAdapter<Unit> unitAdapter = new ArrayAdapter<>(
+                    this.getContext(), android.R.layout.simple_spinner_item, units);
+            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            unitSpinner.setAdapter(unitAdapter);
+            unitSpinner.setSelection(units.indexOf(selectedUnit));
+        } else {
+            unitSpinner.setVisibility(View.INVISIBLE);
+            unitSpinner.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+            unitTextView.setVisibility(View.VISIBLE);
+            unitTextView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
+            unitTextView.setText(selectedUnit.toString());
+        }
     }
 }
