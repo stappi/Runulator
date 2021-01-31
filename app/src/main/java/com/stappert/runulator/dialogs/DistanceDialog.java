@@ -22,6 +22,7 @@ import com.stappert.runulator.R;
 import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.Run;
 import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.ValueChangeListener;
 
 public class DistanceDialog extends AppCompatDialogFragment {
@@ -81,11 +82,22 @@ public class DistanceDialog extends AppCompatDialogFragment {
         builder.setView(view)
                 .setTitle(getString(R.string.distance))
                 .setMessage(getString(R.string.enter_distance))
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        //If the key event is a key-down event on the "enter" button
+                        if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                            applyValue();
+                            return true;
+                        }
+                        return false;
+                    }
+                })
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            listener.applyValue(ParameterType.DISTANCE, distanceEditText.getText().toString(), null);
+                            applyValue();
                         } catch (Exception ex) {
                             Log.e("error", ex.getMessage());
                             Toast.makeText(getActivity(), getString(R.string.enter_distance_fail), Toast.LENGTH_LONG);
@@ -94,6 +106,13 @@ public class DistanceDialog extends AppCompatDialogFragment {
                 });
         initElements(view);
         return builder.create();
+    }
+
+    /**
+     * Applies the value.
+     */
+    private void applyValue() {
+        listener.applyValue(ParameterType.DISTANCE, distanceEditText.getText().toString(), null);
     }
 
     /**
@@ -121,28 +140,21 @@ public class DistanceDialog extends AppCompatDialogFragment {
                 inputMethodManager.showSoftInput(distanceEditText, 0);
             }
         });
-        // via enter, close dialog
-        distanceEditText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
-                //If the key event is a key-down event on the "enter" button
-                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    System.out.println("------------------------>");
-                    return true;
-                }
-                return false;
-            }
-        });
         // set listener
         halfMarathonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
                 distanceEditText.setText("" + Run.HALF_MARATHON);
+                applyValue();
+                getDialog().dismiss();
             }
         });
         marathonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
                 distanceEditText.setText("" + Run.MARATHON);
+                applyValue();
+                getDialog().dismiss();
             }
         });
     }

@@ -9,11 +9,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="@string/input"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:padding="10dp"/>
+        android:textStyle="bold" />
 
     <!-- pillbar -->
     <include layout="@layout/tab_layout_run_pillbar" />
@@ -22,17 +22,92 @@
         android:id="@+id/runParamIntputInfoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:text="@string/input_info_select_please_two"
         android:textColor="@color/colorPrimaryDark"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"/>
+        android:textSize="14sp" />
 
     <TableLayout
         android:id="@+id/runParamIntputTableLayout"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:padding="10dp" />
+        android:padding="10dp">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/runParameter1LabelTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:enabled="false"
+                android:text="@string/run_parameter_1"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/runParameter1EditText"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:enabled="false"
+                android:textAlignment="textEnd"/>
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/runParameter1UnitTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:enabled="false"
+                android:text="@string/unit"
+                android:textAlignment="center" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/runParameter2LabelTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:enabled="false"
+                android:text="@string/run_parameter_2"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/runParameter2EditText"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:enabled="false"
+                android:textAlignment="textEnd" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/runParameter2UnitTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:enabled="false"
+                android:text="@string/unit"
+                android:textAlignment="center"/>
+        </TableRow>
+    </TableLayout>
 </LinearLayout>

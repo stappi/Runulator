@@ -72,6 +72,9 @@ public class TabRun extends Fragment implements ValueChangeListener {
     private static TableLayout.LayoutParams LAYOUT_TABLE_ROW = new TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
 
+    private final static int INPUT_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL;
+    private final static int INPUT_TYPE_TIME = InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_TIME;
+
     // Elements
     private View runView;
     private TableLayout runInputArea;
@@ -80,14 +83,20 @@ public class TabRun extends Fragment implements ValueChangeListener {
     private TextView paceButton;
     private TextView speedButton;
     private TextView runParamIntputInfoTextView;
+    private TextView runParameter1LabelTextView;
+    private EditText runParameter1EditText;
+    private TextView runParameter1UnitTextView;
+    private TextView runParameter2LabelTextView;
+    private EditText runParameter2EditText;
+    private TextView runParameter2UnitTextView;
     private TableLayout runResultArea;
     private TextView caloriesTextView;
     private TextView stepFrequencyTextView;
 
-    /**
-     * Map, to handle parameter input to right parameter.
-     */
-    private final Map<ParameterType, EditText> inputParameter = new HashMap<>();
+//    /**
+//     * Map, to handle parameter input to right parameter.
+//     */
+//    private final Map<ParameterType, EditText> inputParameter = new HashMap<>();
 
     /**
      * Map, to handle output result to right parameter.
@@ -169,15 +178,15 @@ public class TabRun extends Fragment implements ValueChangeListener {
      */
     private void calculateAndUpdateRun() throws CustomException {
         // both input parameters must be set
-        if (!inputParameter.containsKey(parameterType1) || !inputParameter.containsKey(parameterType2)) {
+        if (!runParameter1EditText.isEnabled() || !runParameter2EditText.isEnabled()) {
             // do nothing
-        } else if (inputParameter.get(parameterType1).getText().toString().isEmpty()
-                || inputParameter.get(parameterType2).getText().toString().isEmpty()) {
-            runParamIntputInfoTextView.setVisibility(View.VISIBLE);
+        } else if (runParameter1EditText.getText().toString().isEmpty()
+                || runParameter2EditText.getText().toString().isEmpty()) {
+            runParamIntputInfoTextView.setText(getString(R.string.input_info_enter_values));
         } else {
-            runParamIntputInfoTextView.setVisibility(View.INVISIBLE);
-            Number runValue1 = getRunParameterValue(parameterType1, inputParameter.get(parameterType1));
-            Number runValue2 = getRunParameterValue(parameterType2, inputParameter.get(parameterType2));
+            runParamIntputInfoTextView.setText("");
+            Number runValue1 = getRunParameterValue(parameterType1, runParameter1EditText);
+            Number runValue2 = getRunParameterValue(parameterType2, runParameter2EditText);
             // run parameter 1 is distance or duration
             if (ParameterType.DISTANCE.equals(parameterType1)) {
                 // run parameter 2 is duration, pace or speed
@@ -267,7 +276,6 @@ public class TabRun extends Fragment implements ValueChangeListener {
         } else {
             parameterType1 = ParameterType.DURATION.equals(parameterType2) ? ParameterType.DURATION : null;
             parameterType2 = ParameterType.DURATION.equals(parameterType2) ? null : parameterType2;
-            inputParameter.remove(parameterType);
         }
         return isSelected;
     }
@@ -280,14 +288,10 @@ public class TabRun extends Fragment implements ValueChangeListener {
      */
     private boolean applyRunParameter2(ParameterType parameterType) {
         final boolean isSelected = !parameterType.equals(parameterType2);
-        if (isSelected) {
-            parameterType2 = parameterType;
-        } else {
-            parameterType2 = null;
-            inputParameter.remove(parameterType);
-        }
+        parameterType2 = isSelected ? parameterType : null;
         return isSelected;
     }
+
 
     /**
      * Selects or deselects a run parameter pill button.
@@ -315,104 +319,121 @@ public class TabRun extends Fragment implements ValueChangeListener {
      * Updates the input area depending on selected run parameters.
      */
     private void updateInputArea() {
-        runInputArea.removeAllViews();
         final int numberOfSetRunParameters = getNumberOfSetRunParameters();
-        runParamIntputInfoTextView.setVisibility(View.VISIBLE);
-        if (numberOfSetRunParameters == 0) {
-            runParamIntputInfoTextView.setText(R.string.input_info_select_please_two);
-        } else if (numberOfSetRunParameters == 1) {
-            runParamIntputInfoTextView.setText(R.string.input_info_select_please_one);
-            addParameterToInputArea(parameterType1 != null ? parameterType1 : parameterType2);
-        } else if (numberOfSetRunParameters == 2) {
-            runParamIntputInfoTextView.setText(R.string.input_info_enter_values);
-            addParameterToInputArea(parameterType1);
-            addParameterToInputArea(parameterType2);
+        runParamIntputInfoTextView.setText(
+                numberOfSetRunParameters == 0 ? R.string.input_info_select_please_two
+                        : numberOfSetRunParameters == 1 ? R.string.input_info_select_please_one
+                        : numberOfSetRunParameters == 2 ? R.string.input_info_enter_values
+                        : R.string.input_info_enter_values);
+        updateInputParameter();
+    }
+
+    /**
+     * Updates both input parameters depending on selected parameter types.
+     */
+    private void updateInputParameter() {
+        updateInputParameter1();
+        updateInputParameter2();
+    }
+
+    /**
+     * Updates the first input parameter depending on selected parameter input type.
+     * The first input parameter can be distance or duration.
+     */
+    private void updateInputParameter1() {
+        if (ParameterType.DISTANCE.equals(parameterType1)) {
+            updateInputParameter1(true, getString(R.string.distance), INPUT_TYPE_NUMBER,
+                    settings.getDistanceUnit().getLabel(getContext()));
+        } else if (ParameterType.DURATION.equals(parameterType1)) {
+            updateInputParameter1(true, getString(R.string.run_time), INPUT_TYPE_TIME,
+                    settings.getDurationUnit().getLabel(getContext()));
+        } else {
+            updateInputParameter1(false, getString(R.string.run_parameter_1), InputType.TYPE_CLASS_TEXT, getString(R.string.unit));
         }
     }
 
     /**
-     * Adds a parameter input field to the gui.
-     *
-     * @param parameterType run parameter
+     * Updates the second input parameter depending on selected parameter input type.
+     * The second input parameter can be duration, pace or speed.
      */
-    private void addParameterToInputArea(final ParameterType parameterType) {
-        TextView label = new TextView(getContext());
-        label.setLayoutParams(LAYOUT_LABEL);
-        label.setTypeface(null, Typeface.BOLD);
-        final EditText input = new EditText(getContext());
-        input.setText(this.inputParameter.containsKey(parameterType)
-                ? this.inputParameter.get(parameterType).getText().toString() : "");
-        input.setLayoutParams(LAYOUT_INPUT_VALUE_UNIT);
-        input.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-        // add dialogs
-        if ((ParameterType.DISTANCE.equals(parameterType) || ParameterType.SPEED.equals(parameterType)) && settings.isDialogInput()) {
-            createInputParameterListeners(input, parameterType);
+    private void updateInputParameter2() {
+        if (ParameterType.DURATION.equals(parameterType2)) {
+            updateInputParameter2(true, getString(R.string.run_time), INPUT_TYPE_TIME,
+                    settings.getDurationUnit().getLabel(getContext()));
+        } else if (ParameterType.PACE.equals(parameterType2)) {
+            updateInputParameter2(true, getString(R.string.pace), INPUT_TYPE_TIME,
+                    settings.getPaceUnit().getLabel(getContext()));
+        } else if (ParameterType.SPEED.equals(parameterType2)) {
+            updateInputParameter2(true, getString(R.string.speed), INPUT_TYPE_NUMBER,
+                    settings.getSpeedUnit().getLabel(getContext()));
         } else {
-            input.setFocusable(true);
+            updateInputParameter2(false, getString(R.string.run_parameter_2), InputType.TYPE_CLASS_TEXT, getString(R.string.unit));
         }
+    }
 
-//        if (RunParameterType.DURATION.equals(runParameterType)) {
-//            input.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // TODO Auto-generated method stub
-//                    Calendar mcurrentTime = Calendar.getInstance();
-//                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-//                    int minute = mcurrentTime.get(Calendar.MINUTE);
-//                    TimePickerDialog mTimePicker;
-//                    mTimePicker = new TimePickerDialog(TabRun.this.getContext(), new TimePickerDialog.OnTimeSetListener() {
-//                        @Override
-//                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                            inputParameter.get(runParameterType).setText(hourOfDay + ":" + minute);
-//                        }
-//                    }, hour, minute, true);//Yes 24 hour time
-//                    mTimePicker.setTitle("Select Time");
-//                    mTimePicker.show();
-//                }
-//            });
-//        }
-
-        TextView emptyCell = new TextView(getContext());
-        emptyCell.setLayoutParams(LAYOUT_LABEL);
-        TextView unit = new TextView(getContext());
-        unit.setLayoutParams(LAYOUT_INPUT_VALUE_UNIT);
-        unit.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        this.inputParameter.put(parameterType, input);
-        addTextWatcherToEditText(input);
-        switch (parameterType) {
-            case DISTANCE:
-                label.setText(R.string.distance);
-                input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                unit.setText(settings.getDistanceUnit().getLabel(this.getContext()));
-                break;
-            case DURATION:
-                label.setText(R.string.run_time);
-                input.setInputType(android.text.InputType.TYPE_CLASS_DATETIME | android.text.InputType.TYPE_DATETIME_VARIATION_TIME);
-                unit.setText(settings.getDurationUnit().getLabel(this.getContext()));
-                break;
-            case PACE:
-                label.setText(R.string.pace);
-                input.setInputType(android.text.InputType.TYPE_CLASS_DATETIME | android.text.InputType.TYPE_DATETIME_VARIATION_TIME);
-                unit.setText(settings.getPaceUnit().getLabel(this.getContext()));
-                break;
-            case SPEED:
-                label.setText(R.string.speed);
-                input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                unit.setText(settings.getSpeedUnit().getLabel(this.getContext()));
-                break;
+    /**
+     * Updates the first input parameter depending on selected parameter input type.
+     * The first input parameter can be distance or duration.
+     *
+     * @param isEnabled if a parameter type is selected
+     * @param label     label of parameter
+     * @param inputType input type (for example: decimal or time)
+     * @param unit      unit of parameter
+     */
+    private void updateInputParameter1(boolean isEnabled, String label, int inputType, String unit) {
+        updateInputParameter(runParameter1LabelTextView, runParameter1EditText, runParameter1UnitTextView,
+                isEnabled, label, inputType, unit);
+        // add dialogs
+        if ((ParameterType.DISTANCE.equals(parameterType1) || ParameterType.SPEED.equals(parameterType1)) && settings.isDialogInput()) {
+            createInputParameterListeners(runParameter1EditText, parameterType1);
+        } else {
+            runParameter1EditText.setFocusable(true);
         }
-        TableRow inputRow = new TableRow(getContext());
-        inputRow.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        inputRow.addView(label);
-        inputRow.addView(input);
-        runInputArea.addView(inputRow, LAYOUT_TABLE_ROW);
-        TableRow unitRow = new TableRow(getContext());
-        unitRow.addView(emptyCell);
-        unitRow.addView(unit);
-        unitRow.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        runInputArea.addView(unitRow, LAYOUT_TABLE_ROW);
+    }
+
+    /**
+     * Updates the first input parameter depending on selected parameter input type.
+     * The first input parameter can be distance or duration.
+     *
+     * @param isEnabled if a parameter type is selected
+     * @param label     label of parameter
+     * @param inputType input type (for example: decimal or time)
+     * @param unit      unit of parameter
+     */
+    private void updateInputParameter2(boolean isEnabled, String label, int inputType, String unit) {
+        updateInputParameter(runParameter2LabelTextView, runParameter2EditText, runParameter2UnitTextView,
+                isEnabled, label, inputType, unit);
+        // add dialogs
+        if ((ParameterType.DISTANCE.equals(parameterType2) || ParameterType.SPEED.equals(parameterType2)) && settings.isDialogInput()) {
+            createInputParameterListeners(runParameter2EditText, parameterType2);
+        } else {
+            runParameter2EditText.setFocusable(true);
+        }
+    }
+
+    /**
+     * Updates the desired input parameter.
+     *
+     * @param label     text view for label
+     * @param input     edit text field for input
+     * @param unit      text view for unit
+     * @param isEnabled if a parameter type is selected
+     * @param label     label of parameter
+     * @param inputType input type (for example: decimal or time)
+     * @param unit      unit of parameter
+     */
+    private void updateInputParameter(TextView label, EditText input, TextView unit,
+                                      boolean isEnabled, String labelText, int inputType,
+                                      String unitText) {
+        label.setText(labelText);
+        label.setEnabled(isEnabled);
+        if (!isEnabled) {
+            input.setText("");
+        }
+        input.setInputType(inputType);
+        input.setEnabled(isEnabled);
+        unit.setText(unitText);
+        unit.setEnabled(isEnabled);
     }
 
     /**
@@ -422,7 +443,11 @@ public class TabRun extends Fragment implements ValueChangeListener {
      */
     @Override
     public void applyValue(ParameterType parameter, Object value, Unit unit) {
-        inputParameter.get(parameter).setText("" + value);
+        if (parameter.equals(parameterType1)) {
+            runParameter1EditText.setText("" + value);
+        } else if (parameter.equals(parameterType2)) {
+            runParameter2EditText.setText("" + value);
+        }
     }
 
     /**
@@ -436,7 +461,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
         input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String value = inputParameter.get(parameter).getText().toString();
+                final String value = input.getText().toString();
                 switch (parameter) {
                     case DISTANCE:
                         new DistanceDialog(value, TabRun.this)
@@ -604,6 +629,12 @@ public class TabRun extends Fragment implements ValueChangeListener {
         paceButton = runView.findViewById(R.id.paceButton);
         speedButton = runView.findViewById(R.id.speedButton);
         runParamIntputInfoTextView = runView.findViewById(R.id.runParamIntputInfoTextView);
+        runParameter1LabelTextView = runView.findViewById(R.id.runParameter1LabelTextView);
+        runParameter1EditText = runView.findViewById(R.id.runParameter1EditText);
+        runParameter1UnitTextView = runView.findViewById(R.id.runParameter1UnitTextView);
+        runParameter2LabelTextView = runView.findViewById(R.id.runParameter2LabelTextView);
+        runParameter2EditText = runView.findViewById(R.id.runParameter2EditText);
+        runParameter2UnitTextView = runView.findViewById(R.id.runParameter2UnitTextView);
         // output parameters
         runResultArea = runView.findViewById(R.id.runOutputTableLayout);
         caloriesTextView = runView.findViewById(R.id.caloriesValueTextView);
@@ -618,6 +649,8 @@ public class TabRun extends Fragment implements ValueChangeListener {
         addOnClickListenerToRunParameterButtons(durationButton);
         addOnClickListenerToRunParameterButtons(paceButton);
         addOnClickListenerToRunParameterButtons(speedButton);
+        addTextWatcherToEditText(runParameter1EditText);
+        addTextWatcherToEditText(runParameter2EditText);
     }
 
     /**
