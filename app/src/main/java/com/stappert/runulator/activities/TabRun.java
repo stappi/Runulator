@@ -168,6 +168,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
             calculateAndUpdateRun();
             updatePillButtons();
             updateInputArea();
+            updateResultArea();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
