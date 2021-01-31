@@ -293,30 +293,6 @@ public class Run {
                 + "\'" + JSON_KEY_PACE + "\':" + pace + ","
                 + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
     }
-
-    // =============================================================================================
-    // private functions
-    // =============================================================================================
-
-    /**
-     * Converts the given seconds in hh:mm:ss (h = hour, m = minute, s = second).
-     *
-     * @param totalSeconds time in seconds
-     * @return total seconds in hh:mm:ss
-     */
-    private String secondsToString(int totalSeconds) {
-        if (totalSeconds <= 0) {
-            return "0";
-        } else {
-            int hours = totalSeconds / HOUR;
-            int minutes = totalSeconds / MINUTE % MINUTE;
-            int seconds = totalSeconds % MINUTE % MINUTE;
-            return (hours > 0 ? hours + ":" : "")
-                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
-                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
-        }
-    }
-
     // =============================================================================================
     // create runs depending on parameters
     // =============================================================================================
@@ -477,6 +453,7 @@ public class Run {
      * @throws Exception if input cannot convert to number
      */
     public static int parseTimeInSeconds(String time) throws CustomException {
+        time = time == null || time.isEmpty() ? "0" : time;
         try {
             int duration = 0;
             String[] timeSegments = time.split(":");
@@ -488,6 +465,25 @@ public class Run {
             return duration;
         } catch (NumberFormatException ex) {
             throw new CustomException("Error", "Can not parse time.");
+        }
+    }
+
+    /**
+     * Converts the given seconds in hh:mm:ss (h = hour, m = minute, s = second).
+     *
+     * @param totalSeconds time in seconds
+     * @return total seconds in hh:mm:ss
+     */
+    public static String secondsToString(int totalSeconds) {
+        if (totalSeconds <= 0) {
+            return "0";
+        } else {
+            int hours = totalSeconds / HOUR;
+            int minutes = totalSeconds / MINUTE % MINUTE;
+            int seconds = totalSeconds % MINUTE % MINUTE;
+            return (hours > 0 ? hours + ":" : "")
+                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
+                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
         }
     }
 

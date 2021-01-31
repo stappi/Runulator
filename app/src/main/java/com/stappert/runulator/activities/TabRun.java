@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.stappert.runulator.R;
 import com.stappert.runulator.dialogs.DistanceDialog;
+import com.stappert.runulator.dialogs.TimeDialog;
 import com.stappert.runulator.dialogs.ValueDialog;
 import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.SettingsManager;
@@ -165,10 +166,10 @@ public class TabRun extends Fragment implements ValueChangeListener {
     public void onResume() {
         super.onResume();
         try {
-            calculateAndUpdateRun();
             updatePillButtons();
             updateInputArea();
             updateResultArea();
+            calculateAndUpdateRun();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
             Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -230,6 +231,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
             }
             caloriesValueTextView.setText(currentRun.calculateCalories(settings.getWeightInKg()));
             stepFrequencyValueTextView.setText("" + currentRun.calculateStepFrequency(settings.getHeightInCm()));
+            settings.setRun(currentRun);
         }
     }
 
@@ -416,7 +418,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
         updateInputParameter(inputParameter1LabelTextView, inputParameter1EditText, inputParameter1UnitTextView,
                 isEnabled, label, inputType, unit);
         // add dialogs
-        if ((ParameterType.DISTANCE.equals(inputParameter1) || ParameterType.SPEED.equals(inputParameter1)) && settings.isDialogInput()) {
+        if (settings.isDialogInput()) {
             createInputParameterListeners(inputParameter1EditText, inputParameter1);
         } else {
             inputParameter1EditText.setFocusable(true);
@@ -436,7 +438,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
         updateInputParameter(inputParameter2LabelTextView, inputParameter2EditText, inputParameter2UnitTextView,
                 isEnabled, label, inputType, unit);
         // add dialogs
-        if ((ParameterType.DISTANCE.equals(inputParameter2) || ParameterType.SPEED.equals(inputParameter2)) && settings.isDialogInput()) {
+        if (settings.isDialogInput()) {
             createInputParameterListeners(inputParameter2EditText, inputParameter2);
         } else {
             inputParameter2EditText.setFocusable(true);
@@ -485,13 +487,33 @@ public class TabRun extends Fragment implements ValueChangeListener {
                         new DistanceDialog(value, TabRun.this)
                                 .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.distance));
                         break;
+                    case DURATION:
+                        try {
+                            new TimeDialog(ParameterType.DURATION, true, getString(R.string.run_time),
+                                    getString(R.string.enter_run_time), value, TabRun.this)
+                                    .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.run_time));
+                        } catch (CustomException ex) {
+                            Log.e("error", ex.getMessage());
+                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case PACE:
+                        try {
+                            new TimeDialog(ParameterType.PACE, false, getString(R.string.pace),
+                                    getString(R.string.enter_pace), value, TabRun.this)
+                                    .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.pace));
+                        } catch (CustomException ex) {
+                            Log.e("error", ex.getMessage());
+                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        break;
                     case SPEED:
                         new ValueDialog(ParameterType.SPEED, getContext().getString(R.string.speed),
-                                getContext().getString(R.string.weight_msg),
+                                getContext().getString(R.string.enter_speed),
                                 value, settings.getSpeedUnit(), null,
                                 android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL,
                                 TabRun.this
-                        ).show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.weight));
+                        ).show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.speed));
                 }
             }
         });

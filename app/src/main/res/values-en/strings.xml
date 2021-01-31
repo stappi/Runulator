@@ -69,10 +69,13 @@
     <string name="general">General</string>
     <string name="marathon">Marathon</string>
     <string name="half_marathon">Half marathon</string>
-    <string name="enter_distance">Please enter a distance.</string>
+    <string name="enter_distance">Please enter your run distance.</string>
     <string name="enter_distance_fail">Due to an issue the distance can be updated.</string>
     <string name="type_of_input">Type of input</string>
     <string name="type_of_input_info">To enter run parameters decide between input via dialog or directly.</string>
     <string name="run_result_param_1">Result parameter 1</string>
     <string name="run_result_param_2">Result parameter 2</string>
+    <string name="enter_speed">Please enter a your speed.</string>
+    <string name="enter_pace">Please enter a your pace.</string>
+    <string name="enter_run_time">Please enter your run time.</string>
 </resources>
