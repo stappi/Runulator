@@ -19,7 +19,7 @@
     <include layout="@layout/tab_layout_run_pillbar" />
 
     <TextView
-        android:id="@+id/runParamIntputInfoTextView"
+        android:id="@+id/inputParamInfoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
@@ -29,7 +29,6 @@
         android:textSize="14sp" />
 
     <TableLayout
-        android:id="@+id/runParamIntputTableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -39,7 +38,7 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/runParameter1LabelTextView"
+                android:id="@+id/inputParameter1LabelTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
@@ -48,7 +47,7 @@
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/runParameter1EditText"
+                android:id="@+id/inputParameter1EditText"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
@@ -64,7 +63,7 @@
                 android:layout_weight="0.4" />
 
             <TextView
-                android:id="@+id/runParameter1UnitTextView"
+                android:id="@+id/inputParameter1UnitTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
@@ -76,7 +75,7 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/runParameter2LabelTextView"
+                android:id="@+id/inputParameter2LabelTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.4"
@@ -85,7 +84,7 @@
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/runParameter2EditText"
+                android:id="@+id/inputParameter2EditText"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.6"
@@ -101,7 +100,7 @@
                 android:layout_weight="0.4" />
 
             <TextView
-                android:id="@+id/runParameter2UnitTextView"
+                android:id="@+id/inputParameter2UnitTextView"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="0.6"

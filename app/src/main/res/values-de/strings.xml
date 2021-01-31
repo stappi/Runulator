@@ -73,4 +73,6 @@
     <string name="enter_distance_fail">Auf Grund eines Problems kann die Distanz nicht angepasst werden.</string>
     <string name="type_of_input">Art der Eingabe</string>
     <string name="type_of_input_info">Eingabe der Laufwerte mit Dialog oder direkt.</string>
+    <string name="run_result_param_1">Ergebniswert 1</string>
+    <string name="run_result_param_2">Ergebniswert 2</string>
 </resources>

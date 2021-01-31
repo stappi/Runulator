@@ -34,7 +34,8 @@
                 android:layout_weight="0.45"
                 android:labelFor="@id/caloriesValueTextView"
                 android:text="@string/calories"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:enabled="false"/>
 
             <TextView
                 android:id="@+id/caloriesValueTextView"
@@ -44,7 +45,8 @@
                 android:text="-"
                 android:textSize="15sp"
                 android:textAlignment="textEnd"
-                android:paddingRight="5dp" />
+                android:paddingRight="5dp"
+                android:enabled="false" />
 
             <TextView
                 android:id="@+id/caloriesUnitTextView"
@@ -52,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
                 android:text="kcal"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:enabled="false" />
         </TableRow>
 
         <TableRow
@@ -66,7 +69,8 @@
                 android:layout_weight="0.45"
                 android:labelFor="@id/stepFrequencyValueTextView"
                 android:text="@string/step_frequency"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:enabled="false" />
 
             <TextView
                 android:id="@+id/stepFrequencyValueTextView"
@@ -75,14 +79,78 @@
                 android:layout_weight="0.20"
                 android:text="-"
                 android:textAlignment="textEnd"
-                android:paddingRight="5dp"/>
+                android:paddingRight="5dp"
+                android:enabled="false"/>
 
             <TextView
                 android:id="@+id/stepFrequencyUnitTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
-                android:text="@string/steps_per_minute"/>
+                android:text="@string/steps_per_minute"
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/resultParameter1LabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/stepFrequencyValueTextView"
+                android:text="@string/run_result_param_1"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter1ValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter1UnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text=""
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/resultParameter2LabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/stepFrequencyValueTextView"
+                android:text="@string/run_result_param_2"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter2ValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter2UnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text=""
+                android:enabled="false"/>
         </TableRow>
     </TableLayout>
 </LinearLayout>

@@ -73,4 +73,6 @@
     <string name="enter_distance_fail">Due to an issue the distance can be updated.</string>
     <string name="type_of_input">Type of input</string>
     <string name="type_of_input_info">To enter run parameters decide between input via dialog or directly.</string>
+    <string name="run_result_param_1">Result parameter 1</string>
+    <string name="run_result_param_2">Result parameter 2</string>
 </resources>
