@@ -5,14 +5,29 @@
     android:orientation="vertical">
 
     <!-- input parameters  -->
-    <include layout="@layout/tab_layout_run_input"/>
+    <include layout="@layout/tab_layout_run_input" />
 
+    <!-- input parameters  -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorSeparator"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/colorSeparator" />
 
-    <!-- input parameters  -->
-    <include layout="@layout/tab_layout_run_output"/>
+    <include layout="@layout/tab_layout_run_output" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30"
+        android:gravity="right" >
+
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_round_button"
+            android:src="@drawable/ic_favorite_add"
+            android:layout_marginRight="20dp"/>
+    </RelativeLayout>
 </LinearLayout>

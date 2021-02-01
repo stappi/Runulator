@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -98,16 +99,8 @@ public class TabRun extends Fragment implements ValueChangeListener {
     private TextView stepFrequencyLabelTextView;
     private TextView stepFrequencyValueTextView;
     private TextView stepFrequencyUnitTextView;
-
-//    /**
-//     * Map, to handle parameter input to right parameter.
-//     */
-//    private final Map<ParameterType, EditText> inputParameter = new HashMap<>();
-
-//    /**
-//     * Map, to handle output result to right parameter.
-//     */
-//    private final Map<ParameterType, TextView> runResultParameter = new HashMap<>();
+    // favorites
+    private ImageButton favoriteButton;
 
     /**
      * Type for run parameter 1, which can be distance or duration.
@@ -197,36 +190,29 @@ public class TabRun extends Fragment implements ValueChangeListener {
             // run parameter 1 is distance or duration
             if (ParameterType.DISTANCE.equals(inputParameter1)) {
                 // run parameter 2 is duration, pace or speed
-                switch (inputParameter2) {
-                    case DURATION:
-                        currentRun = Run.createWithDistanceAndDuration(runValue1.floatValue(), runValue2.intValue());
-                        resultParameter1ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
-                        resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
-                        break;
-                    case PACE:
-                        currentRun = Run.createWithDistanceAndPace(runValue1.floatValue(), runValue2.intValue());
-                        resultParameter1ValueTextView.setText(currentRun.getDuration());
-                        resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
-                        break;
-                    case SPEED:
-                        currentRun = Run.createWithDistanceAndSpeed(runValue1.floatValue(), runValue2.intValue());
-                        resultParameter1ValueTextView.setText(currentRun.getDuration());
-                        resultParameter2ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
-                        break;
+                if (ParameterType.DURATION.equals(inputParameter2)) {
+                    currentRun = Run.createWithDistanceAndDuration(runValue1.floatValue(), runValue2.intValue());
+                    resultParameter1ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
+                    resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                } else if (ParameterType.PACE.equals(inputParameter2)) {
+                    currentRun = Run.createWithDistanceAndPace(runValue1.floatValue(), runValue2.intValue());
+                    resultParameter1ValueTextView.setText(currentRun.getDuration());
+                    resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                } else if (ParameterType.SPEED.equals(inputParameter2)) {
+                    currentRun = Run.createWithDistanceAndSpeed(runValue1.floatValue(), runValue2.intValue());
+                    resultParameter1ValueTextView.setText(currentRun.getDuration());
+                    resultParameter2ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
                 }
             } else {
                 // run parameter 2 is pace or speed
-                switch (inputParameter2) {
-                    case PACE:
-                        currentRun = Run.createWithDurationAndPace(runValue1.intValue(), runValue2.intValue());
-                        resultParameter1ValueTextView.setText(currentRun.getDistance(settings.getDistanceUnit()));
-                        resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
-                        break;
-                    case SPEED:
-                        currentRun = Run.createWithDurationAndSpeed(runValue1.intValue(), runValue2.floatValue());
-                        resultParameter1ValueTextView.setText(currentRun.getDistance(settings.getDistanceUnit()));
-                        resultParameter2ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
-                        break;
+                if (ParameterType.PACE.equals(inputParameter2)) {
+                    currentRun = Run.createWithDurationAndPace(runValue1.intValue(), runValue2.intValue());
+                    resultParameter1ValueTextView.setText(currentRun.getDistance(settings.getDistanceUnit()));
+                    resultParameter2ValueTextView.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                } else if (ParameterType.SPEED.equals(inputParameter2)) {
+                    currentRun = Run.createWithDurationAndSpeed(runValue1.intValue(), runValue2.floatValue());
+                    resultParameter1ValueTextView.setText(currentRun.getDistance(settings.getDistanceUnit()));
+                    resultParameter2ValueTextView.setText(currentRun.getPace(settings.getPaceUnit()));
                 }
             }
             caloriesValueTextView.setText(currentRun.calculateCalories(settings.getWeightInKg()));
@@ -256,17 +242,16 @@ public class TabRun extends Fragment implements ValueChangeListener {
      * @throws CustomException if conversion failed
      */
     private Number getRunParameterValue(ParameterType type, EditText textField) throws CustomException {
-        switch (type) {
-            case DISTANCE:
-                return settings.getDistanceUnit().toKm(Run.parseToFloat(textField.getText().toString()));
-            case DURATION:
-                return Run.parseTimeInSeconds(textField.getText().toString());
-            case PACE:
-                return settings.getPaceUnit().toMinPerKm(Run.parseTimeInSeconds(textField.getText().toString()));
-            case SPEED:
-                return settings.getSpeedUnit().toKmPerHour(Run.parseToFloat(textField.getText().toString()));
-            default:
-                return Float.NaN;
+        if (ParameterType.DISTANCE.equals(type)) {
+            return settings.getDistanceUnit().toKm(Run.parseToFloat(textField.getText().toString()));
+        } else if (ParameterType.DURATION.equals(type)) {
+            return Run.parseTimeInSeconds(textField.getText().toString());
+        } else if (ParameterType.PACE.equals(type)) {
+            return settings.getPaceUnit().toMinPerKm(Run.parseTimeInSeconds(textField.getText().toString()));
+        } else if (ParameterType.SPEED.equals(type)) {
+            return settings.getSpeedUnit().toKmPerHour(Run.parseToFloat(textField.getText().toString()));
+        } else {
+            return Float.NaN;
         }
     }
 
@@ -342,6 +327,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
         final boolean isSelected = !parameterType.equals(inputParameter1);
         if (isSelected) {
             inputParameter2 = inputParameter1 != null ? inputParameter1 : inputParameter2;
+            // switch value for duration to parameter 2 if set
             if (inputParameter1 != null) {
                 inputParameter2 = inputParameter1;
                 inputParameter2EditText.setText(inputParameter1EditText.getText());
@@ -351,6 +337,11 @@ public class TabRun extends Fragment implements ValueChangeListener {
         } else {
             inputParameter1 = ParameterType.DURATION.equals(inputParameter2) ? ParameterType.DURATION : null;
             inputParameter2 = ParameterType.DURATION.equals(inputParameter2) ? null : inputParameter2;
+            // switch value for duration to parameter 1 if set
+            if (ParameterType.DURATION.equals(inputParameter1)) {
+                inputParameter1EditText.setText(inputParameter2EditText.getText());
+                inputParameter2EditText.setText("");
+            }
         }
         return isSelected;
     }
@@ -736,6 +727,8 @@ public class TabRun extends Fragment implements ValueChangeListener {
         stepFrequencyLabelTextView = runView.findViewById(R.id.stepFrequencyLabelTextView);
         stepFrequencyValueTextView = runView.findViewById(R.id.stepFrequencyValueTextView);
         stepFrequencyUnitTextView = runView.findViewById(R.id.stepFrequencyUnitTextView);
+        // favorites
+        favoriteButton = runView.findViewById(R.id.favoriteButton);
     }
 
     /**
@@ -748,6 +741,12 @@ public class TabRun extends Fragment implements ValueChangeListener {
         addOnClickListenerToRunParameterButtons(speedButton);
         addTextWatcherToEditText(inputParameter1EditText);
         addTextWatcherToEditText(inputParameter2EditText);
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                Toast.makeText(getContext(), "Favorite", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
