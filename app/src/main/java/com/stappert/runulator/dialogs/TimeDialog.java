@@ -144,7 +144,7 @@ public class TimeDialog extends AppCompatDialogFragment {
         final int hours = withHours ? hoursPicker.getValue() : 0;
         final int minutes = minutesPicker.getValue();
         final int seconds = secondsPicker.getValue();
-        return (hours == 0 ? "" : hours > 9 ? hours + ":" : "0" + hours + ":")
+        return (hours == 0 ? "" : hours + ":")
                 + (minutes > 9 ? "" : "0") + minutes + ":"
                 + (seconds > 9 ? "" : "0") + seconds;
     }
@@ -169,10 +169,24 @@ public class TimeDialog extends AppCompatDialogFragment {
         minutesPicker.setMaxValue(59);
         minutesPicker.setValue(seconds % Run.HOUR / Run.MINUTE);
         minutesPicker.setMinValue(0);
+        if (withHours) {
+            minutesPicker.setFormatter(new NumberPicker.Formatter() {
+                @Override
+                public String format(int value) {
+                    return String.format("%02d", value);
+                }
+            });
+        }
         // seconds
         secondsPicker = view.findViewById(R.id.secondsPicker);
         secondsPicker.setMaxValue(59);
         secondsPicker.setValue(seconds % Run.HOUR % Run.MINUTE);
         secondsPicker.setMinValue(0);
+        secondsPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int value) {
+                return String.format("%02d", value);
+            }
+        });
     }
 }

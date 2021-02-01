@@ -342,6 +342,11 @@ public class TabRun extends Fragment implements ValueChangeListener {
         final boolean isSelected = !parameterType.equals(inputParameter1);
         if (isSelected) {
             inputParameter2 = inputParameter1 != null ? inputParameter1 : inputParameter2;
+            if (inputParameter1 != null) {
+                inputParameter2 = inputParameter1;
+                inputParameter2EditText.setText(inputParameter1EditText.getText());
+                inputParameter1EditText.setText("");
+            }
             inputParameter1 = parameterType;
         } else {
             inputParameter1 = ParameterType.DURATION.equals(inputParameter2) ? ParameterType.DURATION : null;
@@ -482,38 +487,34 @@ public class TabRun extends Fragment implements ValueChangeListener {
             @Override
             public void onClick(View v) {
                 final String value = input.getText().toString();
-                switch (parameter) {
-                    case DISTANCE:
-                        new DistanceDialog(value, TabRun.this)
-                                .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.distance));
-                        break;
-                    case DURATION:
-                        try {
-                            new TimeDialog(ParameterType.DURATION, true, getString(R.string.run_time),
-                                    getString(R.string.enter_run_time), value, TabRun.this)
-                                    .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.run_time));
-                        } catch (CustomException ex) {
-                            Log.e("error", ex.getMessage());
-                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                        break;
-                    case PACE:
-                        try {
-                            new TimeDialog(ParameterType.PACE, false, getString(R.string.pace),
-                                    getString(R.string.enter_pace), value, TabRun.this)
-                                    .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.pace));
-                        } catch (CustomException ex) {
-                            Log.e("error", ex.getMessage());
-                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                        break;
-                    case SPEED:
-                        new ValueDialog(ParameterType.SPEED, getContext().getString(R.string.speed),
-                                getContext().getString(R.string.enter_speed),
-                                value, settings.getSpeedUnit(), null,
-                                android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL,
-                                TabRun.this
-                        ).show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.speed));
+                if (ParameterType.DISTANCE.equals(parameter)) {
+                    new DistanceDialog(value, TabRun.this)
+                            .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.distance));
+                } else if (ParameterType.DURATION.equals(parameter)) {
+                    try {
+                        new TimeDialog(ParameterType.DURATION, true, getString(R.string.run_time),
+                                getString(R.string.enter_run_time), value, TabRun.this)
+                                .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.run_time));
+                    } catch (CustomException ex) {
+                        Log.e("error", ex.getMessage());
+                        Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else if (ParameterType.PACE.equals(parameter)) {
+                    try {
+                        new TimeDialog(ParameterType.PACE, false, getString(R.string.pace),
+                                getString(R.string.enter_pace), value, TabRun.this)
+                                .show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.pace));
+                    } catch (CustomException ex) {
+                        Log.e("error", ex.getMessage());
+                        Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else if (ParameterType.SPEED.equals(parameter)) {
+                    new ValueDialog(ParameterType.SPEED, getContext().getString(R.string.speed),
+                            getContext().getString(R.string.enter_speed),
+                            value, settings.getSpeedUnit(), null,
+                            android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL,
+                            TabRun.this
+                    ).show(TabRun.this.getChildFragmentManager(), getContext().getString(R.string.speed));
                 }
             }
         });
@@ -605,6 +606,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
 
     /**
      * Resets calories and step frequency fields.
+     *
      * @param isEnabled is enabled of both input parameters are selected.
      */
     private void resetStaticResultParameters(boolean isEnabled) {
