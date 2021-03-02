@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- input parameters  -->
-    <include layout="@layout/tab_layout_run_input" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <!-- input parameters  -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorSeparator" />
+        <!-- input parameters  -->
+        <include layout="@layout/tab_layout_run_input" />
 
-    <include layout="@layout/tab_layout_run_output" />
+        <!-- input parameters  -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="30"
-        android:gravity="right" >
+        <include layout="@layout/tab_layout_run_output" />
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/favoriteButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/shape_round_button"
-            android:src="@drawable/ic_favorite_add"
-            android:layout_marginRight="20dp"/>
-    </RelativeLayout>
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_round_button"
+        android:src="@drawable/ic_favorite_add" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stappert.runulator.R;
 import com.stappert.runulator.dialogs.DistanceDialog;
 import com.stappert.runulator.dialogs.TimeDialog;
