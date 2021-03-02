@@ -179,10 +179,13 @@ public class TabRun extends Fragment implements ValueChangeListener {
     private void calculateAndUpdateRun() throws CustomException {
         // both input parameters must be set
         if (!inputParameter1EditText.isEnabled() || !inputParameter2EditText.isEnabled()) {
-            // do nothing
+            favoriteButton.setEnabled(false);
         } else if (inputParameter1EditText.getText().toString().isEmpty()
                 || inputParameter2EditText.getText().toString().isEmpty()) {
             inputParamInfoTextView.setText(getString(R.string.input_info_enter_values));
+            resultParameter1ValueTextView.setText("-");
+            resultParameter2ValueTextView.setText("-");
+            favoriteButton.setEnabled(false);
         } else {
             inputParamInfoTextView.setText("");
             Number runValue1 = getRunParameterValue(inputParameter1, inputParameter1EditText);
@@ -218,6 +221,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
             caloriesValueTextView.setText(currentRun.calculateCalories(settings.getWeightInKg()));
             stepFrequencyValueTextView.setText("" + currentRun.calculateStepFrequency(settings.getHeightInCm()));
             settings.setRun(currentRun);
+            favoriteButton.setEnabled(true);
         }
     }
 
@@ -729,6 +733,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
         stepFrequencyUnitTextView = runView.findViewById(R.id.stepFrequencyUnitTextView);
         // favorites
         favoriteButton = runView.findViewById(R.id.favoriteButton);
+        favoriteButton.setEnabled(false);
     }
 
     /**
