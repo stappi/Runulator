@@ -267,7 +267,7 @@ public class SettingsManager {
     }
 
     /**
-     * Returns the favorite runs.
+     * Returns the favorite runs as json strings.
      *
      * @return favorite runs
      */
@@ -276,12 +276,21 @@ public class SettingsManager {
     }
 
     /**
+     * Returns the favorite runs as json strings.
+     *
+     * @return favorite runs
+     */
+    public Set<String> getFavoriteRunsJson() {
+        return sharedPreferences.getStringSet(KEY_RUNS, new HashSet<String>());
+    }
+
+    /**
      * Stores the favorite runs.
      *
      * @param favoriteRuns favorite runs
      */
-    public void setFavoriteRuns(List<Run> favoriteRuns) {
-        saveValue(KEY_RUNS, Run.runsToJson(favoriteRuns));
+    public void setFavoriteRuns(List<String> favoriteRuns) {
+        saveValue(KEY_RUNS, new HashSet<>(favoriteRuns));
     }
 
     /**

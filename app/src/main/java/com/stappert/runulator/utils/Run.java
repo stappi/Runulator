@@ -316,6 +316,23 @@ public class Run {
     }
 
     /**
+     * Creates a run depending on distance in km and duration in seconds.
+     *
+     * @param distance in km
+     * @param duration in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndDuration(float distance, int duration)
+            throws CustomException {
+        if (distance <= 0 || duration <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
+                + "\'" + JSON_KEY_DURATION + "\':" + duration + "}";
+    }
+
+    /**
      * Creates a run depending on distance in km and pace in seconds.
      *
      * @param distance in km
@@ -331,6 +348,23 @@ public class Run {
         int duration = Math.round(distance * pace);
         float speed = (float) HOUR / pace;
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and pace in seconds.
+     *
+     * @param distance in km
+     * @param pace     in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndPace(float distance, int pace)
+            throws CustomException {
+        if (distance <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
+                + "\'" + JSON_KEY_PACE + "\':" + pace + "}";
     }
 
     /**
@@ -352,6 +386,23 @@ public class Run {
     }
 
     /**
+     * Creates a run depending on distance in km and speed in km/h.
+     *
+     * @param distance in km
+     * @param speed    in km/h
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndSpeed(float distance, float speed)
+            throws CustomException {
+        if (distance <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
+                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+    }
+
+    /**
      * Creates a run depending on duration in seconds and pace in seconds.
      *
      * @param duration in seconds
@@ -367,6 +418,23 @@ public class Run {
         float distance = 1.0f * duration / pace;
         float speed = (float) HOUR / pace;
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on duration in seconds and pace in seconds.
+     *
+     * @param duration in seconds
+     * @param pace     in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDurationAndPace(int duration, int pace)
+            throws CustomException {
+        if (duration <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
+                + "\'" + JSON_KEY_PACE + "\':" + pace + "}";
     }
 
     /**
@@ -388,6 +456,23 @@ public class Run {
     }
 
     /**
+     * Creates a run depending on duration in seconds and speed in km/h.
+     *
+     * @param duration in seconds
+     * @param speed    in km/h
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDurationAndSpeed(int duration, float speed)
+            throws CustomException {
+        if (duration <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
+                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+    }
+
+    /**
      * Converts a list of run as json strings to run objects.
      *
      * @param runsJson list of runs as json strings
@@ -397,19 +482,45 @@ public class Run {
         List<Run> runs = new ArrayList<>();
         try {
             for (String runJsonString : runsJson) {
-                JSONObject runJson = new JSONObject(runJsonString);
-                runs.add(new Run(
-                        (float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
-                        runJson.getInt(Run.JSON_KEY_DURATION),
-                        runJson.getInt(Run.JSON_KEY_PACE),
-                        (float) runJson.getDouble(Run.JSON_KEY_SPEED)
-                ));
+                runs.add(jsonToRun(runJsonString));
             }
-        } catch (JSONException ex) {
+        } catch (JSONException | CustomException ex) {
             Log.e("Error", ex.getMessage());
         }
         return runs;
     }
+
+    /**
+     * Converts a list of run as json strings to run objects.
+     *
+     * @param runJsonString run as json string
+     * @return list of run objects
+     */
+    public static Run jsonToRun(String runJsonString) throws JSONException, CustomException {
+        JSONObject runJson = new JSONObject(runJsonString);
+        if (runJson.has(Run.JSON_KEY_DISTANCE)) {
+            if (runJson.has(Run.JSON_KEY_DURATION)) {
+                return Run.createWithDistanceAndDuration((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
+                        runJson.getInt(Run.JSON_KEY_DURATION));
+            } else if (runJson.has(Run.JSON_KEY_PACE)) {
+                return Run.createWithDistanceAndPace((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
+                        runJson.getInt(Run.JSON_KEY_PACE));
+            } else if (runJson.has(Run.JSON_KEY_SPEED)) {
+                return Run.createWithDistanceAndSpeed((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
+                        (float) runJson.getDouble(Run.JSON_KEY_SPEED));
+            }
+        } else if (runJson.has(Run.JSON_KEY_DURATION)) {
+            if (runJson.has(Run.JSON_KEY_PACE)) {
+                return Run.createWithDurationAndPace(runJson.getInt(Run.JSON_KEY_DURATION),
+                        runJson.getInt(Run.JSON_KEY_PACE));
+            } else if (runJson.has(Run.JSON_KEY_SPEED)) {
+                return Run.createWithDurationAndSpeed(runJson.getInt(Run.JSON_KEY_DURATION),
+                        (float) runJson.getDouble(Run.JSON_KEY_SPEED));
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Converts a collection of run objects to a set of runs as json strings.

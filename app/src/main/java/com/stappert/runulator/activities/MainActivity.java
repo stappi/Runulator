@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.stappert.runulator.R;
-import com.stappert.runulator.dialogs.DistanceDialog;
+import com.stappert.runulator.utils.SettingsManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         MainActivityTabAdapter mainActivityTabAdapter = new MainActivityTabAdapter(
                 getSupportFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-                this);
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,this);
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(mainActivityTabAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
@@ -54,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_info:
-//                Toast.makeText(this, this.getText(R.string.info_text), Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, InfoActivity.class));
+            case R.id.menu_load_run:
+                Toast.makeText(this, "-->" + SettingsManager.getInstance().getFavoriteRunsJson().size(), Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.menu_info:
+                startActivity(new Intent(this, InfoActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

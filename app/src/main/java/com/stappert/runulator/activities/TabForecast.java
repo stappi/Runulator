@@ -108,7 +108,7 @@ public class TabForecast extends Fragment {
         SortedSet distances = new TreeSet();
         distances.addAll(Arrays.asList(5f, 10f, Run.HALF_MARATHON, Run.MARATHON, settings.getDistance()));
         try {
-            for (int i = 0; i < settings.getFavoriteRuns().size(); i++) {
+            for (int i = 0; i < settings.getFavoriteRunsJson().size(); i++) {
                 distances.add(settings.getFavoriteRuns().get(i).getDistanceAsNumber(Unit.KM));
             }
         } catch (CustomException ex) {

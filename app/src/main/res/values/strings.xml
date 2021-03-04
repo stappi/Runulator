@@ -84,6 +84,7 @@
     <string name="enter_speed">Please enter a your speed.</string>
     <string name="enter_pace">Please enter a your pace.</string>
     <string name="enter_run_time">Please enter your run time.</string>
+    <string name="load_run">Load Run</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

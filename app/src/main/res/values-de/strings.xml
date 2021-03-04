@@ -78,4 +78,5 @@
     <string name="enter_speed">Gib deine Geschwindigkeit an.</string>
     <string name="enter_pace">Gib deine Pace an.</string>
     <string name="enter_run_time">Gib deine Laufzeit an.</string>
+    <string name="load_run">Lauf laden</string>
 </resources>
