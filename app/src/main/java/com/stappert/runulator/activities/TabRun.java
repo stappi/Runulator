@@ -569,26 +569,35 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
                     inputParameter2 = ParameterType.DURATION;
                     inputParameter2EditText.setText(currentRun.getDuration());
                     selectRunParameterButton(durationButton, true);
+                    selectRunParameterButton(paceButton, false);
+                    selectRunParameterButton(speedButton, false);
                 } else if (run.contains(ParameterType.PACE.name())) {
                     inputParameter2 = ParameterType.PACE;
                     inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
+                    selectRunParameterButton(durationButton, false);
                     selectRunParameterButton(paceButton, true);
+                    selectRunParameterButton(speedButton, false);
                 } else if (run.contains(ParameterType.SPEED.name())) {
                     inputParameter2 = ParameterType.SPEED;
                     inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    selectRunParameterButton(durationButton, false);
+                    selectRunParameterButton(paceButton, false);
                     selectRunParameterButton(speedButton, true);
                 }
             } else if (run.contains(ParameterType.DURATION.name())) {
                 inputParameter1 = ParameterType.DURATION;
                 inputParameter1EditText.setText(currentRun.getDuration());
                 selectRunParameterButton(durationButton, true);
+                selectRunParameterButton(distanceButton, false);
                 if (run.contains(ParameterType.PACE.name())) {
                     inputParameter2 = ParameterType.PACE;
                     inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
                     selectRunParameterButton(paceButton, true);
+                    selectRunParameterButton(speedButton, false);
                 } else if (run.contains(ParameterType.SPEED.name())) {
                     inputParameter2 = ParameterType.SPEED;
                     inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    selectRunParameterButton(paceButton, false);
                     selectRunParameterButton(speedButton, true);
                 }
             }

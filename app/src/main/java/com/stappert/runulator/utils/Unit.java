@@ -115,6 +115,7 @@ public enum Unit {
     // =============================================================================================
     // methods
     // =============================================================================================
+
     /**
      * Returns the label.
      *
@@ -373,7 +374,11 @@ public enum Unit {
         switch (this) {
             case MINUTE:
             case HOUR:
-                return formatSeconds((int) value) + " " + (value >= HOUR_IN_SECONDS ? "h" : value > HOUR_IN_SECONDS ? "min" : "sec");
+                return formatSeconds((int) value) + " " + (value >= HOUR_IN_SECONDS ? "h" : value > MINUTE_IN_SECONDS ? "min" : "sec");
+            case MIN_KM:
+                return formatSeconds((int) value) + " " + (value >= HOUR_IN_SECONDS ? "h" : value > MINUTE_IN_SECONDS ? "min" : "sec") + "/" + KM.symbol;
+            case MIN_MILE:
+                return formatSeconds((int) value) + " " + (value >= HOUR_IN_SECONDS ? "h" : value > MINUTE_IN_SECONDS ? "min" : "sec") + "/" + symbol;
             default:
                 return value + " " + symbol;
         }
