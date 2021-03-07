@@ -22,21 +22,6 @@ public class Run {
     // time units
     // =============================================================================================
     /**
-     * One second.
-     */
-    public final static int SECOND = 1;
-
-    /**
-     * One minute in seconds.
-     */
-    public final static int MINUTE = 60;
-
-    /**
-     * One hour in seconds.
-     */
-    public final static int HOUR = 60 * 60;
-
-    /**
      * Distance for half marathon.
      */
     public final static float HALF_MARATHON = 21.0975f;
@@ -45,26 +30,6 @@ public class Run {
      * Distance for marathon.
      */
     public final static float MARATHON = 42.195f;
-
-    // =============================================================================================
-    // json keys
-    // =============================================================================================
-    /**
-     * Key 'distance' to parse in/from json.
-     */
-    public final static String JSON_KEY_DISTANCE = "distance";
-    /**
-     * Key 'duration' to parse in/from json.
-     */
-    public final static String JSON_KEY_DURATION = "duration";
-    /**
-     * Key 'pace' to parse in/from json.
-     */
-    public final static String JSON_KEY_PACE = "pace";
-    /**
-     * Key 'speed' to parse in/from json.
-     */
-    public final static String JSON_KEY_SPEED = "speed";
 
     // =============================================================================================
     // class variables
@@ -139,7 +104,7 @@ public class Run {
      * @return duration
      */
     public String getDuration() {
-        return secondsToString(duration);
+        return Unit.formatSeconds(duration);
     }
 
     /**
@@ -160,7 +125,7 @@ public class Run {
      * @throws CustomException if conversion to desired unit is not possible
      */
     public String getPace(Unit unit) throws CustomException {
-        return secondsToString(getPaceAsNumber(unit));
+        return Unit.formatSeconds(getPaceAsNumber(unit));
     }
 
     /**
@@ -274,7 +239,7 @@ public class Run {
     public String toString() {
         try {
             return getDistance(Unit.KM) + "KM in "
-                    + getDuration() + (duration >= HOUR ? "h" : duration >= MINUTE ? "min" : "sec") + "\n("
+                    + Unit.HOUR.format(duration) + "\n("
                     + getPace(Unit.MIN_KM) + "min/km; "
                     + getSpeed(Unit.KM_H) + "km/h)";
         } catch (CustomException ex) {
@@ -288,10 +253,10 @@ public class Run {
      * @return run as json string
      */
     public String toJson() {
-        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
-                + "\'" + JSON_KEY_PACE + "\':" + pace + ","
-                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
     // =============================================================================================
     // create runs depending on parameters
@@ -311,7 +276,7 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         int pace = Math.round(duration / distance);
-        float speed = distance * HOUR / duration;
+        float speed = distance * Unit.HOUR_IN_SECONDS / duration;
         return new Run(distance, duration, pace, speed);
     }
 
@@ -328,8 +293,8 @@ public class Run {
         if (distance <= 0 || duration <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + JSON_KEY_DURATION + "\':" + duration + "}";
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.DURATION.name() + "\':" + duration + "}";
     }
 
     /**
@@ -346,7 +311,7 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         int duration = Math.round(distance * pace);
-        float speed = (float) HOUR / pace;
+        float speed = (float) Unit.HOUR_IN_SECONDS / pace;
         return new Run(distance, duration, pace, speed);
     }
 
@@ -363,8 +328,8 @@ public class Run {
         if (distance <= 0 || pace <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + JSON_KEY_PACE + "\':" + pace + "}";
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + "}";
     }
 
     /**
@@ -380,8 +345,8 @@ public class Run {
         if (distance <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        int duration = Math.round(distance / speed * HOUR);
-        int pace = Math.round(HOUR / speed);
+        int duration = Math.round(distance / speed * Unit.HOUR_IN_SECONDS);
+        int pace = Math.round(Unit.HOUR_IN_SECONDS / speed);
         return new Run(distance, duration, pace, speed);
     }
 
@@ -398,8 +363,8 @@ public class Run {
         if (distance <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
 
     /**
@@ -416,7 +381,7 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         float distance = 1.0f * duration / pace;
-        float speed = (float) HOUR / pace;
+        float speed = (float) Unit.HOUR_IN_SECONDS / pace;
         return new Run(distance, duration, pace, speed);
     }
 
@@ -433,8 +398,8 @@ public class Run {
         if (duration <= 0 || pace <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        return "{" + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
-                + "\'" + JSON_KEY_PACE + "\':" + pace + "}";
+        return "{" + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + "}";
     }
 
     /**
@@ -450,8 +415,8 @@ public class Run {
         if (duration <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        float distance = duration * speed / HOUR;
-        int pace = Math.round(HOUR / speed);
+        float distance = duration * speed / Unit.HOUR_IN_SECONDS;
+        int pace = Math.round(Unit.HOUR_IN_SECONDS / speed);
         return new Run(distance, duration, pace, speed);
     }
 
@@ -468,8 +433,8 @@ public class Run {
         if (duration <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        return "{" + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
-                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+        return "{" + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
 
     /**
@@ -498,24 +463,21 @@ public class Run {
      */
     public static Run jsonToRun(String runJsonString) throws JSONException, CustomException {
         JSONObject runJson = new JSONObject(runJsonString);
-        if (runJson.has(Run.JSON_KEY_DISTANCE)) {
-            if (runJson.has(Run.JSON_KEY_DURATION)) {
-                return Run.createWithDistanceAndDuration((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
-                        runJson.getInt(Run.JSON_KEY_DURATION));
-            } else if (runJson.has(Run.JSON_KEY_PACE)) {
-                return Run.createWithDistanceAndPace((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
-                        runJson.getInt(Run.JSON_KEY_PACE));
-            } else if (runJson.has(Run.JSON_KEY_SPEED)) {
-                return Run.createWithDistanceAndSpeed((float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
-                        (float) runJson.getDouble(Run.JSON_KEY_SPEED));
+        if (runJson.has(ParameterType.DISTANCE.name())) {
+            final float distance = (float) runJson.getDouble(ParameterType.DISTANCE.name());
+            if (runJson.has(ParameterType.DURATION.name())) {
+                return Run.createWithDistanceAndDuration(distance, runJson.getInt(ParameterType.DURATION.name()));
+            } else if (runJson.has(ParameterType.PACE.name())) {
+                return Run.createWithDistanceAndPace(distance, runJson.getInt(ParameterType.PACE.name()));
+            } else if (runJson.has(ParameterType.SPEED.name())) {
+                return Run.createWithDistanceAndSpeed(distance, (float) runJson.getDouble(ParameterType.SPEED.name()));
             }
-        } else if (runJson.has(Run.JSON_KEY_DURATION)) {
-            if (runJson.has(Run.JSON_KEY_PACE)) {
-                return Run.createWithDurationAndPace(runJson.getInt(Run.JSON_KEY_DURATION),
-                        runJson.getInt(Run.JSON_KEY_PACE));
-            } else if (runJson.has(Run.JSON_KEY_SPEED)) {
-                return Run.createWithDurationAndSpeed(runJson.getInt(Run.JSON_KEY_DURATION),
-                        (float) runJson.getDouble(Run.JSON_KEY_SPEED));
+        } else if (runJson.has(ParameterType.DURATION.name())) {
+            final int duration = runJson.getInt(ParameterType.DURATION.name());
+            if (runJson.has(ParameterType.PACE.name())) {
+                return Run.createWithDurationAndPace(duration, runJson.getInt(ParameterType.PACE.name()));
+            } else if (runJson.has(ParameterType.SPEED.name())) {
+                return Run.createWithDurationAndSpeed(duration, (float) runJson.getDouble(ParameterType.SPEED.name()));
             }
         }
         return null;
@@ -576,25 +538,6 @@ public class Run {
             return duration;
         } catch (NumberFormatException ex) {
             throw new CustomException("Error", "Can not parse time.");
-        }
-    }
-
-    /**
-     * Converts the given seconds in hh:mm:ss (h = hour, m = minute, s = second).
-     *
-     * @param totalSeconds time in seconds
-     * @return total seconds in hh:mm:ss
-     */
-    public static String secondsToString(int totalSeconds) {
-        if (totalSeconds <= 0) {
-            return "0";
-        } else {
-            int hours = totalSeconds / HOUR;
-            int minutes = totalSeconds / MINUTE % MINUTE;
-            int seconds = totalSeconds % MINUTE % MINUTE;
-            return (hours > 0 ? hours + ":" : "")
-                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
-                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
         }
     }
 

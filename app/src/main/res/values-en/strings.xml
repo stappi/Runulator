@@ -79,4 +79,9 @@
     <string name="enter_pace">Please enter a your pace.</string>
     <string name="enter_run_time">Please enter your run time.</string>
     <string name="load_run">Load Run</string>
+    <string name="load_run_msg">Select a run.</string>
+    <string name="in">in</string>
+    <string name="with">with</string>
+    <string name="run_added">Run added to favorite list.</string>
+    <string name="run_removed">Run removed from favorite list.</string>
 </resources>

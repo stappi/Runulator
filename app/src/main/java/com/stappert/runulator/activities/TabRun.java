@@ -25,6 +25,7 @@ import com.stappert.runulator.dialogs.DistanceDialog;
 import com.stappert.runulator.dialogs.TimeDialog;
 import com.stappert.runulator.dialogs.ValueDialog;
 import com.stappert.runulator.utils.ParameterType;
+import com.stappert.runulator.utils.RunLoadedListener;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.utils.CustomException;
 import com.stappert.runulator.utils.Run;
@@ -32,13 +33,15 @@ import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.Utils;
 import com.stappert.runulator.utils.ValueChangeListener;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Organizes the run view of the application.
  */
-public class TabRun extends Fragment implements ValueChangeListener {
+public class TabRun extends Fragment implements ValueChangeListener, RunLoadedListener {
 
     /**
      * Layout for labels in gui.
@@ -152,7 +155,7 @@ public class TabRun extends Fragment implements ValueChangeListener {
             settings = SettingsManager.getInstance().init(getContext());
             initElements();
             initListener();
-            updateValues();
+            currentRun = settings.getRun();
             updateInputArea();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
@@ -276,16 +279,6 @@ public class TabRun extends Fragment implements ValueChangeListener {
         } else {
             return Float.NaN;
         }
-    }
-
-    /**
-     * Load values from shared preferences.
-     *
-     * @throws CustomException if initialization failed
-     */
-    private void updateValues() throws CustomException {
-//        favoriteRuns = settings.getFavoriteRuns();
-        currentRun = settings.getRun();
     }
 
     // =============================================================================================
@@ -557,6 +550,57 @@ public class TabRun extends Fragment implements ValueChangeListener {
         }
     }
 
+
+    /**
+     * Applies entered value.
+     *
+     * @param run selected run as json string
+     */
+    @Override
+    public void applyRun(String run) {
+        try {
+            currentRunJson = run;
+            currentRun = Run.jsonToRun(run);
+            if (run.contains(ParameterType.DISTANCE.name())) {
+                inputParameter1 = ParameterType.DISTANCE;
+                inputParameter1EditText.setText(currentRun.getDistance(settings.getDistanceUnit()));
+                selectRunParameterButton(distanceButton, true);
+                if (run.contains(ParameterType.DURATION.name())) {
+                    inputParameter2 = ParameterType.DURATION;
+                    inputParameter2EditText.setText(currentRun.getDuration());
+                    selectRunParameterButton(durationButton, true);
+                } else if (run.contains(ParameterType.PACE.name())) {
+                    inputParameter2 = ParameterType.PACE;
+                    inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
+                    selectRunParameterButton(paceButton, true);
+                } else if (run.contains(ParameterType.SPEED.name())) {
+                    inputParameter2 = ParameterType.SPEED;
+                    inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    selectRunParameterButton(speedButton, true);
+                }
+            } else if (run.contains(ParameterType.DURATION.name())) {
+                inputParameter1 = ParameterType.DURATION;
+                inputParameter1EditText.setText(currentRun.getDuration());
+                selectRunParameterButton(durationButton, true);
+                if (run.contains(ParameterType.PACE.name())) {
+                    inputParameter2 = ParameterType.PACE;
+                    inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
+                    selectRunParameterButton(paceButton, true);
+                } else if (run.contains(ParameterType.SPEED.name())) {
+                    inputParameter2 = ParameterType.SPEED;
+                    inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    selectRunParameterButton(speedButton, true);
+                }
+            }
+            enableButtons();
+            updateInputArea();
+            updateResultArea();
+            calculateAndUpdateRun();
+        } catch (JSONException | CustomException ex) {
+            Log.e("error", ex.getMessage());
+        }
+    }
+
     // =============================================================================================
     // Result area
     // =============================================================================================
@@ -771,10 +815,10 @@ public class TabRun extends Fragment implements ValueChangeListener {
             public void onClick(View button) {
                 if (favoriteRuns.contains(currentRunJson)) {
                     favoriteRuns.remove(currentRunJson);
-                    Toast.makeText(getContext(), "Run removed from favorite list.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.run_removed), Toast.LENGTH_LONG).show();
                 } else {
                     favoriteRuns.add(currentRunJson);
-                    Toast.makeText(getContext(), "Run added from favorite list.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.run_added), Toast.LENGTH_LONG).show();
                 }
                 // save favorite runs
                 settings.setFavoriteRuns(favoriteRuns);
@@ -839,38 +883,4 @@ public class TabRun extends Fragment implements ValueChangeListener {
             }
         });
     }
-
-//    /**
-//     * Shows dialog, to load run from favorite list.
-//     */
-//    private void showOpenFavoriteDialog() {
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setTitle("Favorit laden");
-//        ArrayAdapter arrayAdapter = new ArrayAdapter<Run>(
-//                getContext(),
-//                android.R.layout.select_dialog_item, // Layout
-//                favoriteRuns
-//        );
-//        builder.setSingleChoiceItems(arrayAdapter,
-//                favoriteRuns.indexOf(currentRun),
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int i) {
-//                        try {
-//                            // Get the alert dialog selected item's text
-//                            currentRun = favoriteRuns.get(i);
-////                            updateRunOnGui();
-////                            checkFavoriteButton();
-//                            settings.setRun(currentRun);
-//                            dialog.cancel();
-//                        } catch (CustomException ex) {
-//                            Log.e(ex.getTitle(), ex.getMessage());
-//                            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//        AlertDialog alert = builder.create();
-//        alert.setCanceledOnTouchOutside(true);
-//        alert.show();
-//    }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.stappert.runulator.R;
+import com.stappert.runulator.dialogs.DistanceDialog;
+import com.stappert.runulator.dialogs.LoadRunDialog;
 import com.stappert.runulator.utils.SettingsManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -18,13 +20,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MainActivityTabAdapter mainActivityTabAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MainActivityTabAdapter mainActivityTabAdapter = new MainActivityTabAdapter(
-                getSupportFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,this);
+        mainActivityTabAdapter = new MainActivityTabAdapter(getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, this);
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(mainActivityTabAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_load_run:
-                Toast.makeText(this, "-->" + SettingsManager.getInstance().getFavoriteRunsJson().size(), Toast.LENGTH_LONG).show();
+                new LoadRunDialog(mainActivityTabAdapter.getTabRun())
+                        .show(this.getSupportFragmentManager(), getString(R.string.load_run));
                 return true;
             case R.id.menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -73,11 +77,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-//        try {
-//            initValues();
-//        } catch (CustomException ex) {
-//            Log.e(ex.getTitle(), ex.getMessage());
-//            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-//        }
     }
 }

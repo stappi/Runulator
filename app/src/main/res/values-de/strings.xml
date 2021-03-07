@@ -79,4 +79,9 @@
     <string name="enter_pace">Gib deine Pace an.</string>
     <string name="enter_run_time">Gib deine Laufzeit an.</string>
     <string name="load_run">Lauf laden</string>
+    <string name="load_run_msg">Wähle einen Lauf aus.</string>
+    <string name="in">in</string>
+    <string name="with">mit</string>
+    <string name="run_added">Lauf zu Favoriten hinzugefügt.</string>
+    <string name="run_removed">Lauf von Favoriten entfernt.</string>
 </resources>

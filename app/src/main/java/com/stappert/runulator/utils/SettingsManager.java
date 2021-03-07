@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,11 +34,6 @@ public class SettingsManager {
      * Single object of the settings manager.
      */
     private static final SettingsManager SETTINGS = new SettingsManager();
-
-    /**
-     * Context of this application.
-     */
-    private Context context;
 
     /**
      * Shared preferences, to store data.
@@ -70,7 +66,6 @@ public class SettingsManager {
      * @return settings manager
      */
     public SettingsManager init(Context context) {
-        this.context = context;
         this.sharedPreferences = Utils.getSharedPreferences(context);
         return SETTINGS;
     }
@@ -132,7 +127,7 @@ public class SettingsManager {
      * @return duration
      */
     public int getDuration() {
-        return sharedPreferences.getInt(KEY_DURATION, Run.HOUR);
+        return sharedPreferences.getInt(KEY_DURATION, Unit.HOUR_IN_SECONDS);
     }
 
     /**

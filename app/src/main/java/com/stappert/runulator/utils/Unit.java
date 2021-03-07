@@ -76,6 +76,22 @@ public enum Unit {
      */
     DEFAULT("", null);
 
+    // =============================================================================================
+    // constants
+    // =============================================================================================
+    /**
+     * One minute in seconds.
+     */
+    public final static int MINUTE_IN_SECONDS = 60;
+
+    /**
+     * One hour in seconds.
+     */
+    public final static int HOUR_IN_SECONDS = 60 * 60;
+
+    // =============================================================================================
+    // variables and constructor
+    // =============================================================================================
     /**
      * International symbol.
      */
@@ -96,6 +112,9 @@ public enum Unit {
         this.label = label;
     }
 
+    // =============================================================================================
+    // methods
+    // =============================================================================================
     /**
      * Returns the label.
      *
@@ -105,7 +124,6 @@ public enum Unit {
     public String getLabel(Context context) {
         return label != null ? Utils.getStringByIdName(context, label) : symbol;
     }
-
 
     /**
      * Converts the weight in kilogram. Rounds the value.
@@ -262,10 +280,10 @@ public enum Unit {
         float parsedPace = pace;
         switch (this) {
             case KM_H:
-                parsedPace = Run.HOUR / pace;
+                parsedPace = HOUR_IN_SECONDS / pace;
                 break;
             case MPH:
-                parsedPace = Run.HOUR / pace * 1.60934f;
+                parsedPace = HOUR_IN_SECONDS / pace * 1.60934f;
             case MIN_KM:
                 break;
             case MIN_MILE:
@@ -296,10 +314,10 @@ public enum Unit {
                 parsedSpeed = speedOrPace * 1.60934f;
                 break;
             case MIN_KM:
-                parsedSpeed = Run.HOUR / speedOrPace;
+                parsedSpeed = HOUR_IN_SECONDS / speedOrPace;
                 break;
             case MIN_MILE:
-                parsedSpeed = Run.HOUR / speedOrPace * 1.60934f;
+                parsedSpeed = HOUR_IN_SECONDS / speedOrPace * 1.60934f;
                 break;
             default:
                 throw new CustomException("error", "conversion from " + this.symbol + " to km/h is not supported");
@@ -326,10 +344,10 @@ public enum Unit {
                 parsedSpeed = speed / 1.60934f;
                 break;
             case MIN_KM:
-                parsedSpeed = Run.HOUR / speed;
+                parsedSpeed = HOUR_IN_SECONDS / speed;
                 break;
             case MIN_MILE:
-                parsedSpeed = Run.HOUR / speed * 1.60934f;
+                parsedSpeed = HOUR_IN_SECONDS / speed * 1.60934f;
                 break;
             default:
                 throw new CustomException("error", "conversion from " + this.symbol + " to km/h is not supported");
@@ -351,8 +369,14 @@ public enum Unit {
      *
      * @return value + symbol
      */
-    public String format(int value) {
-        return value + " " + symbol;
+    public String format(double value) {
+        switch (this) {
+            case MINUTE:
+            case HOUR:
+                return formatSeconds((int) value) + " " + (value >= HOUR_IN_SECONDS ? "h" : value > HOUR_IN_SECONDS ? "min" : "sec");
+            default:
+                return value + " " + symbol;
+        }
     }
 
     /**
@@ -380,5 +404,24 @@ public enum Unit {
      */
     public static List<Unit> getDistanceUnits() {
         return new ArrayList<>(Arrays.asList(KM, MILE));
+    }
+
+    /**
+     * Formats seconds to time hh:min:sec.
+     *
+     * @param totalSeconds seconds
+     * @return format time
+     */
+    public static String formatSeconds(int totalSeconds) {
+        if (totalSeconds <= 0) {
+            return "0";
+        } else {
+            int hours = totalSeconds / HOUR_IN_SECONDS;
+            int minutes = totalSeconds / MINUTE_IN_SECONDS % MINUTE_IN_SECONDS;
+            int seconds = totalSeconds % MINUTE_IN_SECONDS % MINUTE_IN_SECONDS;
+            return (hours > 0 ? hours + ":" : "")
+                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
+                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
+        }
     }
 }

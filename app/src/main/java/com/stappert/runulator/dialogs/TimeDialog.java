@@ -19,6 +19,7 @@ import com.stappert.runulator.R;
 import com.stappert.runulator.utils.CustomException;
 import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.ValueChangeListener;
 
 public class TimeDialog extends AppCompatDialogFragment {
@@ -159,7 +160,7 @@ public class TimeDialog extends AppCompatDialogFragment {
         hoursPicker = view.findViewById(R.id.hoursPicker);
         if (withHours) {
             hoursPicker.setMaxValue(23);
-            hoursPicker.setValue(seconds / Run.HOUR);
+            hoursPicker.setValue(seconds / Unit.HOUR_IN_SECONDS);
             hoursPicker.setMinValue(0);
         } else {
             ((LinearLayout) view.findViewById(R.id.timePickerLinearLayout)).removeView(hoursPicker);
@@ -167,7 +168,7 @@ public class TimeDialog extends AppCompatDialogFragment {
         // minutes
         minutesPicker = view.findViewById(R.id.minutesPicker);
         minutesPicker.setMaxValue(59);
-        minutesPicker.setValue(seconds % Run.HOUR / Run.MINUTE);
+        minutesPicker.setValue(seconds % Unit.HOUR_IN_SECONDS / Unit.MINUTE_IN_SECONDS);
         minutesPicker.setMinValue(0);
         if (withHours) {
             minutesPicker.setFormatter(new NumberPicker.Formatter() {
@@ -180,7 +181,7 @@ public class TimeDialog extends AppCompatDialogFragment {
         // seconds
         secondsPicker = view.findViewById(R.id.secondsPicker);
         secondsPicker.setMaxValue(59);
-        secondsPicker.setValue(seconds % Run.HOUR % Run.MINUTE);
+        secondsPicker.setValue(seconds % Unit.HOUR_IN_SECONDS % Unit.MINUTE_IN_SECONDS);
         secondsPicker.setMinValue(0);
         secondsPicker.setFormatter(new NumberPicker.Formatter() {
             @Override
