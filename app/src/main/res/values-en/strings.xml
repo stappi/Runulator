@@ -84,4 +84,5 @@
     <string name="with">with</string>
     <string name="run_added">Run added to favorite list.</string>
     <string name="run_removed">Run removed from favorite list.</string>
+    <string name="info_developer">My name is Michael and I am a software developer.\\nContact: stappi86@web.de</string>
 </resources>

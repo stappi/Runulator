@@ -554,53 +554,54 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
     /**
      * Applies entered value.
      *
-     * @param run selected run as json string
+     * @param runJson selected run as json string
      */
     @Override
-    public void applyRun(String run) {
+    public void applyRun(String runJson) {
         try {
-            currentRunJson = run;
-            currentRun = Run.jsonToRun(run);
-            if (run.contains(ParameterType.DISTANCE.name())) {
+            Run run = Run.jsonToRun(runJson);
+            if (runJson.contains(ParameterType.DISTANCE.name())) {
                 inputParameter1 = ParameterType.DISTANCE;
-                inputParameter1EditText.setText(currentRun.getDistance(settings.getDistanceUnit()));
+                inputParameter1EditText.setText(run.getDistance(settings.getDistanceUnit()));
                 selectRunParameterButton(distanceButton, true);
-                if (run.contains(ParameterType.DURATION.name())) {
+                if (runJson.contains(ParameterType.DURATION.name())) {
                     inputParameter2 = ParameterType.DURATION;
-                    inputParameter2EditText.setText(currentRun.getDuration());
+                    inputParameter2EditText.setText(run.getDuration());
                     selectRunParameterButton(durationButton, true);
                     selectRunParameterButton(paceButton, false);
                     selectRunParameterButton(speedButton, false);
-                } else if (run.contains(ParameterType.PACE.name())) {
+                } else if (runJson.contains(ParameterType.PACE.name())) {
                     inputParameter2 = ParameterType.PACE;
-                    inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
+                    inputParameter2EditText.setText(run.getPace(settings.getPaceUnit()));
                     selectRunParameterButton(durationButton, false);
                     selectRunParameterButton(paceButton, true);
                     selectRunParameterButton(speedButton, false);
-                } else if (run.contains(ParameterType.SPEED.name())) {
+                } else if (runJson.contains(ParameterType.SPEED.name())) {
                     inputParameter2 = ParameterType.SPEED;
-                    inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    inputParameter2EditText.setText(run.getSpeed(settings.getSpeedUnit()));
                     selectRunParameterButton(durationButton, false);
                     selectRunParameterButton(paceButton, false);
                     selectRunParameterButton(speedButton, true);
                 }
-            } else if (run.contains(ParameterType.DURATION.name())) {
+            } else if (runJson.contains(ParameterType.DURATION.name())) {
                 inputParameter1 = ParameterType.DURATION;
-                inputParameter1EditText.setText(currentRun.getDuration());
+                inputParameter1EditText.setText(run.getDuration());
                 selectRunParameterButton(durationButton, true);
                 selectRunParameterButton(distanceButton, false);
-                if (run.contains(ParameterType.PACE.name())) {
+                if (runJson.contains(ParameterType.PACE.name())) {
                     inputParameter2 = ParameterType.PACE;
-                    inputParameter2EditText.setText(currentRun.getPace(settings.getPaceUnit()));
+                    inputParameter2EditText.setText(run.getPace(settings.getPaceUnit()));
                     selectRunParameterButton(paceButton, true);
                     selectRunParameterButton(speedButton, false);
-                } else if (run.contains(ParameterType.SPEED.name())) {
+                } else if (runJson.contains(ParameterType.SPEED.name())) {
                     inputParameter2 = ParameterType.SPEED;
-                    inputParameter2EditText.setText(currentRun.getSpeed(settings.getSpeedUnit()));
+                    inputParameter2EditText.setText(run.getSpeed(settings.getSpeedUnit()));
                     selectRunParameterButton(paceButton, false);
                     selectRunParameterButton(speedButton, true);
                 }
             }
+            currentRun = run;
+            currentRunJson = run.toJson();
             enableButtons();
             updateInputArea();
             updateResultArea();
