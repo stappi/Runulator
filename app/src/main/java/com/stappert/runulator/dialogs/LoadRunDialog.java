@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,6 +81,7 @@ public class LoadRunDialog extends AppCompatDialogFragment {
      */
     private void createList(View view) {
         LinearLayout layout = view.findViewById(R.id.loadRunLayout);
+        layout.addView(createSeparator());
         // create and assign text views to according runs in map
         for (String runJson : settings.getFavoriteRunsJson()) {
             final TextView runTextView = createRunOption(runJson);
@@ -98,7 +101,7 @@ public class LoadRunDialog extends AppCompatDialogFragment {
         final TextView runTextView = new TextView(getContext());
         runTextView.setText(convertRunJsonToLabel(run));
         LinearLayout.LayoutParams layout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        layout.setMargins(75, 15, 25, 15);
+        layout.setMargins(75, 25, 25, 15);
         runTextView.setLayoutParams(layout);
         runTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +122,9 @@ public class LoadRunDialog extends AppCompatDialogFragment {
      */
     private View createSeparator() {
         View separator = new View(getContext());
-//        separator.setBackground(R.color.colorSeparator);
+        int dividerHeight = (int) getResources().getDisplayMetrics().density * 1;
+        separator.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dividerHeight));
+        separator.setBackgroundColor(getResources().getColor(R.color.colorSeparator, getContext().getTheme()));
         return separator;
     }
 
