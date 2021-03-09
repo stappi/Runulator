@@ -100,8 +100,9 @@ public class LoadRunDialog extends AppCompatDialogFragment {
     private TextView createRunOption(String run) {
         final TextView runTextView = new TextView(getContext());
         runTextView.setText(convertRunJsonToLabel(run));
-        LinearLayout.LayoutParams layout = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layout = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         layout.setMargins(75, 25, 25, 15);
+        runTextView.setTextSize(15);
         runTextView.setLayoutParams(layout);
         runTextView.setOnClickListener(new View.OnClickListener() {
             @Override
