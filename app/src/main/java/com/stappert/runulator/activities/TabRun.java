@@ -99,9 +99,9 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
     private TextView caloriesLabelTextView;
     private TextView caloriesValueTextView;
     private TextView caloriesUnitTextView;
-    private TextView stepFrequencyLabelTextView;
-    private TextView stepFrequencyValueTextView;
-    private TextView stepFrequencyUnitTextView;
+    private TextView cadenceCountLabelTextView;
+    private TextView cadenceCountValueTextView;
+    private TextView cadenceCountUnitTextView;
 
     /**
      * Favorite button.
@@ -236,7 +236,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
                 }
             }
             caloriesValueTextView.setText(currentRun.calculateCalories(settings.getWeightInKg()));
-            stepFrequencyValueTextView.setText("" + currentRun.calculateStepFrequency(settings.getHeightInCm()));
+            cadenceCountValueTextView.setText("" + currentRun.calculateCadenceCount(settings.getHeightInCm()));
             settings.setRun(currentRun);
             updateActiveFavoriteButton();
         }
@@ -622,7 +622,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         // get number of set input parameters
         final int noOfSetRunParameters = getNumberOfSetInputParameters();
 
-        // reset calories and step frequency
+        // reset calories and cadence count
         resetStaticResultParameters(noOfSetRunParameters == 2);
 
         // update temporary result parameters
@@ -673,7 +673,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
     }
 
     /**
-     * Resets calories and step frequency fields.
+     * Resets calories and cadence count fields.
      *
      * @param isEnabled is enabled of both input parameters are selected.
      */
@@ -683,11 +683,11 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         caloriesValueTextView.setText("-");
         caloriesValueTextView.setEnabled(isEnabled);
         caloriesUnitTextView.setEnabled(isEnabled);
-        // step frequency row
-        stepFrequencyLabelTextView.setEnabled(isEnabled);
-        stepFrequencyValueTextView.setText("-");
-        stepFrequencyValueTextView.setEnabled(isEnabled);
-        stepFrequencyUnitTextView.setEnabled(isEnabled);
+        // cadence count row
+        cadenceCountLabelTextView.setEnabled(isEnabled);
+        cadenceCountValueTextView.setText("-");
+        cadenceCountValueTextView.setEnabled(isEnabled);
+        cadenceCountUnitTextView.setEnabled(isEnabled);
     }
 
     /**
@@ -801,9 +801,9 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         caloriesLabelTextView = runView.findViewById(R.id.caloriesLabelTextView);
         caloriesValueTextView = runView.findViewById(R.id.caloriesValueTextView);
         caloriesUnitTextView = runView.findViewById(R.id.caloriesUnitTextView);
-        stepFrequencyLabelTextView = runView.findViewById(R.id.stepFrequencyLabelTextView);
-        stepFrequencyValueTextView = runView.findViewById(R.id.stepFrequencyValueTextView);
-        stepFrequencyUnitTextView = runView.findViewById(R.id.stepFrequencyUnitTextView);
+        cadenceCountLabelTextView = runView.findViewById(R.id.cadenceCountLabelTextView);
+        cadenceCountValueTextView = runView.findViewById(R.id.cadenceCountValueTextView);
+        cadenceCountUnitTextView = runView.findViewById(R.id.cadenceCountUnitTextView);
         // favorites
         favoriteRuns = new ArrayList<>(SettingsManager.getInstance().getFavoriteRunsJson());
         favoriteButton = runView.findViewById(R.id.favoriteButton);

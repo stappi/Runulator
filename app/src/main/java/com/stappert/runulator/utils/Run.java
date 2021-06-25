@@ -176,6 +176,7 @@ public class Run {
 
     /**
      * Creates a forecast run for the desired distance depending on the fatigue coefficient.
+     * https://www.laufhannes.de/wissenschaft/modelle-zur-wettkampfprognose/
      *
      * @param forecastDistance   distance for forecast
      * @param fatigueCoefficient fatigue coefficient
@@ -194,7 +195,7 @@ public class Run {
      * @param height height in cm
      * @return recommended step frequency per minute
      */
-    public int calculateStepFrequency(int height) throws CustomException {
+    public int calculateCadenceCount(int height) throws CustomException {
         if (100 < height && height < 272) {
             return (int) Math.ceil(160 + (speed - 6) * 2.5 - (height - 170) / 2);
         } else {

@@ -36,7 +36,7 @@
     <string name="height">Height</string>
     <string name="height_msg">Please enter your height.</string>
     <string name="bmi">BMI</string>
-    <string name="step_frequency">Step frequency</string>
+    <string name="cadence_count">Cadence count</string>
     <string name="steps_per_minute">Steps per minute</string>
     <string name="unit_of_length">Unit of length</string>
     <string name="mile">Mile</string>
@@ -90,7 +90,22 @@
     <string name="with">with</string>
     <string name="run_added">Run added to favorite list.</string>
     <string name="run_removed">Run removed from favorite list.</string>
-    <string name="info_developer">My name is Michael and I am a software developer.\\nContact: stappi86@web.de</string>
+    <string name="info_developer_1">My name is Michael and I am a software developer.</string>
+    <string name="info_calculation_1">To calculate a run, you have to specify two parameters. You can select distance, duration and pace or speed.</string>
+    <string name="info_calculation_2">You can select kilometers or miles in the settings.</string>
+    <string name="info_developer_2">Contact: stappi86@web.de</string>
+    <string name="info_forecast_1">The forecast is based on a fatigue coefficient according to Peter Riegel.</string>
+    <string name="info_forecast_2">The calculation is executed with formula t2 = t1 * (d2 / d1) ^ k.</string>
+    <string name="info_forecast_3">The parameters d1 and d2 describe the different distances, t1 and t2 the corresponding times and k a fatigue coefficient. This coefficient is typically given with values between k = 1.06 and k = 1.08. In Runulator the value is set to k = 1.0759.</string>
+    <string name="info_forecast_4">Source: https://www.laufhannes.de/wissenschaft/modelle-zur-wettkampfprognose</string>
+    <string name="info_cadence_count_1">Running smoothly is easy on the joints. Therefore, you should pay attention to your cadence. The step frequency is calculated depending on your speed and body size. (Formula: 160 + (speed - 6) * 2.5 - (height - 170) / 2)</string>
+    <string name="info_cadence_count_2">Source: https://www.matthias-marquardt.com/rechner/schrittfrequenz</string>
+    <string name="info_heartrate_1">For your training and physical fitness, you should be watching your heart rate and pulse.</string>
+    <string name="info_heartrate_2">Resting heart rate</string>
+    <string name="info_heartrate_3">The faster you return to your resting heart rate after your training, the better your physical condition.</string>
+    <string name="info_heartrate_4">Maximum heart rate</string>
+    <string name="info_heartrate_5">Your personal target heart rate is calculated using the simple formula: maximum heart rate = 220 - age.</string>
+    <string name="info_heartrate_6">The heart rate zones for burning fat, building stamina and training at maximum performance are calculated with a factor of 0.65, 0.75 or 0.85.</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

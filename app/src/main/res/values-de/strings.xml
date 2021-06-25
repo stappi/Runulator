@@ -30,7 +30,7 @@
     <string name="height">Körpergröße</string>
     <string name="height_msg">Bitte gib deine Körpergröße an.</string>
     <string name="bmi">BMI</string>
-    <string name="step_frequency">Schrittfrequenz</string>
+    <string name="cadence_count">Schrittfrequenz</string>
     <string name="steps_per_minute">Schritte / Minute</string>
     <string name="unit_of_length">Längeneinheit</string>
     <string name="mile">Meilen</string>
@@ -84,5 +84,20 @@
     <string name="with">mit</string>
     <string name="run_added">Lauf zu Favoriten hinzugefügt.</string>
     <string name="run_removed">Lauf von Favoriten entfernt.</string>
-    <string name="info_developer">Mein Name ist Michael und ich bin ein Softwareentwickler.\\nKontakt: stappi86@web.de</string>
+    <string name="info_developer_1">Mein Name ist Michael und ich bin ein Softwareentwickler.</string>
+    <string name="info_calculation_1">Für die Berechnung eines Laufs musst du zwei Parameter angeben. Dabei kannst du aus Distanz, Dauer und Pace oder Geschwindigkeit wählen.</string>
+    <string name="info_calculation_2">"Du kannst die Längeneinheit Kilometer oder Meile in den Einstellungen auswählen. "</string>
+    <string name="info_developer_2">Kontakt: stappi86@web.de</string>
+    <string name="info_forecast_1">Die Prognose wird mit einem Ermüdungskoeffizienten nach Peter Riegel.</string>
+    <string name="info_forecast_2">Die Berechnung wird mit der Formel t2 = t1 * (d2/ d1)^k durchgeführt.</string>
+    <string name="info_forecast_3">Dabei beschreiben d1 und d2 die verschiedenen Distanzen, t1 und t2 die entsprechenden Zeiten und k einen Ermüdungskoeffizienten. Dieser wird typischerweise mit Werten zwischen k = 1.06 und k = 1.08 angegeben. In Runulator ist der Wert auf k = 1.0759 festgelegt.</string>
+    <string name="info_forecast_4">Quelle: https://www.laufhannes.de/wissenschaft/modelle-zur-wettkampfprognose</string>
+    <string name="info_cadence_count_1">Flüssiges Laufen schont die Gelenke. Daher solltest du auf deine Schrittfrequenz achten. Die Schrittfrequenz wird in Abhängigkeit von deiner Geschwindigkeit und Körpergröße berechnet. (Formel: 160 + (Geschwindigkeit - 6) * 2,5 - (Körpergröße – 170) / 2)</string>
+    <string name="info_cadence_count_2">Quelle: https://www.matthias-marquardt.com/rechner/schrittfrequenz</string>
+    <string name="info_heartrate_1">Wenn es um Training und physische Fitness geht, solltest du wirklich auf deine Herzfrequenz bzw. deinen Puls achten.</string>
+    <string name="info_heartrate_2">Ruhepuls</string>
+    <string name="info_heartrate_3">Je schneller du nach einer Herz-Kreislauf-Aktivität zu deinem Ruhepuls zurückkehrst, desto besser ist deine körperliche Verfassung.</string>
+    <string name="info_heartrate_4">Maximale Herzfrequenz</string>
+    <string name="info_heartrate_5">Deine persönliche Ziel-Herzfrequenz wird mit der simplen Subtraktions-Gleichung: maximale Herzfrequenz = 220 – dein berechnet.</string>
+    <string name="info_heartrate_6">Die Herzfrequenzzonen für die Fettverbrennung, den Konditionsaufbau und das Training bei maximaler Leistung berechnet sich mit dem Faktor 0,65, 0,75 oder 0,85.</string>
 </resources>

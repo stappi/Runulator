@@ -59,21 +59,21 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/stepFrequencyTableRow"
+            android:id="@+id/cadenceCountTableRow"
             android:layout_marginTop="5dp">
 
             <TextView
-                android:id="@+id/stepFrequencyLabelTextView"
+                android:id="@+id/cadenceCountLabelTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
-                android:labelFor="@id/stepFrequencyValueTextView"
-                android:text="@string/step_frequency"
+                android:labelFor="@id/cadenceCountValueTextView"
+                android:text="@string/cadence_count"
                 android:textStyle="bold"
                 android:enabled="false" />
 
             <TextView
-                android:id="@+id/stepFrequencyValueTextView"
+                android:id="@+id/cadenceCountValueTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.20"
@@ -83,7 +83,7 @@
                 android:enabled="false"/>
 
             <TextView
-                android:id="@+id/stepFrequencyUnitTextView"
+                android:id="@+id/cadenceCountUnitTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
@@ -98,7 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
-                android:labelFor="@id/stepFrequencyValueTextView"
+                android:labelFor="@id/cadenceCountValueTextView"
                 android:text="@string/run_result_param_1"
                 android:textStyle="bold"
                 android:enabled="false"/>
@@ -129,7 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.45"
-                android:labelFor="@id/stepFrequencyValueTextView"
+                android:labelFor="@id/cadenceCountValueTextView"
                 android:text="@string/run_result_param_2"
                 android:textStyle="bold"
                 android:enabled="false"/>
