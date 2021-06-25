@@ -1,6 +1,7 @@
 package com.stappert.runulator;
 
 import com.stappert.runulator.utils.CustomException;
+import com.stappert.runulator.utils.Run;
 import com.stappert.runulator.utils.Unit;
 
 import org.junit.Assert;
@@ -8,10 +9,28 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class TestUnit {
+
+    /**
+     * One second.
+     */
+    private final static int SECOND = 1;
+
+    /**
+     * One minute.
+     */
+    private final static int MINUTE = 60 * SECOND;
+
+    /**
+     * One hour.
+     */
+    private final static int HOUR = 60 * MINUTE;
 
     /**
      * For expected exceptions.
@@ -225,6 +244,34 @@ public class TestUnit {
         faultyUnits.remove(Arrays.asList(Unit.KM_H, Unit.MPH, Unit.MIN_KM, Unit.MIN_MILE));
         for (Unit unit : faultyUnits) {
             unit.kmPerHourTo(10);
+        }
+    }
+
+    @Test
+    public void testFormatSeconds() {
+        try {
+            // Tests
+            assertEquals("0", Unit.formatSeconds(-1));
+            assertEquals("0", Unit.formatSeconds(0));
+            assertEquals("59", Unit.formatSeconds(MINUTE - SECOND));
+            assertEquals("1:00", Unit.formatSeconds(MINUTE));
+            assertEquals("1:01", Unit.formatSeconds(MINUTE + SECOND));
+            assertEquals("1:09", Unit.formatSeconds(MINUTE + 9 * SECOND));
+            assertEquals("1:10", Unit.formatSeconds(MINUTE + 10 * SECOND));
+            assertEquals("9:59", Unit.formatSeconds(10 * MINUTE - SECOND));
+            assertEquals("10:00", Unit.formatSeconds(10 * MINUTE));
+            assertEquals("10:01", Unit.formatSeconds(10 * MINUTE + SECOND));
+            assertEquals("59:59", Unit.formatSeconds(HOUR - SECOND));
+            assertEquals("1:00:00", Unit.formatSeconds(HOUR));
+            assertEquals("1:00:01", Unit.formatSeconds(HOUR + SECOND));
+            assertEquals("1:01:01", Unit.formatSeconds(HOUR + MINUTE + SECOND));
+            assertEquals("9:59:59", Unit.formatSeconds(10 * HOUR - SECOND));
+            assertEquals("10:00:00", Unit.formatSeconds(10 * HOUR));
+            assertEquals("10:00:01", Unit.formatSeconds(10 * HOUR + SECOND));
+            assertEquals("100:59:59", Unit.formatSeconds(101 * HOUR - SECOND));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
