@@ -1,212 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- ==== DISTANCE ===================================================================== -->
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/distanceTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/distance"
-            android:textSize="18dp" />
+        <!-- input parameters  -->
+        <include layout="@layout/tab_layout_run_input" />
 
-        <EditText
-            android:id="@+id/distanceEditTextNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
+        <!-- input parameters  -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
 
-        <ImageButton
-            android:id="@+id/resetDistanceButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_delete" />
+        <include layout="@layout/tab_layout_run_output" />
     </LinearLayout>
 
-    <!-- ==== DURATION ========================================================================= -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/durationTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/run_time"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/durationEditTextNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="time"
-            android:selectAllOnFocus="true" />
-
-        <ImageButton
-            android:id="@+id/resetDurationButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_delete" />
-    </LinearLayout>
-
-    <!-- ==== SPEED PER KM ===================================================================== -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/paceTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/pace"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/paceEditTextNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="time"
-            android:selectAllOnFocus="true" />
-
-        <ImageButton
-            android:id="@+id/resetPaceButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_delete" />
-    </LinearLayout>
-
-    <!-- ==== SPEED ============================================================================ -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/speedTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/speed"
-            android:textSize="18dp" />
-
-        <EditText
-            android:id="@+id/speedEditTextNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="true" />
-
-        <ImageButton
-            android:id="@+id/resetSpeedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_delete" />
-    </LinearLayout>
-
-    <!-- ==== CALCULATION ====================================================================== -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/calculateButton"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.5"
-            android:text="@string/calculate" />
-
-        <ImageButton
-            android:id="@+id/favoriteButton"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_favorite_add" />
-
-        <ImageButton
-            android:id="@+id/openButton"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.25"
-            android:src="@drawable/ic_open" />
-    </LinearLayout>
-
-    <!-- ==== INFORMATION ====================================================================== -->
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
-        android:orientation="horizontal"
-        android:layout_marginTop="25dp"
-        android:padding="10dp">
-
-        <TableRow>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/calories"
-                android:textSize="15dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/caloriesTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="-"
-                android:textSize="15dp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/step_frequency"
-                android:textSize="15dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/stepFrequencyTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="-"
-                android:textSize="15dp" />
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_round_button"
+        android:src="@drawable/ic_favorite_add" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

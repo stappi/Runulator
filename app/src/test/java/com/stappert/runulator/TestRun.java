@@ -1,7 +1,8 @@
 package com.stappert.runulator;
 
-import android.util.Log;
-import android.widget.Toast;
+import com.stappert.runulator.utils.CustomException;
+import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.utils.Unit;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -11,7 +12,6 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -182,7 +182,7 @@ public class TestRun {
     public void testCreateWithDistanceAndDuration() throws CustomException {
         // 10 km in 50 minutes
         Run run_1 = Run.createWithDistanceAndDuration(10, 50 * Run.MINUTE);
-        assertEquals("10.0", run_1.getDistance(Unit.KM));
+        assertEquals("10.0" , run_1.getDistance(Unit.KM));
         assertEquals("50:00", run_1.getDuration());
         assertEquals("5:00", run_1.getPace(Unit.MIN_KM));
         assertEquals("12.0", run_1.getSpeed(Unit.KM_H));
@@ -339,28 +339,28 @@ public class TestRun {
     }
 
     @Test
-    public void testCalculateStepFrequency() throws CustomException {
+    public void testCalculateCadenceCount() throws CustomException {
 
         // height 190 cm
-        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(190));
-        Assert.assertEquals(155, Run.createWithDistanceAndSpeed(10, 8).calculateStepFrequency(190));
-        Assert.assertEquals(158, Run.createWithDistanceAndSpeed(10, 9).calculateStepFrequency(190));
-        Assert.assertEquals(160, Run.createWithDistanceAndSpeed(10, 10).calculateStepFrequency(190));
-        Assert.assertEquals(163, Run.createWithDistanceAndSpeed(10, 11).calculateStepFrequency(190));
-        Assert.assertEquals(165, Run.createWithDistanceAndSpeed(10, 12).calculateStepFrequency(190));
-        Assert.assertEquals(168, Run.createWithDistanceAndSpeed(10, 13).calculateStepFrequency(190));
-        Assert.assertEquals(170, Run.createWithDistanceAndSpeed(10, 14).calculateStepFrequency(190));
-        Assert.assertEquals(173, Run.createWithDistanceAndSpeed(10, 15).calculateStepFrequency(190));
-        Assert.assertEquals(175, Run.createWithDistanceAndSpeed(10, 16).calculateStepFrequency(190));
-        Assert.assertEquals(178, Run.createWithDistanceAndSpeed(10, 17).calculateStepFrequency(190));
-        Assert.assertEquals(180, Run.createWithDistanceAndSpeed(10, 18).calculateStepFrequency(190));
-        Assert.assertEquals(183, Run.createWithDistanceAndSpeed(10, 19).calculateStepFrequency(190));
-        Assert.assertEquals(185, Run.createWithDistanceAndSpeed(10, 20).calculateStepFrequency(190));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateCadenceCount(190));
+        Assert.assertEquals(155, Run.createWithDistanceAndSpeed(10, 8).calculateCadenceCount(190));
+        Assert.assertEquals(158, Run.createWithDistanceAndSpeed(10, 9).calculateCadenceCount(190));
+        Assert.assertEquals(160, Run.createWithDistanceAndSpeed(10, 10).calculateCadenceCount(190));
+        Assert.assertEquals(163, Run.createWithDistanceAndSpeed(10, 11).calculateCadenceCount(190));
+        Assert.assertEquals(165, Run.createWithDistanceAndSpeed(10, 12).calculateCadenceCount(190));
+        Assert.assertEquals(168, Run.createWithDistanceAndSpeed(10, 13).calculateCadenceCount(190));
+        Assert.assertEquals(170, Run.createWithDistanceAndSpeed(10, 14).calculateCadenceCount(190));
+        Assert.assertEquals(173, Run.createWithDistanceAndSpeed(10, 15).calculateCadenceCount(190));
+        Assert.assertEquals(175, Run.createWithDistanceAndSpeed(10, 16).calculateCadenceCount(190));
+        Assert.assertEquals(178, Run.createWithDistanceAndSpeed(10, 17).calculateCadenceCount(190));
+        Assert.assertEquals(180, Run.createWithDistanceAndSpeed(10, 18).calculateCadenceCount(190));
+        Assert.assertEquals(183, Run.createWithDistanceAndSpeed(10, 19).calculateCadenceCount(190));
+        Assert.assertEquals(185, Run.createWithDistanceAndSpeed(10, 20).calculateCadenceCount(190));
 
         // expect exceptions with faulty values
         exception.expect(CustomException.class);
-        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(-1));
-        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(0));
-        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateStepFrequency(272));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateCadenceCount(-1));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateCadenceCount(0));
+        Assert.assertEquals(153, Run.createWithDistanceAndSpeed(10, 7).calculateCadenceCount(272));
     }
 }

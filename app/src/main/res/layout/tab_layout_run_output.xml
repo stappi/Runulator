@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/run_result"
+        android:textSize="14sp"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"/>
+
+    <TableLayout
+        android:id="@+id/runOutputTableLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TableRow
+            android:id="@+id/caloriesTableRow"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/caloriesLabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/caloriesValueTextView"
+                android:text="@string/calories"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/caloriesValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textSize="15sp"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false" />
+
+            <TextView
+                android:id="@+id/caloriesUnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text="kcal"
+                android:textSize="15sp"
+                android:enabled="false" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/cadenceCountTableRow"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/cadenceCountLabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/cadenceCountValueTextView"
+                android:text="@string/cadence_count"
+                android:textStyle="bold"
+                android:enabled="false" />
+
+            <TextView
+                android:id="@+id/cadenceCountValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/cadenceCountUnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text="@string/steps_per_minute"
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/resultParameter1LabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/cadenceCountValueTextView"
+                android:text="@string/run_result_param_1"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter1ValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter1UnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text=""
+                android:enabled="false"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/resultParameter2LabelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.45"
+                android:labelFor="@id/cadenceCountValueTextView"
+                android:text="@string/run_result_param_2"
+                android:textStyle="bold"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter2ValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:text="-"
+                android:textAlignment="textEnd"
+                android:paddingRight="5dp"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/resultParameter2UnitTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:text=""
+                android:enabled="false"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

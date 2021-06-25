@@ -1,8 +1,12 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import androidx.preference.Preference;
 
@@ -52,5 +56,38 @@ public class Utils {
             age--;
         }
         return age;
+    }
+
+    /**
+     * Converts the drawable to bitmap.
+     *
+     * @param drawable drawable
+     * @return bitmap
+     */
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
+    /**
+     * Converts dp in to pixels.
+     *
+     * @param context context of this application
+     * @param dp      dp
+     * @return pixel
+     */
+    public static int dp2Pixel(Context context, int dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

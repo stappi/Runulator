@@ -1,9 +1,10 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,16 +28,12 @@ public class SettingsManager {
     private static String KEY_HEIGHT = "height";
     private static String KEY_HEIGHT_UNIT = "height_unit";
     private static String KEY_BIRTHDAY = "birthday";
+    private static String KEY_IS_DIALOG_INPUT = "isDialogInput";
 
     /**
      * Single object of the settings manager.
      */
     private static final SettingsManager SETTINGS = new SettingsManager();
-
-    /**
-     * Context of this application.
-     */
-    private Context context;
 
     /**
      * Shared preferences, to store data.
@@ -69,7 +66,6 @@ public class SettingsManager {
      * @return settings manager
      */
     public SettingsManager init(Context context) {
-        this.context = context;
         this.sharedPreferences = Utils.getSharedPreferences(context);
         return SETTINGS;
     }
@@ -131,7 +127,7 @@ public class SettingsManager {
      * @return duration
      */
     public int getDuration() {
-        return sharedPreferences.getInt(KEY_DURATION, Run.HOUR);
+        return sharedPreferences.getInt(KEY_DURATION, Unit.HOUR_IN_SECONDS);
     }
 
     /**
@@ -266,7 +262,7 @@ public class SettingsManager {
     }
 
     /**
-     * Returns the favorite runs.
+     * Returns the favorite runs as json strings.
      *
      * @return favorite runs
      */
@@ -275,12 +271,21 @@ public class SettingsManager {
     }
 
     /**
+     * Returns the favorite runs as json strings.
+     *
+     * @return favorite runs
+     */
+    public Set<String> getFavoriteRunsJson() {
+        return sharedPreferences.getStringSet(KEY_RUNS, new HashSet<String>());
+    }
+
+    /**
      * Stores the favorite runs.
      *
      * @param favoriteRuns favorite runs
      */
-    public void setFavoriteRuns(List<Run> favoriteRuns) {
-        saveValue(KEY_RUNS, Run.runsToJson(favoriteRuns));
+    public void setFavoriteRuns(List<String> favoriteRuns) {
+        saveValue(KEY_RUNS, new HashSet<>(favoriteRuns));
     }
 
     /**
@@ -361,6 +366,7 @@ public class SettingsManager {
 
     /**
      * Returns the birthday.
+     *
      * @return birthday
      */
     public long getBirthday() {
@@ -376,6 +382,24 @@ public class SettingsManager {
     public void setHeight(int height, Unit unit) {
         saveValue(KEY_HEIGHT, height);
         saveValue(KEY_HEIGHT_UNIT, unit.name());
+    }
+
+    /**
+     * Returns flag, if dialog input is selected or direct input.
+     *
+     * @return true, if dialog input is selected
+     */
+    public boolean isDialogInput() {
+        return sharedPreferences.getBoolean(KEY_IS_DIALOG_INPUT, true);
+    }
+
+    /**
+     * Sets the flag, if dialog input is selected or direct input.
+     *
+     * @param isDialogInput true, if dialog input is selected or false, if direct input
+     */
+    public void setIsDialogInput(boolean isDialogInput) {
+        saveValue(KEY_IS_DIALOG_INPUT, isDialogInput);
     }
 
     /**

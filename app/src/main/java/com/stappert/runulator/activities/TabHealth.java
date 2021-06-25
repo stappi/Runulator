@@ -1,26 +1,22 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
-import android.content.DialogInterface;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import java.util.List;
+import com.stappert.runulator.R;
+import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.utils.Utils;
+
 import java.util.Locale;
 
 /**
@@ -30,11 +26,14 @@ public class TabHealth extends Fragment {
 
     // Elements
     private View healthView;
+    private TextView ageTextView;
+    private TextView heightTextView;
+    private TextView weightTextView;
+    private TextView bmiTextView;
     private TextView heartRateMaxTextView;
     private TextView heartRateFatBurningTextView;
     private TextView heartRateConditionBuildingTextView;
     private TextView heartRateMaxPerformanceTextView;
-    private TextView bmiTextView;
 
     /**
      * Settings manager.
@@ -75,6 +74,9 @@ public class TabHealth extends Fragment {
      */
     private void updateHealthData() {
         try {
+            ageTextView.setText(Utils.calculateAge(settings.getBirthday()) + " " + getString(R.string.years));
+            heightTextView.setText(settings.getHeight() + " " + settings.getHeightUnit().toString());
+            weightTextView.setText(settings.getWeight() + " " + settings.getWeightUnit().toString());
             bmiTextView.setText(String.format(Locale.ENGLISH, "%.2f", Run.calculateBMI(
                     settings.getWeightUnit().toKg(settings.getWeight()),
                     settings.getHeightUnit().toCm(settings.getHeight()))));
@@ -93,10 +95,13 @@ public class TabHealth extends Fragment {
      * Initializes gui elements.
      */
     private void initElements() {
+        ageTextView = healthView.findViewById(R.id.ageTextView);
+        heightTextView = healthView.findViewById(R.id.heightTextView);
+        weightTextView = healthView.findViewById(R.id.weightTextView);
+        bmiTextView = healthView.findViewById(R.id.bmiTextView);
         heartRateMaxTextView = healthView.findViewById(R.id.heartRateMaxTextView);
         heartRateFatBurningTextView = healthView.findViewById(R.id.heartRateFatBurningTextView);
         heartRateConditionBuildingTextView = healthView.findViewById(R.id.heartRateConditionBuildingTextView);
         heartRateMaxPerformanceTextView = healthView.findViewById(R.id.heartRateMaxPerformanceTextView);
-        bmiTextView = healthView.findViewById(R.id.bmiTextView);
     }
 }

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/general"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_text"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"s
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/calculate"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_calculation_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_calculation_2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/forecast"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_forecast_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_forecast_2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_forecast_3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_forecast_4" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/heart_rate"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_4"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_5" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_heartrate_6" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/cadence_count"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_cadence_count_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_cadence_count_2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Developer"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_developer_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/info_developer_2" />
+
+    </LinearLayout>
+</ScrollView>

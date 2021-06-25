@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.content.Context;
 
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.stappert.runulator.R;
+
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
@@ -17,6 +19,11 @@ public class MainActivityTabAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast, R.string.tab_health};
+
+    /**
+     * Tab run.
+     */
+    private final TabRun tabRun = new TabRun();
 
     private final Context mContext;
 
@@ -28,11 +35,18 @@ public class MainActivityTabAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return new TabRun();
-            case 1: return new TabForecast();
-            case 2: return new TabHealth();
+            case 0:
+                return tabRun;
+            case 1:
+                return new TabForecast();
+            case 2:
+                return new TabHealth();
         }
         return null;
+    }
+
+    public TabRun getTabRun() {
+        return tabRun;
     }
 
     @Nullable

@@ -30,13 +30,13 @@
     <string name="no">No</string>
     <string name="weight_msg">Please enter your weight.</string>
     <string name="ok">Ok</string>
-    <string name="enter_value_fail">Due to an issue the weight could not be updated.</string>
+    <string name="enter_value_fail">Due to an issue the value could not be updated.</string>
     <string name="tab_run">Run</string>
     <string name="tab_forecast">Forecast</string>
     <string name="height">Height</string>
     <string name="height_msg">Please enter your height.</string>
     <string name="bmi">BMI</string>
-    <string name="step_frequency">Step frequency</string>
+    <string name="cadence_count">Cadence count</string>
     <string name="steps_per_minute">Steps per minute</string>
     <string name="unit_of_length">Unit of length</string>
     <string name="mile">Mile</string>
@@ -59,4 +59,53 @@
     <string name="heart_rate_maximal_performance">Maximal performance</string>
     <string name="tab_health">Health</string>
     <string name="heart_rate">Heart Rate</string>
+    <string name="run_parameter_1">Run parameter 1</string>
+    <string name="run_parameter_2">Run parameter 2</string>
+    <string name="unit">Unit</string>
+    <string name="input_info_select_please_one">Select a second run parameter.</string>
+    <string name="input_info_select_please_two">Select two run parameters.</string>
+    <string name="run_value_1">Run value 1</string>
+    <string name="run_value_2">Run value 2</string>
+    <string name="input_info_enter_values">Please enter values to calculate the run.</string>
+    <string name="unknown">-</string>
+    <string name="run_result">Run result</string>
+    <string name="input">Input</string>
+    <string name="further">Further</string>
+    <string name="age">Age</string>
+    <string name="general">General</string>
+    <string name="marathon">Marathon</string>
+    <string name="half_marathon">Half marathon</string>
+    <string name="enter_distance">Please enter your run distance.</string>
+    <string name="enter_distance_fail">Due to an issue the distance can be updated.</string>
+    <string name="type_of_input">Type of input</string>
+    <string name="type_of_input_info">To enter run parameters decide between input via dialog or directly.</string>
+    <string name="run_result_param_1">Result parameter 1</string>
+    <string name="run_result_param_2">Result parameter 2</string>
+    <string name="enter_speed">Please enter a your speed.</string>
+    <string name="enter_pace">Please enter a your pace.</string>
+    <string name="enter_run_time">Please enter your run time.</string>
+    <string name="load_run">Load Run</string>
+    <string name="load_run_msg">Select a run.</string>
+    <string name="in">in</string>
+    <string name="with">with</string>
+    <string name="run_added">Run added to favorite list.</string>
+    <string name="run_removed">Run removed from favorite list.</string>
+    <string name="info_developer_1">My name is Michael and I am a software developer.</string>
+    <string name="info_calculation_1">To calculate a run, you have to specify two parameters. You can select distance, duration and pace or speed.</string>
+    <string name="info_calculation_2">You can select kilometers or miles in the settings.</string>
+    <string name="info_developer_2">Contact: stappi86@web.de</string>
+    <string name="info_forecast_1">The forecast is based on a fatigue coefficient according to Peter Riegel.</string>
+    <string name="info_forecast_2">The calculation is executed with formula t2 = t1 * (d2 / d1) ^ k.</string>
+    <string name="info_forecast_3">The parameters d1 and d2 describe the different distances, t1 and t2 the corresponding times and k a fatigue coefficient. This coefficient is typically given with values between k = 1.06 and k = 1.08. In Runulator the value is set to k = 1.0759.</string>
+    <string name="info_forecast_4">Source: https://www.laufhannes.de/wissenschaft/modelle-zur-wettkampfprognose</string>
+    <string name="info_cadence_count_1">Running smoothly is easy on the joints. Therefore, you should pay attention to your cadence. The step frequency is calculated depending on your speed and body size. (Formula: 160 + (speed - 6) * 2.5 - (height - 170) / 2)</string>
+    <string name="info_cadence_count_2">Source: https://www.matthias-marquardt.com/rechner/schrittfrequenz</string>
+    <string name="info_heartrate_1">For your training and physical fitness, you should be watching your heart rate and pulse.</string>
+    <string name="info_heartrate_2">Resting heart rate</string>
+    <string name="info_heartrate_3">The faster you return to your resting heart rate after your training, the better your physical condition.</string>
+    <string name="info_heartrate_4">Maximum heart rate</string>
+    <string name="info_heartrate_5">Your personal target heart rate is calculated using the simple formula: maximum heart rate = 220 - age.</string>
+    <string name="info_heartrate_6">The heart rate zones for burning fat, building stamina and training at maximum performance are calculated with a factor of 0.65, 0.75 or 0.85.</string>
+    <!-- Strings used for fragments for navigation -->
+
 </resources>

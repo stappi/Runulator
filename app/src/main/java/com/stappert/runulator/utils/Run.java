@@ -1,4 +1,4 @@
-package com.stappert.runulator;
+package com.stappert.runulator.utils;
 
 import android.util.Log;
 
@@ -22,39 +22,14 @@ public class Run {
     // time units
     // =============================================================================================
     /**
-     * One second.
+     * Distance for half marathon.
      */
-    public final static int SECOND = 1;
+    public final static float HALF_MARATHON = 21.0975f;
 
     /**
-     * One minute in seconds.
+     * Distance for marathon.
      */
-    public final static int MINUTE = 60;
-
-    /**
-     * One hour in seconds.
-     */
-    public final static int HOUR = 60 * 60;
-
-    // =============================================================================================
-    // json keys
-    // =============================================================================================
-    /**
-     * Key 'distance' to parse in/from json.
-     */
-    public final static String JSON_KEY_DISTANCE = "distance";
-    /**
-     * Key 'duration' to parse in/from json.
-     */
-    public final static String JSON_KEY_DURATION = "duration";
-    /**
-     * Key 'pace' to parse in/from json.
-     */
-    public final static String JSON_KEY_PACE = "pace";
-    /**
-     * Key 'speed' to parse in/from json.
-     */
-    public final static String JSON_KEY_SPEED = "speed";
+    public final static float MARATHON = 42.195f;
 
     // =============================================================================================
     // class variables
@@ -129,7 +104,7 @@ public class Run {
      * @return duration
      */
     public String getDuration() {
-        return secondsToString(duration);
+        return Unit.formatSeconds(duration);
     }
 
     /**
@@ -150,7 +125,7 @@ public class Run {
      * @throws CustomException if conversion to desired unit is not possible
      */
     public String getPace(Unit unit) throws CustomException {
-        return secondsToString(getPaceAsNumber(unit));
+        return Unit.formatSeconds(getPaceAsNumber(unit));
     }
 
     /**
@@ -195,12 +170,13 @@ public class Run {
      * @param weight in kg
      * @return
      */
-    public String getCalories(int weight) {
-        return "~" + (int) (distance * weight * 0.9f) + " kcal";
+    public String calculateCalories(int weight) {
+        return "~" + (int) (distance * weight * 0.9f);
     }
 
     /**
      * Creates a forecast run for the desired distance depending on the fatigue coefficient.
+     * https://www.laufhannes.de/wissenschaft/modelle-zur-wettkampfprognose/
      *
      * @param forecastDistance   distance for forecast
      * @param fatigueCoefficient fatigue coefficient
@@ -219,7 +195,7 @@ public class Run {
      * @param height height in cm
      * @return recommended step frequency per minute
      */
-    public int calculateStepFrequency(int height) throws CustomException {
+    public int calculateCadenceCount(int height) throws CustomException {
         if (100 < height && height < 272) {
             return (int) Math.ceil(160 + (speed - 6) * 2.5 - (height - 170) / 2);
         } else {
@@ -264,7 +240,7 @@ public class Run {
     public String toString() {
         try {
             return getDistance(Unit.KM) + "KM in "
-                    + getDuration() + (duration >= HOUR ? "h" : duration >= MINUTE ? "min" : "sec") + "\n("
+                    + Unit.HOUR.format(duration) + "\n("
                     + getPace(Unit.MIN_KM) + "min/km; "
                     + getSpeed(Unit.KM_H) + "km/h)";
         } catch (CustomException ex) {
@@ -278,35 +254,11 @@ public class Run {
      * @return run as json string
      */
     public String toJson() {
-        return "{" + "\'" + JSON_KEY_DISTANCE + "\':" + distance + ","
-                + "\'" + JSON_KEY_DURATION + "\':" + duration + ","
-                + "\'" + JSON_KEY_PACE + "\':" + pace + ","
-                + "\'" + JSON_KEY_SPEED + "\':" + speed + "}";
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
-
-    // =============================================================================================
-    // private functions
-    // =============================================================================================
-
-    /**
-     * Converts the given seconds in hh:mm:ss (h = hour, m = minute, s = second).
-     *
-     * @param totalSeconds time in seconds
-     * @return total seconds in hh:mm:ss
-     */
-    private String secondsToString(int totalSeconds) {
-        if (totalSeconds <= 0) {
-            return "0";
-        } else {
-            int hours = totalSeconds / HOUR;
-            int minutes = totalSeconds / MINUTE % MINUTE;
-            int seconds = totalSeconds % MINUTE % MINUTE;
-            return (hours > 0 ? hours + ":" : "")
-                    + (hours > 0 && 10 > minutes ? "0" + minutes + ":" : minutes > 0 ? minutes + ":" : "")
-                    + (hours + minutes > 0 && 10 > seconds ? "0" + seconds : seconds);
-        }
-    }
-
     // =============================================================================================
     // create runs depending on parameters
     // =============================================================================================
@@ -325,8 +277,25 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         int pace = Math.round(duration / distance);
-        float speed = distance * HOUR / duration;
+        float speed = distance * Unit.HOUR_IN_SECONDS / duration;
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and duration in seconds.
+     *
+     * @param distance in km
+     * @param duration in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndDuration(float distance, int duration)
+            throws CustomException {
+        if (distance <= 0 || duration <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.DURATION.name() + "\':" + duration + "}";
     }
 
     /**
@@ -343,8 +312,25 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         int duration = Math.round(distance * pace);
-        float speed = (float) HOUR / pace;
+        float speed = (float) Unit.HOUR_IN_SECONDS / pace;
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and pace in seconds.
+     *
+     * @param distance in km
+     * @param pace     in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndPace(float distance, int pace)
+            throws CustomException {
+        if (distance <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + "}";
     }
 
     /**
@@ -360,9 +346,26 @@ public class Run {
         if (distance <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        int duration = Math.round(distance / speed * HOUR);
-        int pace = Math.round(HOUR / speed);
+        int duration = Math.round(distance / speed * Unit.HOUR_IN_SECONDS);
+        int pace = Math.round(Unit.HOUR_IN_SECONDS / speed);
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on distance in km and speed in km/h.
+     *
+     * @param distance in km
+     * @param speed    in km/h
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDistanceAndSpeed(float distance, float speed)
+            throws CustomException {
+        if (distance <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + ParameterType.DISTANCE.name() + "\':" + distance + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
 
     /**
@@ -379,8 +382,25 @@ public class Run {
             throw new CustomException("Error", "values must be greater than 0");
         }
         float distance = 1.0f * duration / pace;
-        float speed = (float) HOUR / pace;
+        float speed = (float) Unit.HOUR_IN_SECONDS / pace;
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on duration in seconds and pace in seconds.
+     *
+     * @param duration in seconds
+     * @param pace     in seconds
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDurationAndPace(int duration, int pace)
+            throws CustomException {
+        if (duration <= 0 || pace <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.PACE.name() + "\':" + pace + "}";
     }
 
     /**
@@ -396,9 +416,26 @@ public class Run {
         if (duration <= 0 || speed <= 0) {
             throw new CustomException("Error", "values must be greater than 0");
         }
-        float distance = duration * speed / HOUR;
-        int pace = Math.round(HOUR / speed);
+        float distance = duration * speed / Unit.HOUR_IN_SECONDS;
+        int pace = Math.round(Unit.HOUR_IN_SECONDS / speed);
         return new Run(distance, duration, pace, speed);
+    }
+
+    /**
+     * Creates a run depending on duration in seconds and speed in km/h.
+     *
+     * @param duration in seconds
+     * @param speed    in km/h
+     * @return run
+     * @throws CustomException if parameters are not greater than 0
+     */
+    public static String jsonWithDurationAndSpeed(int duration, float speed)
+            throws CustomException {
+        if (duration <= 0 || speed <= 0) {
+            throw new CustomException("Error", "values must be greater than 0");
+        }
+        return "{" + "\'" + ParameterType.DURATION.name() + "\':" + duration + ","
+                + "\'" + ParameterType.SPEED.name() + "\':" + speed + "}";
     }
 
     /**
@@ -411,19 +448,42 @@ public class Run {
         List<Run> runs = new ArrayList<>();
         try {
             for (String runJsonString : runsJson) {
-                JSONObject runJson = new JSONObject(runJsonString);
-                runs.add(new Run(
-                        (float) runJson.getDouble(Run.JSON_KEY_DISTANCE),
-                        runJson.getInt(Run.JSON_KEY_DURATION),
-                        runJson.getInt(Run.JSON_KEY_PACE),
-                        (float) runJson.getDouble(Run.JSON_KEY_SPEED)
-                ));
+                runs.add(jsonToRun(runJsonString));
             }
-        } catch (JSONException ex) {
+        } catch (JSONException | CustomException ex) {
             Log.e("Error", ex.getMessage());
         }
         return runs;
     }
+
+    /**
+     * Converts a list of run as json strings to run objects.
+     *
+     * @param runJsonString run as json string
+     * @return list of run objects
+     */
+    public static Run jsonToRun(String runJsonString) throws JSONException, CustomException {
+        JSONObject runJson = new JSONObject(runJsonString);
+        if (runJson.has(ParameterType.DISTANCE.name())) {
+            final float distance = (float) runJson.getDouble(ParameterType.DISTANCE.name());
+            if (runJson.has(ParameterType.DURATION.name())) {
+                return Run.createWithDistanceAndDuration(distance, runJson.getInt(ParameterType.DURATION.name()));
+            } else if (runJson.has(ParameterType.PACE.name())) {
+                return Run.createWithDistanceAndPace(distance, runJson.getInt(ParameterType.PACE.name()));
+            } else if (runJson.has(ParameterType.SPEED.name())) {
+                return Run.createWithDistanceAndSpeed(distance, (float) runJson.getDouble(ParameterType.SPEED.name()));
+            }
+        } else if (runJson.has(ParameterType.DURATION.name())) {
+            final int duration = runJson.getInt(ParameterType.DURATION.name());
+            if (runJson.has(ParameterType.PACE.name())) {
+                return Run.createWithDurationAndPace(duration, runJson.getInt(ParameterType.PACE.name()));
+            } else if (runJson.has(ParameterType.SPEED.name())) {
+                return Run.createWithDurationAndSpeed(duration, (float) runJson.getDouble(ParameterType.SPEED.name()));
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Converts a collection of run objects to a set of runs as json strings.
@@ -467,6 +527,7 @@ public class Run {
      * @throws Exception if input cannot convert to number
      */
     public static int parseTimeInSeconds(String time) throws CustomException {
+        time = time == null || time.isEmpty() ? "0" : time;
         try {
             int duration = 0;
             String[] timeSegments = time.split(":");

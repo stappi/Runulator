@@ -1,9 +1,8 @@
-package com.stappert.runulator;
+package com.stappert.runulator.activities;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.stappert.runulator.R;
+import com.stappert.runulator.utils.SettingsManager;
+import com.stappert.runulator.utils.CustomException;
+import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.utils.Unit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -88,7 +89,7 @@ public class TabForecast extends Fragment {
             for (int i = 0; i < distances.size(); i++) {
                 TableRow forecast = createForecast(
                         run.getForecastRun(distances.get(i), 1.0759f),
-                        i % 2 == 0 ? Color.LTGRAY : Color.TRANSPARENT);
+                        i % 2 == 0 ? getContext().getColor(R.color.colorSeparator) : Color.TRANSPARENT);
                 forecastTable.addView(forecast, new TableLayout.LayoutParams(
                         TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
@@ -105,9 +106,9 @@ public class TabForecast extends Fragment {
      */
     private List<Float> createDistanceList() {
         SortedSet distances = new TreeSet();
-        distances.addAll(Arrays.asList(5f, 10f, 21.0975f, 42.195f, settings.getDistance()));
+        distances.addAll(Arrays.asList(5f, 10f, Run.HALF_MARATHON, Run.MARATHON, settings.getDistance()));
         try {
-            for (int i = 0; i < settings.getFavoriteRuns().size(); i++) {
+            for (int i = 0; i < settings.getFavoriteRunsJson().size(); i++) {
                 distances.add(settings.getFavoriteRuns().get(i).getDistanceAsNumber(Unit.KM));
             }
         } catch (CustomException ex) {
