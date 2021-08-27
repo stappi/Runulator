@@ -501,6 +501,15 @@ public class Run {
         return runsJson;
     }
 
+    /**
+     * Creates a default run with 10 km in 50 minutes.
+     *
+     * @return default run
+     */
+    public static Run defaultRun() throws CustomException {
+        return Run.createWithDistanceAndDuration(10, 50 * 60);
+    }
+
     // =============================================================================================
     // utility functions
     // =============================================================================================

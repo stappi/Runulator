@@ -2,9 +2,9 @@ package com.stappert.runulator.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +22,7 @@ public class SettingsManager {
     private static String KEY_PACE = "pace";
     private static String KEY_SPEED_UNIT = "speed_unit";
     private static String KEY_SPEED = "speed";
+    private static String KEY_RUN = "run";
     private static String KEY_RUNS = "runs";
     private static String KEY_WEIGHT = "weight";
     private static String KEY_WEIGHT_UNIT = "weight_unit";
@@ -238,14 +239,23 @@ public class SettingsManager {
      * will be returned.
      *
      * @return run
+     */
+    public String getRunJson() throws CustomException {
+        return sharedPreferences.getString(KEY_RUN, Run.defaultRun().toJson());
+    }
+
+    /**
+     * Returns the last calculated run. If no run is available, a default run (10 km, 60 minutes)
+     * will be returned.
+     *
+     * @return run
      * @throws CustomException if run can not be created
      */
     public Run getRun() throws CustomException {
         try {
-            return Run.createWithDistanceAndDuration(getDistance(), getDuration());
-        } catch (Exception ex) {
-            Log.e("error", ex.getMessage());
-            return Run.createWithDistanceAndDuration(10, 55 * 60);
+        return Run.jsonToRun(getRunJson());
+    } catch (JSONException ex) {
+            return Run.defaultRun();
         }
     }
 
@@ -256,9 +266,8 @@ public class SettingsManager {
      * @return run
      * @throws CustomException if run can not be created
      */
-    public void setRun(Run run) throws CustomException {
-        setDistance(run.getDistanceAsNumber(Unit.KM));
-        setDuration(run.getDurationAsNumber());
+    public void setRun(String run) throws CustomException {
+        saveValue(KEY_RUN, run);
     }
 
     /**

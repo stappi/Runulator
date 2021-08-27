@@ -155,7 +155,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
             settings = SettingsManager.getInstance().init(getContext());
             initElements();
             initListener();
-            currentRun = settings.getRun();
+            applyRun(settings.getRunJson());
             updateInputArea();
         } catch (CustomException ex) {
             Log.e(ex.getTitle(), ex.getMessage());
@@ -237,7 +237,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
             }
             caloriesValueTextView.setText(currentRun.calculateCalories(settings.getWeightInKg()));
             cadenceCountValueTextView.setText("" + currentRun.calculateCadenceCount(settings.getHeightInCm()));
-            settings.setRun(currentRun);
+            settings.setRun(currentRunJson);
             updateActiveFavoriteButton();
         }
     }
