@@ -125,7 +125,9 @@ public class Run {
      * @throws CustomException if conversion to desired unit is not possible
      */
     public String getPace(Unit unit) throws CustomException {
-        return Unit.formatSeconds(getPaceAsNumber(unit));
+        String paceString = Unit.formatSeconds(getPaceAsNumber(unit));
+        return paceString.length() == 1 ? "00:0" + paceString
+                : paceString.length() == 2 ? "00:" + paceString : paceString;
     }
 
     /**
