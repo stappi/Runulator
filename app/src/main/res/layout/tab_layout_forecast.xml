@@ -15,4 +15,13 @@
         android:orientation="horizontal"
         android:stretchColumns="0,1,2"
         android:scrollHorizontally="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/forecast_last_run_calculated"
+        android:textSize="14sp"
+        android:textColor="@color/colorSelected"
+        android:textStyle="bold"/>
 </LinearLayout>

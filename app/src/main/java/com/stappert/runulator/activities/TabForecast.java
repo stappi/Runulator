@@ -87,9 +87,11 @@ public class TabForecast extends Fragment {
             // add runs
             List<Float> distances = createDistanceList();
             for (int i = 0; i < distances.size(); i++) {
-                TableRow forecast = createForecast(
-                        run.getForecastRun(distances.get(i), 1.0759f),
-                        i % 2 == 0 ? getContext().getColor(R.color.colorSeparator) : Color.TRANSPARENT);
+                final Run forecastRun = run.getForecastRun(distances.get(i), 1.0759f);
+                final int backgroundColor = run.equals(forecastRun)
+                        ? getContext().getColor(R.color.colorSelected) : i % 2 == 0
+                        ? getContext().getColor(R.color.colorSeparator) : Color.TRANSPARENT;
+                TableRow forecast = createForecast(forecastRun, backgroundColor);
                 forecastTable.addView(forecast, new TableLayout.LayoutParams(
                         TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }

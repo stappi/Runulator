@@ -104,4 +104,5 @@
     <string name="bmi_info_1">Der Body-Mass-Index ist eine Maßzahl für die Bewertung des Körpergewichts eines Menschen in Relation zu seiner Körpergröße.</string>
     <string name="bmi_info_2">Formel: BMI = Gewicht [kg] / Körpergröße^2 [m]</string>
     <string name="bmi_info_source">Quelle: https://de.wikipedia.org/wiki/Body-Mass-Index</string>
+    <string name="forecast_last_run_calculated">Zuletzt berechneter Lauf</string>
 </resources>

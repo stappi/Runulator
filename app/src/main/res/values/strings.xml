@@ -110,6 +110,7 @@
     <string name="bmi_info_1">Body mass index (BMI) is a value derived from the mass (weight) and height of a person.</string>
     <string name="bmi_info_2">Formula: bmi = weight [kg] / height^2 [m]</string>
     <string name="bmi_info_source">Source: https://en.wikipedia.org/wiki/Body_mass_index</string>
+    <string name="forecast_last_run_calculated">Last run calculated</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>
