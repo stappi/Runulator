@@ -84,7 +84,7 @@
     <string name="with">with</string>
     <string name="run_added">Run added to favorite list.</string>
     <string name="run_removed">Run removed from favorite list.</string>
-    <string name="info_developer_1">My name is Michael and I am a software developer.</string>
+    <string name="info_developer_1">Michael Stappert</string>
     <string name="info_calculation_1">To calculate a run, you have to specify two parameters. You can select distance, duration and pace or speed.</string>
     <string name="info_calculation_2">You can select kilometers or miles in the settings.</string>
     <string name="info_developer_2">Contact: stappi86@web.de</string>

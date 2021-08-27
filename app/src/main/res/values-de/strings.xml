@@ -84,7 +84,7 @@
     <string name="with">mit</string>
     <string name="run_added">Lauf zu Favoriten hinzugefügt.</string>
     <string name="run_removed">Lauf von Favoriten entfernt.</string>
-    <string name="info_developer_1">Mein Name ist Michael und ich bin ein Softwareentwickler.</string>
+    <string name="info_developer_1">Michael Stappert</string>
     <string name="info_calculation_1">Für die Berechnung eines Laufs musst du zwei Parameter angeben. Dabei kannst du aus Distanz, Dauer und Pace oder Geschwindigkeit wählen.</string>
     <string name="info_calculation_2">"Du kannst die Längeneinheit Kilometer oder Meile in den Einstellungen auswählen. "</string>
     <string name="info_developer_2">Kontakt: stappi86@web.de</string>
