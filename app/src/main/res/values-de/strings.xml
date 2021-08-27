@@ -29,7 +29,7 @@
     <string name="tab_forecast">Prognose</string>
     <string name="height">Körpergröße</string>
     <string name="height_msg">Bitte gib deine Körpergröße an.</string>
-    <string name="bmi">BMI</string>
+    <string name="bmi">BMI (Body-Mass-Index)</string>
     <string name="cadence_count">Schrittfrequenz</string>
     <string name="steps_per_minute">Schritte / Minute</string>
     <string name="unit_of_length">Längeneinheit</string>
@@ -51,7 +51,7 @@
     <string name="heart_rate_condition_building">Konditionsaufbau</string>
     <string name="heart_rate_max">Maximal</string>
     <string name="heart_rate_fat_burning">Fettverbrennung</string>
-    <string name="tab_health">Gesundheit</string>
+    <string name="tab_fitness">Fitness</string>
     <string name="heart_rate">Herzfrequenz</string>
     <string name="run_parameter_1">Laufparameter 1</string>
     <string name="run_parameter_2">Laufparameter 1</string>
@@ -100,4 +100,8 @@
     <string name="info_heartrate_4">Maximale Herzfrequenz</string>
     <string name="info_heartrate_5">Deine persönliche Ziel-Herzfrequenz wird mit der simplen Subtraktions-Gleichung: maximale Herzfrequenz = 220 – dein berechnet.</string>
     <string name="info_heartrate_6">Die Herzfrequenzzonen für die Fettverbrennung, den Konditionsaufbau und das Training bei maximaler Leistung berechnet sich mit dem Faktor 0,65, 0,75 oder 0,85.</string>
+    <string name="developer">Entwickler</string>
+    <string name="bmi_info_1">Der Body-Mass-Index ist eine Maßzahl für die Bewertung des Körpergewichts eines Menschen in Relation zu seiner Körpergröße.</string>
+    <string name="bmi_info_2">Formel: BMI = Gewicht [kg] / Körpergröße^2 [m]</string>
+    <string name="bmi_info_source">Quelle: https://de.wikipedia.org/wiki/Body-Mass-Index</string>
 </resources>

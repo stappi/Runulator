@@ -211,7 +211,46 @@
             android:padding="5dp"
             android:paddingLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="Developer"
+            android:text="@string/bmi"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/bmi_info_1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/bmi_info_2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/bmi_info_source" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorSeparator" />
+
+        <!-- =================================================================================== -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/developer"
             android:textSize="14sp"
             android:textStyle="bold" />
 

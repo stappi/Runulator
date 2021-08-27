@@ -18,7 +18,7 @@ import com.stappert.runulator.R;
 public class MainActivityTabAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast, R.string.tab_health};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_run, R.string.tab_forecast, R.string.tab_fitness};
 
     /**
      * Tab run.

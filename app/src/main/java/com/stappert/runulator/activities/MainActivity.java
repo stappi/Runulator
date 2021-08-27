@@ -5,9 +5,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.stappert.runulator.R;
-import com.stappert.runulator.dialogs.DistanceDialog;
 import com.stappert.runulator.dialogs.LoadRunDialog;
-import com.stappert.runulator.utils.SettingsManager;
 
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;

@@ -433,7 +433,9 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         if (settings.isDialogInput()) {
             createInputParameterListeners(inputParameter1EditText, inputParameter1);
         } else {
+            inputParameter1EditText.setOnClickListener(null);
             inputParameter1EditText.setFocusable(true);
+            inputParameter1EditText.setFocusableInTouchMode(true);
         }
     }
 
@@ -453,7 +455,9 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         if (settings.isDialogInput()) {
             createInputParameterListeners(inputParameter2EditText, inputParameter2);
         } else {
+            inputParameter2EditText.setOnClickListener(null);
             inputParameter2EditText.setFocusable(true);
+            inputParameter2EditText.setFocusableInTouchMode(true);
         }
     }
 
