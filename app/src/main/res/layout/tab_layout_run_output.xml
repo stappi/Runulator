@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/shape_drop_shadow">
 
     <TextView
         android:layout_width="match_parent"
@@ -21,7 +22,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
         <TableRow
             android:id="@+id/caloriesTableRow"

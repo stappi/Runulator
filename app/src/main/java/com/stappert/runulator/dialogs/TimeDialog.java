@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.stappert.runulator.R;
 import com.stappert.runulator.utils.CustomException;
 import com.stappert.runulator.utils.ParameterType;
-import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.entities.Run;
 import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.ValueChangeListener;
 

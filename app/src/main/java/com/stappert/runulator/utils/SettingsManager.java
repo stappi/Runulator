@@ -3,6 +3,8 @@ package com.stappert.runulator.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.stappert.runulator.entities.Run;
+
 import org.json.JSONException;
 
 import java.util.HashSet;

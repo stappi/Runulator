@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.stappert.runulator.R;
 import com.stappert.runulator.utils.SettingsManager;
-import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.entities.Run;
 import com.stappert.runulator.utils.Utils;
 
 import java.util.Locale;

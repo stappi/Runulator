@@ -1,11 +1,13 @@
 package com.stappert.runulator.activities;
 
+import android.graphics.Typeface;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.stappert.runulator.App;
 import com.stappert.runulator.R;
 import com.stappert.runulator.dialogs.DistanceDialog;
 import com.stappert.runulator.dialogs.TimeDialog;
@@ -28,7 +31,7 @@ import com.stappert.runulator.utils.ParameterType;
 import com.stappert.runulator.utils.RunLoadedListener;
 import com.stappert.runulator.utils.SettingsManager;
 import com.stappert.runulator.utils.CustomException;
-import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.entities.Run;
 import com.stappert.runulator.utils.Unit;
 import com.stappert.runulator.utils.Utils;
 import com.stappert.runulator.utils.ValueChangeListener;
@@ -36,6 +39,7 @@ import com.stappert.runulator.utils.ValueChangeListener;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -73,6 +77,8 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
     private static TableLayout.LayoutParams LAYOUT_TABLE_ROW = new TableLayout.LayoutParams(
             TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
 
+    private static final String DURATION_TEMPLATE = "00:00:00";
+
     private final static int INPUT_TYPE_NUMBER = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL;
     private final static int INPUT_TYPE_TIME = InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_TIME;
 
@@ -102,6 +108,8 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
     private TextView cadenceCountLabelTextView;
     private TextView cadenceCountValueTextView;
     private TextView cadenceCountUnitTextView;
+    // Run time table
+    private TableLayout runTimeTable;
 
     /**
      * Favorite button.
@@ -192,12 +200,14 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         // both input parameters must be set
         if (!inputParameter1EditText.isEnabled() || !inputParameter2EditText.isEnabled()) {
             deactivateFavoriteButton();
+            updateRunTimeTable(null);
         } else if (inputParameter1EditText.getText().toString().isEmpty()
                 || inputParameter2EditText.getText().toString().isEmpty()) {
             inputParamInfoTextView.setText(getString(R.string.input_info_enter_values));
             resultParameter1ValueTextView.setText("-");
             resultParameter2ValueTextView.setText("-");
             deactivateFavoriteButton();
+            updateRunTimeTable(null);
         } else {
             inputParamInfoTextView.setText("");
             Number runValue1 = getRunParameterValue(inputParameter1, inputParameter1EditText);
@@ -239,6 +249,7 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
             cadenceCountValueTextView.setText("" + currentRun.calculateCadenceCount(settings.getHeightInCm()));
             settings.setRun(currentRunJson);
             updateActiveFavoriteButton();
+            updateRunTimeTable(currentRun);
         }
     }
 
@@ -775,6 +786,78 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         unit.setText(unitText);
         unit.setEnabled(isEnabled);
     }
+
+    private void updateRunTimeTable(Run referenceRun) {
+        runTimeTable.removeAllViews();
+        for (final RunDistance distance : RunDistance.values()) {
+            try {
+                if (RunDistance.M800.equals(distance) || RunDistance.KM1_5.equals(distance)
+                        || RunDistance.KM10.equals(distance) || RunDistance.MARATHON.equals(distance)) {
+                    addEmptyRow(runTimeTable);
+                }
+                runTimeTable.addView(createRunTime(referenceRun, distance), new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            } catch (CustomException ex) {
+                // do nothing
+            }
+        }
+    }
+
+    private void addEmptyRow(TableLayout runTimeTable) {
+        TableRow emptyRow = new TableRow(getContext());
+        emptyRow.setMinimumHeight(40);
+        runTimeTable.addView(emptyRow, new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    /**
+     * Creates the header row for the table including column titles.
+     *
+     * @return header of table
+     */
+    private TableRow createRunTime(Run referenceRun, RunDistance runDistance) throws CustomException {
+        Run run = referenceRun != null ? referenceRun.calculateDifferentDistance(runDistance.dinstance) : null;
+        TableRow row = new TableRow(getContext());
+        row.addView(createRunTimeDistance(runDistance.getText(), run != null));
+        row.addView(createRunTimeDuration(run));
+        row.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        return row;
+    }
+
+    /**
+     * Creates a cell for the column title.
+     *
+     * @param distance distance
+     * @return cell
+     */
+    private TextView createRunTimeDistance(String distance, boolean isEnabled) throws CustomException {
+        TextView valueTextView = new TextView(getContext());
+        valueTextView.setText(distance + ":");
+        valueTextView.setTypeface(null, Typeface.BOLD);
+        valueTextView.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f));
+        valueTextView.setEnabled(isEnabled);
+        return valueTextView;
+    }
+
+    /**
+     * Creates a cell for the column title.
+     *
+     * @param run run
+     * @return cell
+     */
+    private TextView createRunTimeDuration(Run run) {
+        TextView valueTextView = new TextView(getContext());
+        String duration = run != null ? run.getDuration() : "";
+        valueTextView.setText(DURATION_TEMPLATE.substring(0, DURATION_TEMPLATE.length() - duration.length()) + duration);
+        valueTextView.setGravity(Gravity.RIGHT);
+        valueTextView.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f));
+        valueTextView.setEnabled(run != null);
+        return valueTextView;
+    }
+
     // =============================================================================================
     // Initialize
     // =============================================================================================
@@ -808,6 +891,8 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
         cadenceCountLabelTextView = runView.findViewById(R.id.cadenceCountLabelTextView);
         cadenceCountValueTextView = runView.findViewById(R.id.cadenceCountValueTextView);
         cadenceCountUnitTextView = runView.findViewById(R.id.cadenceCountUnitTextView);
+        // run time table
+        runTimeTable = runView.findViewById(R.id.runTimeOutputTable);
         // favorites
         favoriteRuns = new ArrayList<>(SettingsManager.getInstance().getFavoriteRunsJson());
         favoriteButton = runView.findViewById(R.id.favoriteButton);
@@ -896,5 +981,36 @@ public class TabRun extends Fragment implements ValueChangeListener, RunLoadedLi
                 updateResultArea();
             }
         });
+    }
+
+    /**
+     * Denifes all sports.
+     */
+    private enum RunDistance {
+        M100(.1f, R.string.m100),
+        M200(.2f, R.string.m200),
+        M400(.4f, R.string.m400),
+        M800(.8f, R.string.m800),
+        KM1(1, R.string.km1),
+        KM1_5(1.5f, R.string.km1_5),
+        KM3(3, R.string.km3),
+        KM5(5, R.string.km5),
+        KM10(10, R.string.km10),
+        HALF_MARATHON(Run.HALF_MARATHON, R.string.half_marathon),
+        MARATHON(Run.MARATHON, R.string.marathon),
+        KM50(50f, R.string.km50),
+        KM100(100f, R.string.km100);
+
+        RunDistance(float distance, int stringId) {
+            this.dinstance = distance;
+            this.stringId = stringId;
+        }
+
+        private float dinstance;
+        private int stringId;
+
+        private String getText() {
+            return App.getContext().getString(stringId);
+        }
     }
 }

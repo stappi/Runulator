@@ -105,4 +105,17 @@
     <string name="bmi_info_2">Formel: BMI = Gewicht [kg] / Körpergröße^2 [m]</string>
     <string name="bmi_info_source">Quelle: https://de.wikipedia.org/wiki/Body-Mass-Index</string>
     <string name="forecast_last_run_calculated">Zuletzt berechneter Lauf</string>
+    <string name="m100">100m</string>
+    <string name="m200">200m</string>
+    <string name="m400">400m</string>
+    <string name="m800">800m</string>
+    <string name="km1">1km</string>
+    <string name="km1_5">1.5km</string>
+    <string name="km3">3km</string>
+    <string name="km5">5km</string>
+    <string name="km10">10km</string>
+    <string name="km50">50km</string>
+    <string name="km100">100km</string>
+    <string name="run_result_time_table_text">Mit dieser Geschwindigkeit würdest du folgende Zeiten erreichen:</string>
+    <string name="run_result_time_table">Zeit-Tabelle</string>
 </resources>

@@ -1,6 +1,10 @@
-package com.stappert.runulator.utils;
+package com.stappert.runulator.entities;
 
 import android.util.Log;
+
+import com.stappert.runulator.utils.CustomException;
+import com.stappert.runulator.utils.ParameterType;
+import com.stappert.runulator.utils.Unit;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -188,6 +192,17 @@ public class Run {
     public Run getForecastRun(float forecastDistance, float fatigueCoefficient) throws CustomException {
         return createWithDistanceAndDuration(forecastDistance,
                 (int) (duration * Math.pow(forecastDistance / distance, fatigueCoefficient)));
+    }
+
+    /**
+     * Calculates the distance for a different distance
+     *
+     * @param differentDistance   disred distance
+     * @return forecast run
+     * @throws CustomException if forecast is not possible
+     */
+    public Run calculateDifferentDistance(float differentDistance) throws CustomException {
+        return createWithDistanceAndPace(differentDistance, pace);
     }
 
     /**

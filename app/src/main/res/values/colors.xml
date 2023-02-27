@@ -10,4 +10,6 @@
     <color name="colorIcon">#4C4C4C</color>
     <color name="colorSelected">#FF5A96DC</color>
     <color name="colorSeparator">#E8E8E8</color>
+    <color name="colorBackground">#E8E8E8</color>
+    <color name="colorTile">#FFFFFF</color>
 </resources>

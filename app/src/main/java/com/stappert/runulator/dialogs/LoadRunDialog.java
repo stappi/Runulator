@@ -3,7 +3,6 @@ package com.stappert.runulator.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +10,20 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.stappert.runulator.R;
-import com.stappert.runulator.utils.CustomException;
 import com.stappert.runulator.utils.ParameterType;
-import com.stappert.runulator.utils.Run;
 import com.stappert.runulator.utils.RunLoadedListener;
 import com.stappert.runulator.utils.SettingsManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class LoadRunDialog extends AppCompatDialogFragment {
 

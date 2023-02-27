@@ -1,8 +1,7 @@
 package com.stappert.runulator;
 
 import com.stappert.runulator.utils.CustomException;
-import com.stappert.runulator.utils.ParameterType;
-import com.stappert.runulator.utils.Run;
+import com.stappert.runulator.entities.Run;
 import com.stappert.runulator.utils.Unit;
 
 import org.junit.Assert;

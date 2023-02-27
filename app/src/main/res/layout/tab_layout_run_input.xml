@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/shape_drop_shadow"
+    android:paddingBottom="5dp">
 
     <TextView
         android:layout_width="match_parent"
